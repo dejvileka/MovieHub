@@ -1,4 +1,4 @@
-package com.dejvidleka.moviehub
+package com.dejvidleka.moviehub.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 
 /**

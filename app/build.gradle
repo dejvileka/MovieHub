@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android' version '2.44' apply false
 }
 
 android {
@@ -36,7 +38,10 @@ android {
 }
 
 dependencies {
+    def room_version = "2.5.1"
 
+
+//core dependencies
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -46,4 +51,63 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+//Hilt dependency injection
+    implementation "com.google.dagger:hilt-android:2.44.2"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.46.1'
+
+// Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+
+// To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+
+
+// To use Kotlin Symbol Processing (KSP)
+    //ksp "androidx.room:room-compiler:$room_version"
+
+
+// optional - RxJava2 support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+
+// optional - RxJava3 support for Room
+    implementation "androidx.room:room-rxjava3:$room_version"
+
+
+
+// optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+
+
+// optional - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
+
+
+// optional - Paging 3 Integration
+    implementation "androidx.room:room-paging:$room_version"
+
+
+// retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+
+
+
+// GSON
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+
+// coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+
+//material ui
+    implementation 'com.google.android.material:material:1.9.0'
+
+
 }

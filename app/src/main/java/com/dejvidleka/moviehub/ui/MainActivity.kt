@@ -1,4 +1,4 @@
-package com.dejvidleka.moviehub
+package com.dejvidleka.moviehub.ui
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -10,12 +10,18 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bottomNavigationView: BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -30,10 +36,27 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_home -> {
+                    // Handle Home item selection
+                    true
+                }
+                R.id.action_search -> {
+                    // Handle Search item selection
+                    true
+                }
+                R.id.action_favorites -> {
+                    // Handle Favorites item selection
+                    true
+                }
+                R.id.action_what_to_watch -> {
+                    // Handle Favorites item selection
+                    true
+                }
+                else -> false
+            }
         }
     }
 
