@@ -1,4 +1,4 @@
-package com.dejvidleka.moviehub.ui
+package com.dejvidleka.moviehub.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -7,13 +7,16 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.dejvidleka.moviehub.ui.FirstFragment"
+        android:name="com.dejvidleka.moviehub.ui.home.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_getStartedFragment"
+            app:destination="@id/getStartedFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -25,4 +28,24 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/getStartedFragment"
+        android:name="com.dejvidleka.moviehub.ui.getstarted.GetStartedFragment"
+        android:label="fragment_get_started"
+        tools:layout="@layout/fragment_get_started" />
+    <fragment
+        android:id="@+id/seachFragment"
+        android:name="com.dejvidleka.moviehub.ui.search.SeachFragment"
+        android:label="fragment_seach"
+        tools:layout="@layout/fragment_seach" />
+    <fragment
+        android:id="@+id/whatToWatchFragment"
+        android:name="com.dejvidleka.moviehub.ui.whattowatch.WhatToWatchFragment"
+        android:label="fragment_what_to_watch"
+        tools:layout="@layout/fragment_what_to_watch" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.dejvidleka.moviehub.ui.favorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>

@@ -40,19 +40,19 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_home -> {
-                    // Handle Home item selection
+                    navController.navigate(R.id.FirstFragment)
                     true
                 }
                 R.id.action_search -> {
-                    // Handle Search item selection
+                    navController.navigate(R.id.seachFragment)
                     true
                 }
                 R.id.action_favorites -> {
-                    // Handle Favorites item selection
+                    navController.navigate(R.id.favoritesFragment)
                     true
                 }
                 R.id.action_what_to_watch -> {
-                    // Handle Favorites item selection
+                    navController.navigate(R.id.whatToWatchFragment)
                     true
                 }
                 else -> false
