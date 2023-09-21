@@ -11,6 +11,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.ActivityMainBinding
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {

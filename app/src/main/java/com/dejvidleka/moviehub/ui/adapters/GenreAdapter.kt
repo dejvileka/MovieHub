@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.moviehub.data.model.Genre
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.google.android.material.carousel.CarouselLayoutManager
 
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
@@ -35,7 +36,7 @@ class GenreAdapter(
 
         val moviesAdapter = MovieListByGenreAdapter(mainViewModel)
         holder.binding.moviesRv.adapter = moviesAdapter
-        holder.binding.moviesRv.layoutManager = LinearLayoutManager(holder.binding.root.context,LinearLayoutManager.HORIZONTAL, false )
+        holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
 
         // Fetch the movies for this genre.
         mainViewModel.fetchMoviesByGenre(genre.id)

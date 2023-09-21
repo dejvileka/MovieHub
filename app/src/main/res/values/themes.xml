@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieHub" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Base Colors -->
-        <item name="colorPrimary">#1E1E1E</item> <!-- Deep black for primary backgrounds -->
+        <item name="colorPrimary">#FFFFFF</item> <!-- Deep black for primary backgrounds -->
         <item name="colorPrimaryVariant">#121212</item> <!-- Even darker shade for elements like the status bar -->
         <item name="colorOnPrimary">#FFFFFF</item> <!-- White or off-white for text/icons on primary backgrounds -->
 
@@ -18,7 +18,7 @@
         <item name="colorAccent">#FFC107</item> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
 
         <!-- Other Colors -->
-        <item name="colorPrimaryDark">#121212</item> <!-- Darker shade for elements like the navigation bar -->
+        <item name="colorPrimaryDark">#FFFFFF</item> <!-- Darker shade for elements like the navigation bar -->
         <item name="android:colorBackground">#1E1E1E</item> <!-- Deep black for the default background -->
 
 
