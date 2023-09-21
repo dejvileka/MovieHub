@@ -1,8 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieHub" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Base Colors -->
+        <item name="colorPrimary">#1E1E1E</item> <!-- Deep black for primary backgrounds -->
+        <item name="colorPrimaryVariant">#121212</item> <!-- Even darker shade for elements like the status bar -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- White or off-white for text/icons on primary backgrounds -->
+
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">#FFC107</item> <!-- Bright accent, like sunflower yellow -->
+        <item name="colorOnSecondary">#1E1E1E</item> <!-- Text/icons on secondary colors, deep black -->
+
+        <!-- Surface Color -->
+        <item name="colorSurface">#282828</item> <!-- Slightly lifted color for cards and elevated surfaces -->
+        <item name="colorOnSurface">#EFEFEF</item> <!-- Light text/icons on surface backgrounds -->
+
+        <!-- Accent (formerly colorAccent in older Material Design) -->
+        <item name="colorAccent">#FFC107</item> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
+
+        <!-- Other Colors -->
+        <item name="colorPrimaryDark">#121212</item> <!-- Darker shade for elements like the navigation bar -->
+        <item name="android:colorBackground">#1E1E1E</item> <!-- Deep black for the default background -->
+
+
     </style>
 
     <style name="Theme.MovieHub" parent="Base.Theme.MovieHub" />
