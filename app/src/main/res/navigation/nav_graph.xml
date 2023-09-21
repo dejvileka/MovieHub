@@ -8,26 +8,35 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.dejvidleka.moviehub.ui.home.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_getStartedFragment"
-            app:destination="@id/getStartedFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.dejvidleka.moviehub.ui.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+            app:destination="@id/movie_detailFragment">
+            <argument
+                android:name="movieResult"
+                app:argType="com.dejvidleka.moviehub.data.model.MovieResult" />
+        </action>
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_FirstFragment_to_getStartedFragment"
+            app:destination="@id/getStartedFragment" >
+
+        </action>
     </fragment>
+    <fragment
+        android:id="@+id/movie_detailFragment"
+        android:name="com.dejvidleka.moviehub.ui.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_movie_detail">
+
+
+        <argument
+            android:name="movieResult"
+            app:argType="com.dejvidleka.moviehub.data.model.MovieResult" />
+    </fragment>
+
     <fragment
         android:id="@+id/getStartedFragment"
         android:name="com.dejvidleka.moviehub.ui.getstarted.GetStartedFragment"

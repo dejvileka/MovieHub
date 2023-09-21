@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
 
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
 

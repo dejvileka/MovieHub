@@ -10,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,6 +49,7 @@ class FirstFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
+
 
         genreAdapter = GenreAdapter(mainViewModel ,viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
