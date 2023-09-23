@@ -6,6 +6,7 @@ import com.dejvidleka.moviehub.data.model.Cast
 import com.dejvidleka.moviehub.data.model.Genre
 import com.dejvidleka.moviehub.data.model.MovieByGenre
 import com.dejvidleka.moviehub.data.model.MovieResult
+import com.dejvidleka.moviehub.data.model.Trailer
 import com.dejvidleka.moviehub.data.network.GenreApi
 import com.dejvidleka.moviehub.data.network.MovieCastCrewApi
 import com.dejvidleka.moviehub.data.network.MoviesApi
@@ -13,6 +14,7 @@ import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,8 +27,11 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel() {
     private val _genre = MutableStateFlow(emptyList<Genre>())
+
     val genre: StateFlow<List<Genre>> = _genre
+
     private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
+
     val movie: StateFlow<List<MovieByGenre>> = _movie
 
     val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
@@ -37,7 +42,12 @@ class MainViewModel @Inject constructor(
     val loading: MutableStateFlow<Boolean> get() = _loading
 
     private val _cast = MutableStateFlow(emptyList<Cast>())
+
     val cast: StateFlow<List<Cast>> = _cast
+
+    private val _trailer = MutableStateFlow<String?>(null)
+
+    val trailer: StateFlow<String?> = _trailer.asStateFlow()
 
 
     private val _error = MutableStateFlow("")
@@ -108,6 +118,26 @@ class MainViewModel @Inject constructor(
                 _error.value = e.localizedMessage
             }
             _loading.value = false
+        }
+    }
+
+    fun fetchTrailerForMovie(movieId: Int) {
+
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = movieCastCrewApi.getTrailer(movieId = movieId, appId = API_KEY)
+                if (response.isSuccessful) {
+                    val trailer = response.body()
+                    val key = trailer?.results?.firstOrNull()?.key
+                    _trailer.value = key
+                } else {
+                    _error.value = "Failed to fetch"
+                }
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+
+            }
         }
     }
 }

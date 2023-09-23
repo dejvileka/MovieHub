@@ -1,15 +1,18 @@
 package com.dejvidleka.moviehub.ui.home
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dejvidleka.moviehub.R
+import com.dejvidleka.moviehub.data.model.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.ui.adapters.MovieCastAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
@@ -69,7 +72,6 @@ class MovieDetailFragment : Fragment() {
         mainViewModel.fetchMovieCast(movieResult.id)
         castAdapter = MovieCastAdapter()
         binding.castRv.adapter = castAdapter
-
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.castById.collect { map ->
                 val castResult = map[movieResult.id] ?: emptyList()
@@ -78,7 +80,28 @@ class MovieDetailFragment : Fragment() {
                 }
             }
         }
+        mainViewModel.fetchTrailerForMovie(movieResult.id)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.trailer.collect { key ->
+                key?.let {
+                    playTrailer(it)
+                }
+            }
+        }
     }
+
+    fun playTrailer(id:String) {
+
+
+        val videoKey = id
+        val videoUrl = "https://www.youtube.com/embed/$videoKey?autoplay=1"
+
+        val webSettings = binding.webView.settings
+        webSettings.javaScriptEnabled = true
+
+        binding.webView.loadUrl(videoUrl)
+    }
+
 
     private fun loadImage(path: String?) {
         val baseURL = "https://image.tmdb.org/t/p/w500"
