@@ -19,65 +19,61 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class FirstFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
     private var _binding: FragmentFirstBinding? = null
     private lateinit var genreAdapter: GenreAdapter
-    private lateinit var moviesAdapter: MovieListByGenreAdapter
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        observeViewModelData()
+    }
 
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
 
-
-        genreAdapter = GenreAdapter(mainViewModel ,viewLifecycleOwner)
+        genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
+    }
 
-
-
-        // Observe ViewModel data using flows
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+    private fun observeViewModelData() {
+        viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.genre.collect { genres ->
                 genreAdapter.submitList(genres)
-                Toast.makeText(requireContext(), "hello", Toast.LENGTH_SHORT).show()
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.loading.collect { isLoading ->
+                // You can add code here to show/hide a progress bar based on the isLoading value
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.error.collect { errorMessage ->
                 if (!errorMessage.isNullOrEmpty()) {
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
-
     }
 
     override fun onDestroyView() {

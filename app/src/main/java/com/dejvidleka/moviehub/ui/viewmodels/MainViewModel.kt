@@ -2,10 +2,12 @@ package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dejvidleka.moviehub.data.model.Cast
 import com.dejvidleka.moviehub.data.model.Genre
 import com.dejvidleka.moviehub.data.model.MovieByGenre
 import com.dejvidleka.moviehub.data.model.MovieResult
 import com.dejvidleka.moviehub.data.network.GenreApi
+import com.dejvidleka.moviehub.data.network.MovieCastCrewApi
 import com.dejvidleka.moviehub.data.network.MoviesApi
 import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val genreApi: GenreApi,
-    private val moviesApi: MoviesApi
+    private val moviesApi: MoviesApi,
+    private val movieCastCrewApi: MovieCastCrewApi
 
 ) : ViewModel() {
     private val _genre = MutableStateFlow(emptyList<Genre>())
@@ -28,8 +31,14 @@ class MainViewModel @Inject constructor(
 
     val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
 
+    val castById: MutableStateFlow<Map<Int, List<Cast>>> = MutableStateFlow(emptyMap())
+
     private val _loading = MutableStateFlow(false)
     val loading: MutableStateFlow<Boolean> get() = _loading
+
+    private val _cast = MutableStateFlow(emptyList<Cast>())
+    val cast: StateFlow<List<Cast>> = _cast
+
 
     private val _error = MutableStateFlow("")
     val error: StateFlow<String?> get() = _error
@@ -66,8 +75,7 @@ class MainViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     response.body()?.let { movieByGenre ->
                         val currentMap = moviesByGenre.value
-                        moviesByGenre.value = currentMap + (genreId to (movieByGenre.movieResults ?: emptyList()))
-
+                            moviesByGenre.value =  currentMap + (genreId to (movieByGenre.movieResults?: emptyList()))
                     } ?: run {
                         _error.value = "Movie response body is null"
                     }
@@ -81,6 +89,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-
+    fun fetchMovieCast(movieId: Int) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = movieCastCrewApi.getCast(movieId = movieId, appId = API_KEY)
+                if (response.isSuccessful) {
+                    response.body()?.let { movieCast ->
+                        val currentMap = castById.value
+                        castById.value = currentMap + (movieId to (movieCast.cast))
+                    } ?: run {
+                        _error.value = "Cast response body is null"
+                    }
+                } else {
+                    _error.value = "Failed to fetch"
+                }
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+            }
+            _loading.value = false
+        }
+    }
 }

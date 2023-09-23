@@ -1,6 +1,7 @@
 package com.dejvidleka.moviehub.di
 
 import com.dejvidleka.moviehub.data.network.GenreApi
+import com.dejvidleka.moviehub.data.network.MovieCastCrewApi
 import com.dejvidleka.moviehub.data.network.MoviesApi
 import com.dejvidleka.moviehub.utils.BASE_URL
 import dagger.Module
@@ -35,6 +36,11 @@ object NetworkModule {
     @Singleton
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi {
         return retrofit.create(MoviesApi::class.java)
+    }
+    @Provides
+    @Singleton
+    fun provideMovieCast(retrofit: Retrofit): MovieCastCrewApi{
+        return retrofit.create(MovieCastCrewApi::class.java)
     }
 
 

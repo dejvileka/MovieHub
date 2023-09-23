@@ -26,7 +26,7 @@ class MovieListByGenreAdapter(private val viewModel: MainViewModel) : ListAdapte
         }
 
         private fun navigateToDetails(movieResult: MovieResult, view: View) {
-            val directions = FirstFragmentDirections.actionFirstFragmentToSecondFragment(movieResult)
+            val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
             view.findNavController().navigate(directions)
         }
 

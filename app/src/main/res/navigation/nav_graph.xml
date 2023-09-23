@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/movie_detailFragment">
+            android:id="@+id/action_home_to_movie_detail"
+            app:destination="@id/movie_detail_fragment">
             <argument
                 android:name="movieResult"
                 app:argType="com.dejvidleka.moviehub.data.model.MovieResult" />
@@ -26,11 +26,10 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/movie_detailFragment"
-        android:name="com.dejvidleka.moviehub.ui.SecondFragment"
+        android:id="@+id/movie_detail_fragment"
+        android:name="com.dejvidleka.moviehub.ui.home.MovieDetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_movie_detail">
-
 
         <argument
             android:name="movieResult"
