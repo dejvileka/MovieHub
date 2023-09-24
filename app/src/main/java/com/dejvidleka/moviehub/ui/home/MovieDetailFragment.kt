@@ -97,7 +97,6 @@ class MovieDetailFragment : Fragment() {
 
         val videoKey = id
         val videoUrl = "https://www.youtube.com/embed/$videoKey?autoplay=1"
-
         val webSettings = binding.webView.settings
         webSettings.javaScriptEnabled = true
 
