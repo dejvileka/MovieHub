@@ -92,7 +92,7 @@
                     android:textSize="22sp"
                     app:layout_constraintBottom_toTopOf="@id/cast_rv"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoView" />
+                    app:layout_constraintTop_toBottomOf="@+id/webView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cast_rv"
@@ -101,9 +101,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoView"
+                    app:layout_constraintTop_toBottomOf="@+id/webView"
                     tools:listitem="@layout/item_cast_crew" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/videoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -68,7 +68,9 @@ class MovieDetailFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movieTitle.text = movieResult.title
         binding.movieDescription.text = movieResult.overview
-        loadImage(movieResult.backdrop_path)
+        if (movieResult.backdrop_path == null) {
+            loadImage(movieResult.poster_path)
+        } else loadImage(movieResult.backdrop_path)
         mainViewModel.fetchMovieCast(movieResult.id)
         castAdapter = MovieCastAdapter()
         binding.castRv.adapter = castAdapter
@@ -101,6 +103,7 @@ class MovieDetailFragment : Fragment() {
 
         binding.webView.loadUrl(videoUrl)
     }
+
 
 
     private fun loadImage(path: String?) {

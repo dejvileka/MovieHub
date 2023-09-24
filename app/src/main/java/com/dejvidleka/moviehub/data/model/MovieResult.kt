@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class MovieResult(
     val adult: Boolean,
-    val backdrop_path: String,
+    val backdrop_path: String?=null,
     val genre_ids: List<Int>,
     val id: Int,
     val original_language: String,
