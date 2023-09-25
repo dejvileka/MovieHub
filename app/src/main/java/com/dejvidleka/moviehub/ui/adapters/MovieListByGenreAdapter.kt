@@ -52,6 +52,7 @@ class MovieListByGenreAdapter(private val viewModel: MainViewModel) : ListAdapte
             holder.itemBinding.movieImg.setImageResource(R.drawable.moviehublogo)
             holder.itemBinding.movieImg.setOnClickListener {
                 navigateToMoreMovies(it)
+
             }// Use your "View More" image here
         } else {
             holder.bind(movieResult)
