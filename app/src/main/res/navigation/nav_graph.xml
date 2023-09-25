@@ -24,6 +24,9 @@
             app:destination="@id/getStartedFragment" >
 
         </action>
+        <action
+            android:id="@+id/action_FirstFragment_to_moreMoviesPerGenre"
+            app:destination="@id/moreMoviesPerGenre" />
     </fragment>
     <fragment
         android:id="@+id/movie_detail_fragment"
@@ -56,4 +59,9 @@
         android:name="com.dejvidleka.moviehub.ui.favorites.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/moreMoviesPerGenre"
+        android:name="com.dejvidleka.moviehub.ui.home.MoreMoviesPerGenre"
+        android:label="fragment_more_movies_per_genre"
+        tools:layout="@layout/fragment_more_movies_per_genre" />
 </navigation>

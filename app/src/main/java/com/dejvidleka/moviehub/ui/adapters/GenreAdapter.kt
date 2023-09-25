@@ -21,7 +21,9 @@ class GenreAdapter(
         fun bind(genre: Genre) {
             binding.genre = genre
             binding.executePendingBindings()
+
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
@@ -44,10 +46,11 @@ class GenreAdapter(
 
         lifecycleOwner.lifecycleScope.launchWhenStarted {
             mainViewModel.moviesByGenre.collect { map ->
-                val movieResults = map[genre.id] ?: emptyList()
+                val movieResults = (map[genre.id] ?: emptyList()).toMutableList()
                 if (movieResults.isNotEmpty()) {
-                    moviesAdapter.submitList(movieResults)
-                }
+                    val lastItem = movieResults.last().copy(isViewMore = true)
+                    movieResults[movieResults.size - 1] = lastItem
+                    moviesAdapter.submitList(movieResults)}
             }
         }
     }

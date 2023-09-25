@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.data.model.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemMovieByCategorieBinding
 import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
@@ -16,12 +17,13 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 class MovieListByGenreAdapter(private val viewModel: MainViewModel) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
 
 
-    inner class MovieResultViewHolder(private val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
             itemBinding.clickListener = View.OnClickListener {
                 navigateToDetails(movieResult, it)
             }
+
 
         }
 
@@ -32,14 +34,28 @@ class MovieListByGenreAdapter(private val viewModel: MainViewModel) : ListAdapte
 
     }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
+    private fun navigateToMoreMovies(view: View) {
+        val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre()
+        view.findNavController().navigate(directions)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
         val binding = ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieResultViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MovieResultViewHolder, position: Int) {
+
         val movieResult = getItem(position)
-        holder.bind(movieResult)
+        if (movieResult.isViewMore) {
+            holder.itemBinding.movieTitle.text = "View More"
+            holder.itemBinding.movieImg.setImageResource(R.drawable.moviehublogo)
+            holder.itemBinding.movieImg.setOnClickListener {
+                navigateToMoreMovies(it)
+            }// Use your "View More" image here
+        } else {
+            holder.bind(movieResult)
+        }
     }
 
 }

@@ -4,18 +4,24 @@
     <color name="transparent">#00000000</color>
     <!-- Base Colors -->
     <color name="colorPrimary">#FFFFFF</color> <!-- Deep black for primary backgrounds -->
-    <color name="colorPrimaryVariant">#FFFFFF</color> <!-- Even darker shade for elements like the status bar -->
-    <color name="colorOnPrimary">#FFFFFF</color> <!-- White or off-white for text/icons on primary backgrounds -->
+    <color name="colorPrimaryVariant">#FFFFFF
+    </color> <!-- Even darker shade for elements like the status bar -->
+    <color name="colorOnPrimary">#FFFFFF
+    </color> <!-- White or off-white for text/icons on primary backgrounds -->
 
     <color name="colorSecondary">#FFC107</color> <!-- Bright accent, like sunflower yellow -->
-    <color name="colorOnSecondary">#1E1E1E</color> <!-- Text/icons on secondary colors, deep black -->
+    <color name="colorOnSecondary">#1E1E1E
+    </color> <!-- Text/icons on secondary colors, deep black -->
 
-    <color name="colorSurface">#FFFFFF</color> <!-- Slightly lifted color for cards and elevated surfaces -->
+    <color name="colorSurface">#FFFFFF
+    </color> <!-- Slightly lifted color for cards and elevated surfaces -->
     <color name="colorOnSurface">#EFEFEF</color> <!-- Light text/icons on surface backgrounds -->
 
-    <color name="colorAccent">#FFC107</color> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
+    <color name="colorAccent">#FFC107
+    </color> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
 
-    <color name="colorPrimaryDark">#FFFFFF</color> <!-- Darker shade for elements like the navigation bar -->
+    <color name="colorPrimaryDark">#FFFFFF
+    </color> <!-- Darker shade for elements like the navigation bar -->
     <color name="colorBackground">#1E1E1E</color> <!-- Deep black for the default background -->
     <color name="colorWhite">#FFFFFF</color> <!-- White -->
     <color name="colorBlack">#000000</color> <!-- Black -->
@@ -36,6 +42,11 @@
     <color name="colorLime">#00FF00</color> <!-- Lime -->
     <color name="colorGolden">#FFD700</color> <!-- Golden -->
     <color name="colorBeige">#F5F5DC</color> <!-- Beige -->
-    <color name="colorMaroon">#800000</color> <!-- Maroon -->
+    <color name="colorMaroon">#800000</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color> <!-- Maroon -->
 
 </resources>
