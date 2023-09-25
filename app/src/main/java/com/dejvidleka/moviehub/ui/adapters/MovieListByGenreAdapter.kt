@@ -55,6 +55,7 @@ class MovieListByGenreAdapter(private val viewModel: MainViewModel) : ListAdapte
             }// Use your "View More" image here
         } else {
             holder.bind(movieResult)
+
         }
     }
 
