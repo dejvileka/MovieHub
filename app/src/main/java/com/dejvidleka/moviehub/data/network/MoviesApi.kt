@@ -10,6 +10,7 @@ interface MoviesApi {
     suspend fun getMovies(
         @Query("api_key") appId: String,
         @Query("with_genres") genre: String,
+        @Query("page") page:Int
     ): Response<MovieByGenre>
 
 }

@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="colorPrimary">#FFFFFF</color> <!-- Pure white for primary backgrounds -->
+    <color name="colorPrimaryVariant">#F7F7F7</color> <!-- Slightly off-white for elements like the status bar -->
+    <color name="colorOnPrimary">#333333</color> <!-- Dark gray text/icons on primary backgrounds -->
+
+    <color name="colorSecondary">#FFEB3B</color> <!-- Bright yellow for accents -->
+    <color name="colorOnSecondary">#333333</color> <!-- Dark gray text/icons on yellow -->
+
+    <color name="colorSurface">#F5F5F5</color> <!-- Light gray for cards and elevated surfaces -->
+    <color name="colorOnSurface">#333333</color> <!-- Dark gray text/icons on light gray backgrounds -->
+
+    <color name="colorAccent">#FFEB3B</color>
+
+    <color name="colorPrimaryDark">#E5E5E5</color> <!-- Darker off-white for elements like the navigation bar -->
+
     <color name="transparent">#00000000</color>
-    <!-- Base Colors -->
-    <color name="colorPrimary">#FFFFFF</color> <!-- Deep black for primary backgrounds -->
-    <color name="colorPrimaryVariant">#FFFFFF
-    </color> <!-- Even darker shade for elements like the status bar -->
-    <color name="colorOnPrimary">#FFFFFF
-    </color> <!-- White or off-white for text/icons on primary backgrounds -->
-
-    <color name="colorSecondary">#FFC107</color> <!-- Bright accent, like sunflower yellow -->
-    <color name="colorOnSecondary">#1E1E1E
-    </color> <!-- Text/icons on secondary colors, deep black -->
-
-    <color name="colorSurface">#FFFFFF
-    </color> <!-- Slightly lifted color for cards and elevated surfaces -->
-    <color name="colorOnSurface">#EFEFEF</color> <!-- Light text/icons on surface backgrounds -->
-
-    <color name="colorAccent">#FFC107
-    </color> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
-
-    <color name="colorPrimaryDark">#FFFFFF
-    </color> <!-- Darker shade for elements like the navigation bar -->
-    <color name="colorBackground">#1E1E1E</color> <!-- Deep black for the default background -->
     <color name="colorWhite">#FFFFFF</color> <!-- White -->
     <color name="colorBlack">#000000</color> <!-- Black -->
     <color name="colorRed">#FF0000</color> <!-- Red -->

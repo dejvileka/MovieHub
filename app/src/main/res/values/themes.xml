@@ -2,39 +2,30 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieHub" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Base Colors -->
-        <item name="colorPrimary">#FFFFFF</item> <!-- Deep black for primary backgrounds -->
-        <item name="colorPrimaryVariant">#121212
-        </item> <!-- Even darker shade for elements like the status bar -->
-        <item name="colorOnPrimary">#FFFFFF
-        </item> <!-- White or off-white for text/icons on primary backgrounds -->
+        <item name="colorPrimary">#FFFFFF</item> <!-- Pure white for primary backgrounds -->
+        <item name="colorPrimaryVariant">#F7F7F7</item> <!-- Slightly off-white for elements like the status bar -->
+        <item name="colorOnPrimary">#333333</item> <!-- Dark gray text/icons on primary backgrounds -->
 
         <!-- Secondary Colors -->
-        <item name="colorSecondary">#FFC107</item> <!-- Bright accent, like sunflower yellow -->
-        <item name="colorOnSecondary">#1E1E1E
-        </item> <!-- Text/icons on secondary colors, deep black -->
+        <item name="colorSecondary">#FFEB3B</item> <!-- Bright yellow for accents -->
+        <item name="colorOnSecondary">#333333</item> <!-- Dark gray text/icons on yellow -->
 
         <!-- Surface Color -->
-        <item name="colorSurface">#282828
-        </item> <!-- Slightly lifted color for cards and elevated surfaces -->
-        <item name="colorOnSurface">#EFEFEF</item> <!-- Light text/icons on surface backgrounds -->
+        <item name="colorSurface">#F5F5F5</item> <!-- Light gray for cards and elevated surfaces -->
+        <item name="colorOnSurface">#333333</item> <!-- Dark gray text/icons on light gray backgrounds -->
 
-        <!-- Accent (formerly colorAccent in older Material Design) -->
-        <item name="colorAccent">#FFC107
-        </item> <!-- Sunflower yellow for accent. However, consider using "colorSecondary" for new apps instead -->
+        <!-- Accent (Using secondary yellow for consistency) -->
+        <item name="colorAccent">#FFEB3B</item>
 
         <!-- Other Colors -->
-        <item name="colorPrimaryDark">#FFFFFF
-        </item> <!-- Darker shade for elements like the navigation bar -->
-        <item name="android:colorBackground">#1E1E1E
-        </item> <!-- Deep black for the default background -->
-
-
+        <item name="colorPrimaryDark">#E5E5E5</item> <!-- Darker off-white for elements like the navigation bar -->
+        <item name="android:colorBackground">#FFFFFF</item>
     </style>
 
     <style name="Theme.MovieHub" parent="Base.Theme.MovieHub" />
 
     <style name="ThemeOverlay.MovieHub.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+        <item name="fullscreenBackgroundColor">#AED8D5</item> <!-- Light teal -->
+        <item name="fullscreenTextColor">#425959</item> <!-- Dark grey for text on light teal -->
     </style>
 </resources>

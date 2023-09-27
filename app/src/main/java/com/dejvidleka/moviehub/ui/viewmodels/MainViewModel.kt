@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dejvidleka.moviehub.data.model.Cast
@@ -12,9 +13,11 @@ import com.dejvidleka.moviehub.data.network.MovieCastCrewApi
 import com.dejvidleka.moviehub.data.network.MoviesApi
 import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,6 +38,8 @@ class MainViewModel @Inject constructor(
     val movie: StateFlow<List<MovieByGenre>> = _movie
 
     val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
+
+    val allMovies: MutableStateFlow<List<MovieResult>> = MutableStateFlow(emptyList())
 
     val castById: MutableStateFlow<Map<Int, List<Cast>>> = MutableStateFlow(emptyMap())
 
@@ -81,7 +86,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = moviesApi.getMovies(appId = API_KEY, genre = genreId.toString())
+                val response = moviesApi.getMovies(appId = API_KEY, genre = genreId.toString(), page = 1)
                 if (response.isSuccessful) {
                     response.body()?.let { movieByGenre ->
                         val currentMap = moviesByGenre.value
@@ -140,4 +145,43 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun fetchAllMoviesByGenre(genreId: Int) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val allMoviesList = mutableListOf<MovieResult>()
+
+                val movieFlow: Flow<List<MovieResult>> = flow {
+                    var currentPage = 1
+                    val maxPages = 10
+                    while (currentPage <= maxPages) {
+                        val response = moviesApi.getMovies(appId = API_KEY, genre = genreId.toString(), page = currentPage)
+                        Log.d("API_RESPONSE", "Response: $response")
+
+                        if (response.isSuccessful) {
+                            response.body()?.let { allMoviesByGenreResponse ->
+                                emit(allMoviesByGenreResponse.movieResults ?: emptyList())
+                            }
+                        }
+                        currentPage++
+                    }
+                }
+                movieFlow.collect { movies ->
+                    allMoviesList.addAll(movies)
+                }
+
+                allMovies.value = allMoviesList
+
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+
+
 }

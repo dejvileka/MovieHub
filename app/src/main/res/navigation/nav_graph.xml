@@ -63,5 +63,9 @@
         android:id="@+id/moreMoviesPerGenre"
         android:name="com.dejvidleka.moviehub.ui.home.MoreMoviesPerGenre"
         android:label="fragment_more_movies_per_genre"
-        tools:layout="@layout/fragment_more_movies_per_genre" />
+        tools:layout="@layout/fragment_more_movies_per_genre" >
+        <argument
+            android:name="genre"
+            app:argType="com.dejvidleka.moviehub.data.model.Genre" />
+    </fragment>
 </navigation>

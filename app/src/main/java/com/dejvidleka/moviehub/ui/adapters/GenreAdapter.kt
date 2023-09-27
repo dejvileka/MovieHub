@@ -36,7 +36,7 @@ class GenreAdapter(
         val genre = getItem(position)
         holder.bind(genre)
 
-        val moviesAdapter = MovieListByGenreAdapter(mainViewModel)
+        val moviesAdapter = MovieListByGenreAdapter(mainViewModel,genre)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
 
