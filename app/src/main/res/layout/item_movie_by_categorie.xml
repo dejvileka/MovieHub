@@ -39,7 +39,6 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/movie"
                 android:clipToOutline="true"
                 app:imageUrl="@{movie.poster_path}"
                 app:layout_constraintEnd_toEndOf="parent"
