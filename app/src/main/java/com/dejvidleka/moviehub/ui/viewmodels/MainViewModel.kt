@@ -3,14 +3,11 @@ package com.dejvidleka.moviehub.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dejvidleka.moviehub.data.model.Cast
-import com.dejvidleka.moviehub.data.model.Genre
-import com.dejvidleka.moviehub.data.model.MovieByGenre
-import com.dejvidleka.moviehub.data.model.MovieResult
-import com.dejvidleka.moviehub.data.model.Trailer
-import com.dejvidleka.moviehub.data.network.GenreApi
-import com.dejvidleka.moviehub.data.network.MovieCastCrewApi
-import com.dejvidleka.moviehub.data.network.MoviesApi
+import com.dejvidleka.data.network.models.Cast
+import com.dejvidleka.data.network.models.Genre
+import com.dejvidleka.data.network.models.MovieByGenre
+import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.network.Services
 import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -24,31 +21,29 @@ import javax.inject.Inject
 @HiltViewModel
 
 class MainViewModel @Inject constructor(
-    private val genreApi: GenreApi,
-    private val moviesApi: MoviesApi,
-    private val movieCastCrewApi: MovieCastCrewApi
+private val services: com.dejvidleka.data.network.Services
 
 ) : ViewModel() {
-    private val _genre = MutableStateFlow(emptyList<Genre>())
+    private val _genre = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.Genre>())
 
-    val genre: StateFlow<List<Genre>> = _genre
+    val genre: StateFlow<List<com.dejvidleka.data.network.models.Genre>> = _genre
 
-    private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
+    private val _movie = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.MovieByGenre>())
 
-    val movie: StateFlow<List<MovieByGenre>> = _movie
+    val movie: StateFlow<List<com.dejvidleka.data.network.models.MovieByGenre>> = _movie
 
-    val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
+    val moviesByGenre: MutableStateFlow<Map<Int, List<com.dejvidleka.data.network.models.MovieResult>>> = MutableStateFlow(emptyMap())
 
-    val allMovies: MutableStateFlow<List<MovieResult>> = MutableStateFlow(emptyList())
+    val allMovies: MutableStateFlow<List<com.dejvidleka.data.network.models.MovieResult>> = MutableStateFlow(emptyList())
 
-    val castById: MutableStateFlow<Map<Int, List<Cast>>> = MutableStateFlow(emptyMap())
+    val castById: MutableStateFlow<Map<Int, List<com.dejvidleka.data.network.models.Cast>>> = MutableStateFlow(emptyMap())
 
     private val _loading = MutableStateFlow(false)
     val loading: MutableStateFlow<Boolean> get() = _loading
 
-    private val _cast = MutableStateFlow(emptyList<Cast>())
+    private val _cast = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.Cast>())
 
-    val cast: StateFlow<List<Cast>> = _cast
+    val cast: StateFlow<List<com.dejvidleka.data.network.models.Cast>> = _cast
 
     private val _trailer = MutableStateFlow<String?>(null)
 
@@ -69,7 +64,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = genreApi.getGenre(appId = API_KEY)
+                val response = services.getGenre(appId = API_KEY)
                 if (response.isSuccessful && response.body() != null) {
                     _genre.value = response.body()?.genres!!
                 } else {
@@ -86,7 +81,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = moviesApi.getMovies(appId = API_KEY, genre = genreId.toString(), page = 1)
+                val response =  services.getMovies(appId = API_KEY, genre = genreId.toString(), page = 1)
                 if (response.isSuccessful) {
                     response.body()?.let { movieByGenre ->
                         val currentMap = moviesByGenre.value
@@ -108,7 +103,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = movieCastCrewApi.getCast(movieId = movieId, appId = API_KEY)
+                val response = services.getCast(movieId = movieId, appId = API_KEY)
                 if (response.isSuccessful) {
                     response.body()?.let { movieCast ->
                         val currentMap = castById.value
@@ -131,7 +126,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = movieCastCrewApi.getTrailer(movieId = movieId, appId = API_KEY)
+                val response = services.getTrailer(movieId = movieId, appId = API_KEY)
                 if (response.isSuccessful) {
                     val trailer = response.body()
                     val key = trailer?.results?.firstOrNull()?.key
@@ -151,13 +146,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val allMoviesList = mutableListOf<MovieResult>()
+                val allMoviesList = mutableListOf<com.dejvidleka.data.network.models.MovieResult>()
 
-                val movieFlow: Flow<List<MovieResult>> = flow {
+                val movieFlow: Flow<List<com.dejvidleka.data.network.models.MovieResult>> = flow {
                     var currentPage = 1
                     val maxPages = 10
                     while (currentPage <= maxPages) {
-                        val response = moviesApi.getMovies(appId = API_KEY, genre = genreId.toString(), page = currentPage)
+                        val response = services.getMovies(appId = API_KEY, genre = genreId.toString(), page = currentPage)
                         Log.d("API_RESPONSE", "Response: $response")
 
                         if (response.isSuccessful) {

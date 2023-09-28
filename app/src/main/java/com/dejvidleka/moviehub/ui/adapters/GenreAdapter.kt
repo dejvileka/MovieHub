@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.moviehub.data.model.Genre
+import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -16,9 +15,9 @@ import com.google.android.material.carousel.CarouselLayoutManager
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner,
-) : ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
+) : ListAdapter<com.dejvidleka.data.network.models.Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(genre: Genre) {
+        fun bind(genre: com.dejvidleka.data.network.models.Genre) {
             binding.genre = genre
             binding.executePendingBindings()
 
@@ -56,12 +55,12 @@ class GenreAdapter(
     }
 
 
-    private class GenreDiffUtil : DiffUtil.ItemCallback<Genre>() {
-        override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
+    private class GenreDiffUtil : DiffUtil.ItemCallback<com.dejvidleka.data.network.models.Genre>() {
+        override fun areItemsTheSame(oldItem: com.dejvidleka.data.network.models.Genre, newItem: com.dejvidleka.data.network.models.Genre): Boolean {
             return newItem.name == oldItem.name
         }
 
-        override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean {
+        override fun areContentsTheSame(oldItem: com.dejvidleka.data.network.models.Genre, newItem: com.dejvidleka.data.network.models.Genre): Boolean {
             return newItem == oldItem
         }
 

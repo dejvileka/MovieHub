@@ -9,7 +9,7 @@
 
         <variable
             name="cast"
-            type="com.dejvidleka.moviehub.data.model.Cast">
+            type="com.dejvidleka.data.network.models.Cast">
 
         </variable>
         <variable

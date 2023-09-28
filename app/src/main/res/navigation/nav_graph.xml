@@ -16,7 +16,7 @@
             app:destination="@id/movie_detail_fragment">
             <argument
                 android:name="movieResult"
-                app:argType="com.dejvidleka.moviehub.data.model.MovieResult" />
+                app:argType="com.dejvidleka.data.network.models.MovieResult" />
         </action>
 
         <action
@@ -36,7 +36,7 @@
 
         <argument
             android:name="movieResult"
-            app:argType="com.dejvidleka.moviehub.data.model.MovieResult" />
+            app:argType="com.dejvidleka.data.network.models.MovieResult" />
     </fragment>
 
     <fragment
@@ -66,6 +66,6 @@
         tools:layout="@layout/fragment_more_movies_per_genre" >
         <argument
             android:name="genre"
-            app:argType="com.dejvidleka.moviehub.data.model.Genre" />
+            app:argType="com.dejvidleka.data.network.models.Genre" />
     </fragment>
 </navigation>

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="genre"
-            type="com.dejvidleka.moviehub.data.model.Genre" />
+            type="com.dejvidleka.data.network.models.Genre" />
     </data>
 
 
