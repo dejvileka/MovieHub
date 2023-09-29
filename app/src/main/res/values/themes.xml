@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MovieHub" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MovieHub" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Base Colors -->
+        <item name="android:windowLightStatusBar">true</item>
         <item name="colorPrimary">#FFFFFF</item> <!-- Pure white for primary backgrounds -->
         <item name="colorPrimaryVariant">#F7F7F7</item> <!-- Slightly off-white for elements like the status bar -->
         <item name="colorOnPrimary">#333333</item> <!-- Dark gray text/icons on primary backgrounds -->

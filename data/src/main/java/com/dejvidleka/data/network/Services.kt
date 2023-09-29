@@ -3,6 +3,7 @@ package com.dejvidleka.data.network
 import com.dejvidleka.data.network.models.GenreResponse
 import com.dejvidleka.data.network.models.MovieByGenre
 import com.dejvidleka.data.network.models.MovieCast
+import com.dejvidleka.data.network.models.TopRatedMovies
 import com.dejvidleka.data.network.models.Trailer
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,6 +17,11 @@ interface Services {
         @Query("with_genres") genre: String,
         @Query("page") page: Int
     ): Response<MovieByGenre>
+
+   @GET("/3/movie/top_rated")
+    suspend fun getTopRated(
+        @Query("api_key") appId: String
+    ): Response<TopRatedMovies>
 
 
     @GET("/3/movie/{movie_id}/credits")

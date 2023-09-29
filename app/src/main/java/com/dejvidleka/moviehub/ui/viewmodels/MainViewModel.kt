@@ -7,7 +7,6 @@ import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieByGenre
 import com.dejvidleka.data.network.models.MovieResult
-import com.dejvidleka.data.network.Services
 import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -24,26 +23,31 @@ class MainViewModel @Inject constructor(
 private val services: com.dejvidleka.data.network.Services
 
 ) : ViewModel() {
-    private val _genre = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.Genre>())
+    private val _genre = MutableStateFlow(emptyList<Genre>())
 
-    val genre: StateFlow<List<com.dejvidleka.data.network.models.Genre>> = _genre
+    val genre: StateFlow<List<Genre>> = _genre
 
-    private val _movie = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.MovieByGenre>())
+    private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
 
-    val movie: StateFlow<List<com.dejvidleka.data.network.models.MovieByGenre>> = _movie
+    val movie: StateFlow<List<MovieByGenre>> = _movie
 
-    val moviesByGenre: MutableStateFlow<Map<Int, List<com.dejvidleka.data.network.models.MovieResult>>> = MutableStateFlow(emptyMap())
+    private val _topMovie = MutableStateFlow(emptyList<MovieResult>())
 
-    val allMovies: MutableStateFlow<List<com.dejvidleka.data.network.models.MovieResult>> = MutableStateFlow(emptyList())
+    val topMovie: StateFlow<List<MovieResult>> = _topMovie
 
-    val castById: MutableStateFlow<Map<Int, List<com.dejvidleka.data.network.models.Cast>>> = MutableStateFlow(emptyMap())
+
+    val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
+
+    val allMovies: MutableStateFlow<List<MovieResult>> = MutableStateFlow(emptyList())
+
+    val castById: MutableStateFlow<Map<Int, List<Cast>>> = MutableStateFlow(emptyMap())
 
     private val _loading = MutableStateFlow(false)
     val loading: MutableStateFlow<Boolean> get() = _loading
 
     private val _cast = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.Cast>())
 
-    val cast: StateFlow<List<com.dejvidleka.data.network.models.Cast>> = _cast
+    val cast: StateFlow<List<Cast>> = _cast
 
     private val _trailer = MutableStateFlow<String?>(null)
 
@@ -97,7 +101,32 @@ private val services: com.dejvidleka.data.network.Services
             }
             _loading.value = false
         }
+
     }
+
+    fun fetchTopRatedMovies() {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = services.getTopRated(appId = API_KEY)
+                if (response.isSuccessful) {
+                    response.body()?.let { moviesResponse ->
+                        _topMovie.value = moviesResponse.movieResults.sortedBy { it.title }
+                        Log.d("API_RESPONSE", "Response: $response")
+
+                    } ?: run {
+                        _error.value = "Movie response body is null"
+                    }
+                } else {
+                    _error.value = "failed to fetch movies"
+                }
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+            }
+            _loading.value = false
+        }
+    }
+
 
     fun fetchMovieCast(movieId: Int) {
         viewModelScope.launch {
@@ -178,5 +207,5 @@ private val services: com.dejvidleka.data.network.Services
     }
 
 
-
 }
+

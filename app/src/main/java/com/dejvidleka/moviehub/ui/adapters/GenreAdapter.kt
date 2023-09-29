@@ -15,7 +15,7 @@ import com.google.android.material.carousel.CarouselLayoutManager
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner,
-) : ListAdapter<com.dejvidleka.data.network.models.Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
+) : ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(genre: com.dejvidleka.data.network.models.Genre) {
             binding.genre = genre
@@ -35,7 +35,7 @@ class GenreAdapter(
         val genre = getItem(position)
         holder.bind(genre)
 
-        val moviesAdapter = MovieListByGenreAdapter(mainViewModel,genre)
+        val moviesAdapter = MovieListByGenreAdapter(genre)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
 

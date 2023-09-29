@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
-import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -63,7 +59,6 @@ class FirstFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.loading.collect { isLoading ->
-                // You can add code here to show/hide a progress bar based on the isLoading value
             }
         }
 
