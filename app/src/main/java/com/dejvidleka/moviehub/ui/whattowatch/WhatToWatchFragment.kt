@@ -3,20 +3,18 @@ package com.dejvidleka.moviehub.ui.whattowatch
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
-import com.dejvidleka.moviehub.databinding.ItemPosterBinding
+import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
-import com.dejvidleka.moviehub.utils.bindImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,7 +23,6 @@ class WhatToWatchFragment : Fragment() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var binding: FragmentWhatToWatchBinding
-
     private lateinit var viewPager: ViewPager2
     private val handler = Handler(Looper.getMainLooper())
     private val update = object : Runnable {
@@ -50,7 +47,6 @@ class WhatToWatchFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,15 +55,22 @@ class WhatToWatchFragment : Fragment() {
         viewPager.adapter = adapter
         handler.postDelayed(update, 3000)
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.fetchTopRatedMovies()
-            mainViewModel.topMovie.collect { topMovie ->
-                Log.d("List", "$topMovie");
-                adapter.submitList(topMovie)
+
+            mainViewModel.topMovies.collect { topMovie ->
+                when (topMovie) {
+                    is Result.Success -> {
+                            adapter.submitList(topMovie.data )
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is Result.Loading -> {
+                        Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-
         }
-
-
     }
 
     override fun onDestroyView() {

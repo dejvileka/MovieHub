@@ -13,3 +13,9 @@ data class Crew(
     val popularity: Double,
     val profile_path: String
 )
+
+//fun CrewNetwork.toCrew():Crew{
+//    return Crew(
+//        adlfkaklds
+//    )
+//}

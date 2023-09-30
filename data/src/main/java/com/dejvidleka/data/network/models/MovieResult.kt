@@ -19,6 +19,6 @@ data class MovieResult(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int,
-    val isViewMore: Boolean= false
+    val isViewMore: Boolean = false
 ) : Parcelable
 

@@ -3,10 +3,15 @@ package com.dejvidleka.moviehub.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dejvidleka.data.network.apiservice.MovieClient
+import com.dejvidleka.data.network.apiservice.MoviesServices
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieByGenre
 import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.repo.MoviesRepository
+import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.domain.toResult
 import com.dejvidleka.moviehub.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -14,14 +19,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 
 class MainViewModel @Inject constructor(
-private val services: com.dejvidleka.data.network.Services
-
+    private val moviesRepository: MoviesRepository,
+    private val services: MoviesServices,
+    private val movieClient: MovieClient
 ) : ViewModel() {
     private val _genre = MutableStateFlow(emptyList<Genre>())
 
@@ -30,10 +37,6 @@ private val services: com.dejvidleka.data.network.Services
     private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
 
     val movie: StateFlow<List<MovieByGenre>> = _movie
-
-    private val _topMovie = MutableStateFlow(emptyList<MovieResult>())
-
-    val topMovie: StateFlow<List<MovieResult>> = _topMovie
 
 
     val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
@@ -57,39 +60,19 @@ private val services: com.dejvidleka.data.network.Services
     private val _error = MutableStateFlow("")
     val error: StateFlow<String?> get() = _error
 
-    init {
-        viewModelScope.launch {
-            fetchGenres()
-        }
+    val genres = moviesRepository.getGenre().toResult()
 
-    }
-
-    private fun fetchGenres() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = services.getGenre(appId = API_KEY)
-                if (response.isSuccessful && response.body() != null) {
-                    _genre.value = response.body()?.genres!!
-                } else {
-                    _error.value = "failed to fetch generes"
-                }
-            } catch (e: Exception) {
-                _error.value = e.localizedMessage
-            }
-            _loading.value = false
-        }
-    }
+    val topMovies=moviesRepository.getTopRated().toResult()
 
     fun fetchMoviesByGenre(genreId: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response =  services.getMovies(appId = API_KEY, genre = genreId.toString(), page = 1)
+                val response = services.getMovies(genre = genreId.toString(), page = 1)
                 if (response.isSuccessful) {
                     response.body()?.let { movieByGenre ->
                         val currentMap = moviesByGenre.value
-                            moviesByGenre.value =  currentMap + (genreId to (movieByGenre.movieResults?: emptyList()))
+                        moviesByGenre.value = currentMap + (genreId to (movieByGenre.movieResults ?: emptyList()))
                     } ?: run {
                         _error.value = "Movie response body is null"
                     }
@@ -104,35 +87,35 @@ private val services: com.dejvidleka.data.network.Services
 
     }
 
-    fun fetchTopRatedMovies() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = services.getTopRated(appId = API_KEY)
-                if (response.isSuccessful) {
-                    response.body()?.let { moviesResponse ->
-                        _topMovie.value = moviesResponse.movieResults.sortedBy { it.title }
-                        Log.d("API_RESPONSE", "Response: $response")
-
-                    } ?: run {
-                        _error.value = "Movie response body is null"
-                    }
-                } else {
-                    _error.value = "failed to fetch movies"
-                }
-            } catch (e: Exception) {
-                _error.value = e.localizedMessage
-            }
-            _loading.value = false
-        }
-    }
+//    fun fetchTopRatedMovies() {
+//        viewModelScope.launch {
+//            _loading.value = true
+//            try {
+//                val response = movieClient.getTopRatedMovies()
+//                if (response.isSuccessful) {
+//                    response.body()?.let { moviesResponse ->
+//                        topMovies.value = moviesResponse.movieResults.sortedBy { it.title }
+//                        Log.d("API_RESPONSE", "Response: $response")
+//
+//                    } ?: run {
+//                        _error.value = "Movie response body is null"
+//                    }
+//                } else {
+//                    _error.value = "failed to fetch movies"
+//                }
+//            } catch (e: Exception) {
+//                _error.value = e.localizedMessage
+//            }
+//            _loading.value = false
+//        }
+//    }
 
 
     fun fetchMovieCast(movieId: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = services.getCast(movieId = movieId, appId = API_KEY)
+                val response = services.getCast(movieId = movieId)
                 if (response.isSuccessful) {
                     response.body()?.let { movieCast ->
                         val currentMap = castById.value
@@ -155,7 +138,7 @@ private val services: com.dejvidleka.data.network.Services
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = services.getTrailer(movieId = movieId, appId = API_KEY)
+                val response = services.getTrailer(movieId = movieId)
                 if (response.isSuccessful) {
                     val trailer = response.body()
                     val key = trailer?.results?.firstOrNull()?.key
@@ -181,7 +164,7 @@ private val services: com.dejvidleka.data.network.Services
                     var currentPage = 1
                     val maxPages = 10
                     while (currentPage <= maxPages) {
-                        val response = services.getMovies(appId = API_KEY, genre = genreId.toString(), page = currentPage)
+                        val response = services.getMovies(genre = genreId.toString(), page = currentPage)
                         Log.d("API_RESPONSE", "Response: $response")
 
                         if (response.isSuccessful) {

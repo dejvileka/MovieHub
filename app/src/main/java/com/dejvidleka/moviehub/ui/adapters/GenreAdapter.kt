@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
+import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 
@@ -43,15 +44,20 @@ class GenreAdapter(
         mainViewModel.fetchMoviesByGenre(genre.id)
 
 
-        lifecycleOwner.lifecycleScope.launchWhenStarted {
-            mainViewModel.moviesByGenre.collect { map ->
-                val movieResults = (map[genre.id] ?: emptyList()).toMutableList()
-                if (movieResults.isNotEmpty()) {
-                    val lastItem = movieResults.last().copy(isViewMore = true)
-                    movieResults[movieResults.size - 1] = lastItem
-                    moviesAdapter.submitList(movieResults)}
-            }
-        }
+//        lifecycleOwner.lifecycleScope.launchWhenStarted {
+//            mainViewModel.genres.collect { map ->
+//                when(map){
+//                    is Result.Success<*> ->
+//                }
+//
+//                val movieResults = (map[genre.id] ?: emptyList()).toMutableList()
+//                if (movieResults.isNotEmpty()) {
+//                    val lastItem = movieResults.last().copy(isViewMore = true)
+//                    movieResults[movieResults.size - 1] = lastItem
+//                    moviesAdapter.submitList(movieResults)
+//                }
+//            }
+//        }
     }
 
 

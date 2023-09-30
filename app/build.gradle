@@ -14,16 +14,17 @@ android {
     namespace 'com.dejvidleka.moviehub'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         applicationId "com.dejvidleka.moviehub"
         minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
 
 
     buildTypes {
