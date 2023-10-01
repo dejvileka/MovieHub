@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
+import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,8 +54,18 @@ class FirstFragment : Fragment() {
 
     private fun observeViewModelData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.genre.collect { genres ->
-                genreAdapter.submitList(genres)
+            mainViewModel.genres.collect { genres ->
+                when (genres) {
+                    is Result.Loading -> {
+                        Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
+                    }
+                    is Result.Success -> {
+                        genreAdapter.submitList(genres.data.sortedBy { it.id })
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -30,16 +31,13 @@ class MainViewModel @Inject constructor(
     private val services: MoviesServices,
     private val movieClient: MovieClient
 ) : ViewModel() {
-    private val _genre = MutableStateFlow(emptyList<Genre>())
-
-    val genre: StateFlow<List<Genre>> = _genre
+//    private val _genre = MutableStateFlow(emptyList<Genre>())
+//
+//    val genre: StateFlow<List<Genre>> = _genre
 
     private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
 
     val movie: StateFlow<List<MovieByGenre>> = _movie
-
-
-    val moviesByGenre: MutableStateFlow<Map<Int, List<MovieResult>>> = MutableStateFlow(emptyMap())
 
     val allMovies: MutableStateFlow<List<MovieResult>> = MutableStateFlow(emptyList())
 
@@ -61,10 +59,29 @@ class MainViewModel @Inject constructor(
     val error: StateFlow<String?> get() = _error
 
     val genres = moviesRepository.getGenre().toResult()
+    val trailers = moviesRepository.getTrailer(1).toResult()
+    val movieCast = moviesRepository.getCast(1).toResult()
+    val topMovies = moviesRepository.getTopRated().toResult()
 
-    val topMovies=moviesRepository.getTopRated().toResult()
+    private val _selectedGenreId = MutableStateFlow<String?>(null)
 
-    fun fetchMoviesByGenre(genreId: Int) {
+    val moviesByGenre: Flow<Result<List<MovieResult>>> = _selectedGenreId.flatMapLatest { genreId ->
+        if (genreId != null) {
+            moviesRepository.getMovies(genreId).toResult()
+        } else {
+            flowOf(Result.Error(Throwable("No genre selected")))
+        }
+    }
+
+    fun setGenre(genreId: String) {
+        _selectedGenreId.value = genreId
+    }
+
+    fun moviesForGenre(genreId: String): Flow<Result<List<MovieResult>>> {
+        return moviesRepository.getMovies(genreId).toResult()
+    }
+
+/*    fun fetchMoviesByGenre(genreId: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -85,30 +102,30 @@ class MainViewModel @Inject constructor(
             _loading.value = false
         }
 
-    }
+    }*/
 
-//    fun fetchTopRatedMovies() {
-//        viewModelScope.launch {
-//            _loading.value = true
-//            try {
-//                val response = movieClient.getTopRatedMovies()
-//                if (response.isSuccessful) {
-//                    response.body()?.let { moviesResponse ->
-//                        topMovies.value = moviesResponse.movieResults.sortedBy { it.title }
-//                        Log.d("API_RESPONSE", "Response: $response")
-//
-//                    } ?: run {
-//                        _error.value = "Movie response body is null"
-//                    }
-//                } else {
-//                    _error.value = "failed to fetch movies"
-//                }
-//            } catch (e: Exception) {
-//                _error.value = e.localizedMessage
-//            }
-//            _loading.value = false
-//        }
-//    }
+ /*   fun fetchTopRatedMovies() {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = movieClient.getTopRatedMovies()
+                if (response.isSuccessful) {
+                    response.body()?.let { moviesResponse ->
+                        topMovies.value = moviesResponse.movieResults.sortedBy { it.title }
+                        Log.d("API_RESPONSE", "Response: $response")
+
+                    } ?: run {
+                        _error.value = "Movie response body is null"
+                    }
+                } else {
+                    _error.value = "failed to fetch movies"
+                }
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+            }
+            _loading.value = false
+        }
+    }*/
 
 
     fun fetchMovieCast(movieId: Int) {
@@ -153,14 +170,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     fun fetchAllMoviesByGenre(genreId: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val allMoviesList = mutableListOf<com.dejvidleka.data.network.models.MovieResult>()
-
-                val movieFlow: Flow<List<com.dejvidleka.data.network.models.MovieResult>> = flow {
+                val allMoviesList = mutableListOf<MovieResult>()
+                val movieFlow: Flow<List<MovieResult>> = flow {
                     var currentPage = 1
                     val maxPages = 10
                     while (currentPage <= maxPages) {
@@ -188,7 +203,5 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-
-
 }
 

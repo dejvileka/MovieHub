@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 interface MoviesRepository {
     fun getMovies(genre: String, page: Int = 1): Flow<List<MovieResult>>
+
     fun getGenre(): Flow<List<Genre>>
 
     fun getCast(movieId:Int):Flow<List<Cast>>

@@ -2,6 +2,7 @@ package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +13,7 @@ import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
+import kotlinx.coroutines.launch
 
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
@@ -39,34 +41,35 @@ class GenreAdapter(
         val moviesAdapter = MovieListByGenreAdapter(genre)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
+        mainViewModel.setGenre(genre.id.toString())
+        val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
 
-        // Fetch the movies for this genre.
-        mainViewModel.fetchMoviesByGenre(genre.id)
+        lifecycleOwner.lifecycleScope.launch {
 
+            moviesFlow.collect { movieResultsList ->
+                when (movieResultsList) {
+                    is Result.Loading -> {
+                    }
 
-//        lifecycleOwner.lifecycleScope.launchWhenStarted {
-//            mainViewModel.genres.collect { map ->
-//                when(map){
-//                    is Result.Success<*> ->
-//                }
-//
-//                val movieResults = (map[genre.id] ?: emptyList()).toMutableList()
-//                if (movieResults.isNotEmpty()) {
-//                    val lastItem = movieResults.last().copy(isViewMore = true)
-//                    movieResults[movieResults.size - 1] = lastItem
-//                    moviesAdapter.submitList(movieResults)
-//                }
-//            }
-//        }
+                    is Result.Success -> {
+                        moviesAdapter.submitList(movieResultsList.data.sortedBy { it.id })
+                    }
+
+                    is Result.Error -> {
+                    }
+                }
+
+            }
+        }
     }
 
 
-    private class GenreDiffUtil : DiffUtil.ItemCallback<com.dejvidleka.data.network.models.Genre>() {
-        override fun areItemsTheSame(oldItem: com.dejvidleka.data.network.models.Genre, newItem: com.dejvidleka.data.network.models.Genre): Boolean {
+    private class GenreDiffUtil : DiffUtil.ItemCallback<Genre>() {
+        override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
             return newItem.name == oldItem.name
         }
 
-        override fun areContentsTheSame(oldItem: com.dejvidleka.data.network.models.Genre, newItem: com.dejvidleka.data.network.models.Genre): Boolean {
+        override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean {
             return newItem == oldItem
         }
 
