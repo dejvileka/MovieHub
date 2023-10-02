@@ -1,32 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MovieHub" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Base Colors -->
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="colorPrimary">#FFFFFF</item> <!-- Pure white for primary backgrounds -->
-        <item name="colorPrimaryVariant">#F7F7F7</item> <!-- Slightly off-white for elements like the status bar -->
-        <item name="colorOnPrimary">#333333</item> <!-- Dark gray text/icons on primary backgrounds -->
-
-        <!-- Secondary Colors -->
-        <item name="colorSecondary">#FFEB3B</item> <!-- Bright yellow for accents -->
-        <item name="colorOnSecondary">#333333</item> <!-- Dark gray text/icons on yellow -->
-
-        <!-- Surface Color -->
-        <item name="colorSurface">#F5F5F5</item> <!-- Light gray for cards and elevated surfaces -->
-        <item name="colorOnSurface">#333333</item> <!-- Dark gray text/icons on light gray backgrounds -->
-
-        <!-- Accent (Using secondary yellow for consistency) -->
+    <style name="Base.Theme.MovieHub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryVariant">#F7F7F7</item>
+        <item name="colorOnPrimary">#333333</item>
+        <item name="colorSecondary">#FFEB3B</item>
+        <item name="colorOnSecondary">#333333</item>
+        <item name="colorSurface">#F5F5F5</item>
+        <item name="colorOnSurface">#333333</item>
         <item name="colorAccent">#FFEB3B</item>
-
-        <!-- Other Colors -->
-        <item name="colorPrimaryDark">#E5E5E5</item> <!-- Darker off-white for elements like the navigation bar -->
+        <item name="colorPrimaryDark">#E5E5E5</item>
         <item name="android:colorBackground">#FFFFFF</item>
-    </style>
 
-    <style name="Theme.MovieHub" parent="Base.Theme.MovieHub" />
 
-    <style name="ThemeOverlay.MovieHub.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">#AED8D5</item> <!-- Light teal -->
-        <item name="fullscreenTextColor">#425959</item> <!-- Dark grey for text on light teal -->
     </style>
 </resources>

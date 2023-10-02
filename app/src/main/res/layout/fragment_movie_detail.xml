@@ -9,6 +9,7 @@
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="-20dp"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -44,11 +45,14 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/cardview_movies"
+            android:layout_marginTop="-10dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:padding="16dp">
 
                 <TextView

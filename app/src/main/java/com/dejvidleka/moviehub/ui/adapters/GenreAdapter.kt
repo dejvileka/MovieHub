@@ -13,6 +13,7 @@ import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 
 class GenreAdapter(
@@ -20,12 +21,10 @@ class GenreAdapter(
     private val lifecycleOwner: LifecycleOwner,
 ) : ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(genre: com.dejvidleka.data.network.models.Genre) {
+        fun bind(genre: Genre) {
             binding.genre = genre
             binding.executePendingBindings()
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
@@ -37,7 +36,6 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         val genre = getItem(position)
         holder.bind(genre)
-
         val moviesAdapter = MovieListByGenreAdapter(genre)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
@@ -45,34 +43,32 @@ class GenreAdapter(
         val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
 
         lifecycleOwner.lifecycleScope.launch {
-
             moviesFlow.collect { movieResultsList ->
                 when (movieResultsList) {
                     is Result.Loading -> {
                     }
 
                     is Result.Success -> {
-                        moviesAdapter.submitList(movieResultsList.data.sortedBy { it.id })
+                        val sortedMovies = movieResultsList.data.sortedBy { it.id }.toMutableList()
+                        if (sortedMovies.isNotEmpty()) {
+                            val lastMovie = sortedMovies.last().copy(isViewMore = true)
+                            sortedMovies[sortedMovies.size - 1] = lastMovie
+                        }
+                        moviesAdapter.submitList(sortedMovies)
                     }
-
                     is Result.Error -> {
                     }
                 }
-
             }
         }
     }
-
 
     private class GenreDiffUtil : DiffUtil.ItemCallback<Genre>() {
         override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
             return newItem.name == oldItem.name
         }
-
         override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean {
             return newItem == oldItem
         }
-
-
     }
 }

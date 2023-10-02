@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.spalsh.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.MovieHub">
+            android:theme="@style/Base.Theme.MovieHub">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +34,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="unspecified"
-            android:theme="@style/Theme.MovieHub" />
+            android:theme="@style/Base.Theme.MovieHub"/>
     </application>
 
 </manifest>

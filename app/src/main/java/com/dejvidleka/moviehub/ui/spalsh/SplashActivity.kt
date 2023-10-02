@@ -10,6 +10,7 @@ import com.dejvidleka.moviehub.utils.SPLASH_DELAY
 import android.content.Intent
 
 import android.os.Handler
+import android.view.WindowManager
 import dagger.hilt.android.AndroidEntryPoint
 
 class SplashActivity : AppCompatActivity(){
@@ -18,6 +19,9 @@ class SplashActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)

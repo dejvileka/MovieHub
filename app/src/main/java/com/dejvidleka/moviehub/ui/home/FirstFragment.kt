@@ -68,19 +68,6 @@ class FirstFragment : Fragment() {
                 }
             }
         }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.loading.collect { isLoading ->
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.error.collect { errorMessage ->
-                if (!errorMessage.isNullOrEmpty()) {
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {

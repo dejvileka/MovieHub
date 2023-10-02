@@ -9,6 +9,8 @@ import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieByGenre
 import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.network.models.Trailer
+import com.dejvidleka.data.network.models.TrailerResult
 import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.domain.toResult
@@ -18,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -31,113 +34,50 @@ class MainViewModel @Inject constructor(
     private val services: MoviesServices,
     private val movieClient: MovieClient
 ) : ViewModel() {
-//    private val _genre = MutableStateFlow(emptyList<Genre>())
-//
-//    val genre: StateFlow<List<Genre>> = _genre
 
-    private val _movie = MutableStateFlow(emptyList<MovieByGenre>())
 
-    val movie: StateFlow<List<MovieByGenre>> = _movie
 
     val allMovies: MutableStateFlow<List<MovieResult>> = MutableStateFlow(emptyList())
 
-    val castById: MutableStateFlow<Map<Int, List<Cast>>> = MutableStateFlow(emptyMap())
-
     private val _loading = MutableStateFlow(false)
-    val loading: MutableStateFlow<Boolean> get() = _loading
-
-    private val _cast = MutableStateFlow(emptyList<com.dejvidleka.data.network.models.Cast>())
-
-    val cast: StateFlow<List<Cast>> = _cast
-
-    private val _trailer = MutableStateFlow<String?>(null)
-
-    val trailer: StateFlow<String?> = _trailer.asStateFlow()
-
 
     private val _error = MutableStateFlow("")
-    val error: StateFlow<String?> get() = _error
 
     val genres = moviesRepository.getGenre().toResult()
-//    val trailers = moviesRepository.getTrailer().toResult()
 
     val topMovies = moviesRepository.getTopRated().toResult()
 
     private val _selectedGenreId = MutableStateFlow<String?>(null)
-    private val _selectedMovieCast = MutableStateFlow<Int?>(null)
 
-
-/*    val castForMovie: Flow<Result<List<Cast>>> = _selectedMovieCast.flatMapLatest { movieId ->
-        if (movieId != null) {
-            moviesRepository.getCast(movieId).toResult()
-        } else {
-            flowOf(Result.Error(Throwable("No movie selected")))
-        }
-    }*/
-
-  /*  val moviesByGenre: Flow<Result<List<MovieResult>>> = _selectedGenreId.flatMapLatest { genreId ->
-        if (genreId != null) {
-            moviesRepository.getMovies(genreId).toResult()
-        } else {
-            flowOf(Result.Error(Throwable("No genre selected")))
-        }
-    }*/
 
     fun setGenre(genreId: String) {
         _selectedGenreId.value = genreId
     }
-    fun setMovieCast(movieId: Int) {
-        _selectedMovieCast.value = movieId
-    }
 
-    fun moviesForGenre(genreId: String): Flow<Result<List<MovieResult>>> {
-        return moviesRepository.getMovies(genreId).toResult()
+    fun moviesForGenre(genreId: String, page: Int=1): Flow<Result<List<MovieResult>>> {
+        return moviesRepository.getMovies(genreId,page).toResult()
     }
 
     fun castForMovie(movieId: Int): Flow<Result<List<Cast>>> {
         return moviesRepository.getCast(movieId).toResult()
     }
 
-/*    fun fetchMovieCast(movieId: Int) {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = services.getCast(movieId = movieId)
-                if (response.isSuccessful) {
-                    response.body()?.let { movieCast ->
-                        val currentMap = castById.value
-                        castById.value = currentMap + (movieId to (movieCast.cast))
-                    } ?: run {
-                        _error.value = "Cast response body is null"
-                    }
-                } else {
-                    _error.value = "Failed to fetch"
-                }
-            } catch (e: Exception) {
-                _error.value = e.localizedMessage
+    fun trailerForMovie(movieId: Int): Flow<Result<TrailerResult>> {
+        return moviesRepository.getTrailer(movieId).toResult()
+    }
+
+    fun allMoviesForGenre(genreId: String, page: Int): Flow<Result<List<MovieResult>>> {
+        val movieFlow: Flow<List<MovieResult>> = flow {
+            var currentPage = 1
+            val maxPages = 10
+            while (currentPage <= maxPages) {
+                val response = moviesRepository.getMovies(genre = genreId, page = currentPage)
+                Log.d("API_RESPONSE", "Response: ${response}")
+                currentPage++
             }
-            _loading.value = false
+
         }
-    }*/
-
-    fun fetchTrailerForMovie(movieId: Int) {
-
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = services.getTrailer(movieId = movieId)
-                if (response.isSuccessful) {
-                    val trailer = response.body()
-                    val key = trailer?.results?.firstOrNull()?.key
-                    _trailer.value = key
-                } else {
-                    _error.value = "Failed to fetch"
-                }
-            } catch (e: Exception) {
-                _error.value = e.localizedMessage
-
-            }
-        }
+        return movieFlow.toResult()
     }
 
     fun fetchAllMoviesByGenre(genreId: Int) {

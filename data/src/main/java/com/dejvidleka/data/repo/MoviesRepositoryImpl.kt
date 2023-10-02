@@ -4,10 +4,9 @@ import com.dejvidleka.data.network.apiservice.MoviesServices
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieResult
-import com.dejvidleka.data.network.models.Result
 import com.dejvidleka.data.network.models.Trailer
+import com.dejvidleka.data.network.models.TrailerResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -36,12 +35,12 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTrailer(movieId: Int): Flow<Trailer> {
+    override fun getTrailer(movieId: Int): Flow<TrailerResult> {
         return flow {
             val response = moviesService.getTrailer(movieId)
             val trailer = response.body()
             if (trailer != null) {
-                emit(trailer)
+                emit(trailer.results.first())
             } else {
 
             }
