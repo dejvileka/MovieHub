@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.moviehub.databinding.ItemCastCrewBinding
 
-class MovieCastAdapter : ListAdapter<com.dejvidleka.data.network.models.Cast, MovieCastAdapter.MovieClassViewHolder>(CastDiffUtil()) {
+class MovieCastAdapter : ListAdapter<Cast, MovieCastAdapter.MovieClassViewHolder>(CastDiffUtil()) {
 
     inner class MovieClassViewHolder(private val itemBinding: ItemCastCrewBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(cast: com.dejvidleka.data.network.models.Cast) {
+        fun bind(cast: Cast) {
             itemBinding.cast = cast
         }
     }

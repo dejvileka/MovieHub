@@ -53,7 +53,7 @@ class MoreMoviesPerGenre : Fragment() {
         binding.allMoviesRv.adapter = adapter
         binding.allMoviesRv.layoutManager = layoutManager
         mainViewModel.fetchAllMoviesByGenre(args.genre.id)
-        lifecycleScope.launch {
+ /*       lifecycleScope.launch {
 
             mainViewModel.moviesByGenre.collect { movieResultsList ->
                 when (movieResultsList) {
@@ -68,7 +68,7 @@ class MoreMoviesPerGenre : Fragment() {
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
                     }
-                }
+                }*/
 //
 //                val movieResults = movieResultsList.toMutableList()
 //                if (movieResults.isNotEmpty()) {
@@ -77,9 +77,9 @@ class MoreMoviesPerGenre : Fragment() {
 //                    adapter.submitList(movieResults)
 //                }
             }
-        }
 
-    }
+
+
 
     private fun hideBottomNavigation() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)

@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
+import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieCastAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.VideoHandler
@@ -61,27 +64,43 @@ class MovieDetailFragment : Fragment() {
     private fun setupMovieDetails() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
         val movieResult = args.movieResult
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.castRv.layoutManager = layoutManager
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.movieTitle.text = movieResult.title
         binding.movieDescription.text = movieResult.overview
-
-
+        val castAdapter = MovieCastAdapter()
+        binding.castRv.adapter= castAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.castRv.layoutManager = layoutManager
+        mainViewModel.setMovieCast(args.movieResult.id)
         if (movieResult.backdrop_path == null) {
             loadImage(movieResult.poster_path)
-        } else loadImage(movieResult.backdrop_path)
-        mainViewModel.fetchMovieCast(movieResult.id)
-        castAdapter = MovieCastAdapter()
-        binding.castRv.adapter = castAdapter
+        } else {
+            loadImage(movieResult.backdrop_path)
+        }
+        val castFlow = mainViewModel.castForMovie(args.movieResult.id)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.castById.collect { map ->
-                val castResult = map[movieResult.id] ?: emptyList()
-                if (castResult.isNotEmpty()) {
-                    castAdapter.submitList(castResult)
+           castFlow.collect { cast ->
+                when (cast) {
+                    is Result.Loading -> {
+                        Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is Result.Success -> {
+                        castAdapter.submitList(cast.data)
+                        Toast.makeText(requireContext(), "yai", Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+
+
         mainViewModel.fetchTrailerForMovie(movieResult.id)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.trailer.collect { key ->
