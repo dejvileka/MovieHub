@@ -27,12 +27,12 @@ class MovieCastAdapter : ListAdapter<Cast, MovieCastAdapter.MovieClassViewHolder
     }
 }
 
-private class CastDiffUtil : DiffUtil.ItemCallback<com.dejvidleka.data.network.models.Cast>() {
-    override fun areItemsTheSame(oldItem: com.dejvidleka.data.network.models.Cast, newItem: com.dejvidleka.data.network.models.Cast): Boolean {
+private class CastDiffUtil : DiffUtil.ItemCallback<Cast>() {
+    override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean {
     return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: com.dejvidleka.data.network.models.Cast, newItem: com.dejvidleka.data.network.models.Cast): Boolean {
+    override fun areContentsTheSame(oldItem: Cast, newItem: Cast): Boolean {
     return oldItem ==newItem
     }
 }

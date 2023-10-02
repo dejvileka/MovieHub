@@ -1,5 +1,8 @@
 package com.dejvidleka.moviehub.ui.home
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +12,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -69,17 +75,34 @@ class MovieDetailFragment : Fragment() {
             movieDescription.text = args.movieResult.overview
             castRv.adapter = MovieCastAdapter().also { castAdapter = it }
             castRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            detailImage.loadImage(args.movieResult.backdrop_path ?: args.movieResult.poster_path)
+            detailImage.loadImageAndExtractColor(args.movieResult.backdrop_path ?: args.movieResult.poster_path)
         }
     }
 
-    private fun ImageView.loadImage(path: String?) {
+    private fun ImageView.loadImageAndExtractColor(path: String?) {
         val baseURL = "https://image.tmdb.org/t/p/w500"
         val imageUrl = baseURL + path
         Glide.with(this@MovieDetailFragment)
+            .asBitmap() // Important: get a bitmap rather than a drawable
             .load(imageUrl)
-            .into(this)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    this@loadImageAndExtractColor.setImageBitmap(resource)
+
+                    Palette.from(resource).generate { palette ->
+                        val vibrantColor = palette?.vibrantSwatch?.rgb
+                        val dominantColor= palette?.dominantSwatch?.rgb
+                        if (vibrantColor != null) {
+                            val background = binding.scrollable.background as GradientDrawable
+                            background.setColor(vibrantColor)
+                        }
+                    }
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
     }
+
 
     private fun loadMovieDetails() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
