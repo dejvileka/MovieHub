@@ -35,6 +35,8 @@ class MovieDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var castAdapter: MovieCastAdapter
+    private var originalBackgroundColor: Int? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +48,7 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        originalBackgroundColor = (binding.scrollable.background as? GradientDrawable)?.color?.defaultColor
         hideBottomNavigation()
         setupUIComponents()
         loadMovieDetails()
@@ -53,11 +56,6 @@ class MovieDetailFragment : Fragment() {
         loadMovieTrailer()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        showBottomNavigation()
-        _binding = null
-    }
 
     private fun hideBottomNavigation() {
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
@@ -92,6 +90,7 @@ class MovieDetailFragment : Fragment() {
                     Palette.from(resource).generate { palette ->
                         val vibrantColor = palette?.vibrantSwatch?.rgb
                         val dominantColor= palette?.dominantSwatch?.rgb
+                        val mainColor= palette?.lightVibrantSwatch?.rgb
                         if (vibrantColor != null) {
                             val background = binding.scrollable.background as GradientDrawable
                             background.setColor(vibrantColor)
@@ -163,6 +162,16 @@ class MovieDetailFragment : Fragment() {
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        showBottomNavigation()
+        originalBackgroundColor?.let {
+            val background = binding.scrollable.background as? GradientDrawable
+            background?.setColor(it)
+        }
+        _binding = null
+    }
+
 }
 
 

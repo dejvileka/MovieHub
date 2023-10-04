@@ -23,14 +23,15 @@
         android:id="@+id/rv_element"
         android:layout_width="180dp"
         android:layout_height="250dp"
-        android:layout_margin="6dp"
+        android:layout_margin="10dp"
+
         android:onClick="@{clickListener}"
-        android:foreground="?attr/selectableItemBackground"
         app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
 
             <ImageView
@@ -38,8 +39,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                tools:src="@drawable/movie"
                 android:clipToOutline="true"
+                android:background="@drawable/cardview_movies"
+                app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+                android:scaleType="centerCrop"
                 app:imageUrl="@{movie.poster_path}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +78,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
-                android:layout_width="90dp"
+                android:layout_width="30dp"
                 android:layout_height="24dp"
                 android:background="@drawable/cardview_movies"
                 android:layout_marginTop="10dp"
@@ -89,7 +93,6 @@
                     android:text="@{String.valueOf(movie.vote_average)}"
                     android:textColor="#000000"
                     android:gravity="center"
-                    app:drawableStartCompat="@drawable/star_svg"
                     tools:text="6.3" />
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

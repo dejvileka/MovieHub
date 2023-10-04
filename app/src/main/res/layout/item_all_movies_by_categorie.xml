@@ -9,13 +9,11 @@
 
         <variable
             name="movie"
-            type="com.dejvidleka.data.network.models.MovieResult">
-
-        </variable>
+            type="com.dejvidleka.data.network.models.MovieResult"/>
 
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"></variable>
+            type="android.view.View.OnClickListener" />
     </data>
 
 
