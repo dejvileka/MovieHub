@@ -51,7 +51,9 @@ class MovieListByGenreAdapter(
         val movieResult = getItem(position)
         if (movieResult.isViewMore) {
             holder.itemBinding.movieTitle.text = "View More"
-            holder.itemBinding.movieImg.setImageResource(R.drawable.moviehublogo)
+            holder.itemBinding.movieRating.visibility=View.GONE
+            holder.itemBinding.movieTitle.visibility = View.VISIBLE
+
             holder.itemBinding.movieImg.setOnClickListener {
                 navigateToMoreMovies(genre, it)
             }

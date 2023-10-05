@@ -23,6 +23,7 @@ import com.dejvidleka.data.network.models.SimilarMovies
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.ui.adapters.GridSpacingItemDecoration
 import com.dejvidleka.moviehub.ui.adapters.MovieCastAdapter
 import com.dejvidleka.moviehub.ui.adapters.SimilarMoviesAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
@@ -181,14 +182,19 @@ class MovieDetailFragment : Fragment() {
     private fun showSimilarMovies() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
         similarMoviesAdapter = SimilarMoviesAdapter()
-        binding.similarMovieRv.layoutManager= GridLayoutManager(this.requireContext(), 3)
+        binding.similarMovieRv.layoutManager = GridLayoutManager(this.requireContext(), 3)
         binding.similarMovieRv.adapter = similarMoviesAdapter
+        val spanCount = 3
+        val spacing = 16  // Example spacing value, adjust as needed
+        val includeEdge = true
+        binding.similarMovieRv.addItemDecoration( GridSpacingItemDecoration (spanCount, spacing, includeEdge))
+
         lifecycleScope.launch {
             mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
                 when (result) {
                     is Result.Loading -> showToast("Wait")
                     is Result.Success -> {
-                        Log.d("My List","${result.data}")
+                        Log.d("My List", "${result.data}")
                         similarMoviesAdapter.submitList(result.data)
                     }
 

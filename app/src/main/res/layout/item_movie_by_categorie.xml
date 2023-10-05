@@ -23,8 +23,7 @@
         android:id="@+id/rv_element"
         android:layout_width="180dp"
         android:layout_height="250dp"
-        android:layout_margin="10dp"
-
+        android:padding="10dp"
         android:onClick="@{clickListener}"
         app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
@@ -50,32 +49,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="#66000000"
-                app:layout_constraintStart_toStartOf="parent" >
-
-            <TextView
-                android:id="@+id/movie_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{movie.title}"
-                android:textColor="@color/colorWhite"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginHorizontal="20dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"  />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
                 android:layout_width="30dp"
@@ -95,6 +68,20 @@
                     android:gravity="center"
                     tools:text="6.3" />
             </FrameLayout>
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:background="@drawable/cardview_movie_title"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
+                app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/movie_img" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.carousel.MaskableFrameLayout>

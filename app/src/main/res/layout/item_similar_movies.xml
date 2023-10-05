@@ -23,7 +23,7 @@
         android:id="@+id/rv_element"
         android:layout_width="130dp"
         android:layout_height="200dp"
-        android:layout_margin="20dp"
+        android:padding="10dp"
         android:onClick="@{clickListener}"
         app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
