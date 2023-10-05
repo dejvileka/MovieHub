@@ -3,6 +3,7 @@ package com.dejvidleka.data.network.apiservice
 import com.dejvidleka.data.network.models.GenreResponse
 import com.dejvidleka.data.network.models.MovieByGenre
 import com.dejvidleka.data.network.models.MovieCast
+import com.dejvidleka.data.network.models.SimilarMovies
 import com.dejvidleka.data.network.models.TopRatedMovies
 import com.dejvidleka.data.network.models.Trailer
 import retrofit2.Response
@@ -36,6 +37,11 @@ interface MoviesServices {
     @GET("/3/genre/movie/list")
     suspend fun getGenre(
     ): Response<GenreResponse>
+
+    @GET("/3/movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int
+    ): Response<SimilarMovies>
 
 }
 

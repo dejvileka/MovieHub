@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.dejvidleka.data.network.models.SimilarMovies
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieCastAdapter
+import com.dejvidleka.moviehub.ui.adapters.SimilarMoviesAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,6 +37,7 @@ class MovieDetailFragment : Fragment() {
 
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
+    private lateinit var similarMoviesAdapter: SimilarMoviesAdapter
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var castAdapter: MovieCastAdapter
     private var originalBackgroundColor: Int? = null
@@ -54,6 +59,7 @@ class MovieDetailFragment : Fragment() {
         loadMovieDetails()
         loadMovieCast()
         loadMovieTrailer()
+        showSimilarMovies()
     }
 
 
@@ -104,7 +110,6 @@ class MovieDetailFragment : Fragment() {
 
 
     private fun loadMovieDetails() {
-        val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
     }
 
     private fun loadMovieCast() {
@@ -162,6 +167,7 @@ class MovieDetailFragment : Fragment() {
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         showBottomNavigation()
@@ -170,6 +176,27 @@ class MovieDetailFragment : Fragment() {
             background?.setColor(it)
         }
         _binding = null
+    }
+
+    private fun showSimilarMovies() {
+        val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
+        similarMoviesAdapter = SimilarMoviesAdapter()
+        binding.similarMovieRv.layoutManager= GridLayoutManager(this.requireContext(), 3)
+        binding.similarMovieRv.adapter = similarMoviesAdapter
+        lifecycleScope.launch {
+            mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
+                when (result) {
+                    is Result.Loading -> showToast("Wait")
+                    is Result.Success -> {
+                        Log.d("My List","${result.data}")
+                        similarMoviesAdapter.submitList(result.data)
+                    }
+
+                    is Result.Error -> showToast("Shame")
+                }
+
+            }
+        }
     }
 
 }

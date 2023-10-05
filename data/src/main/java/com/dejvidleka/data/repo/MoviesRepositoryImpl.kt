@@ -4,7 +4,7 @@ import com.dejvidleka.data.network.apiservice.MoviesServices
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieResult
-import com.dejvidleka.data.network.models.Trailer
+import com.dejvidleka.data.network.models.SimilarMoviesResult
 import com.dejvidleka.data.network.models.TrailerResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -54,5 +54,10 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-
+    override fun getSimilarMovies(movieId: Int): Flow<List<SimilarMoviesResult>> {
+        return flow {
+            val response = moviesService.getSimilarMovies(movieId)
+            emit (response.body()?.results ?: emptyList() )
+        }
+    }
 }
