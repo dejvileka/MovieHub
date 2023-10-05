@@ -1,6 +1,7 @@
 package com.dejvidleka.moviehub.ui.home
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -54,7 +55,7 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        originalBackgroundColor = (binding.scrollable.background as? GradientDrawable)?.color?.defaultColor
+        originalBackgroundColor = context?.getColor(com.dejvidleka.data.R.color.white)
         hideBottomNavigation()
         setupUIComponents()
         loadMovieDetails()
@@ -77,6 +78,9 @@ class MovieDetailFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             movieTitle.text = args.movieResult.title
+            val rating = args.movieResult.vote_average
+            binding.circularProgress.progress = rating.toFloat()
+            binding.movieRating.text = "$rating/10"
             movieDescription.text = args.movieResult.overview
             castRv.adapter = MovieCastAdapter().also { castAdapter = it }
             castRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -101,17 +105,33 @@ class MovieDetailFragment : Fragment() {
                         if (vibrantColor != null) {
                             val background = binding.scrollable.background as GradientDrawable
                             background.setColor(vibrantColor)
+                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.movieDescription.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.moreLikeThisTitle.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
                         }
                     }
                 }
+
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
             })
     }
 
-
     private fun loadMovieDetails() {
     }
+
+    fun getTextColorForBackground(backgroundColor: Int): Int {
+        val red = Color.red(backgroundColor)
+        val green = Color.green(backgroundColor)
+        val blue = Color.blue(backgroundColor)
+        val luminance = 0.299 * red + 0.587 * green + 0.114 * blue
+        return if (luminance > 128) Color.BLACK else Color.WHITE
+    }
+
 
     private fun loadMovieCast() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
@@ -167,6 +187,14 @@ class MovieDetailFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPause() {
+        originalBackgroundColor?.let {
+            val background = binding.scrollable.background as? GradientDrawable
+            background?.setColor(it)
+        }
+        super.onPause()
     }
 
     override fun onDestroyView() {
