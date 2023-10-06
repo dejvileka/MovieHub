@@ -1,9 +1,11 @@
 package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dejvidleka.data.network.apiservice.MovieClient
 import com.dejvidleka.data.network.apiservice.MoviesServices
 import com.dejvidleka.data.network.models.Cast
+import com.dejvidleka.data.network.models.MovieEntity
 import com.dejvidleka.data.network.models.MovieResult
 import com.dejvidleka.data.network.models.SimilarMoviesResult
 import com.dejvidleka.data.network.models.TrailerResult
@@ -13,6 +15,7 @@ import com.dejvidleka.moviehub.domain.toResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +23,26 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val services: MoviesServices,
-    private val movieClient: MovieClient
+    private val movieClient: MovieClient,
 ) : ViewModel() {
+
+
+    fun addFavorite(movie: MovieEntity) {
+        viewModelScope.launch {
+            moviesRepository.addFavorite(movie)
+        }
+    }
+
+    fun removeFavorite(movie: MovieEntity) {
+        viewModelScope.launch {
+            moviesRepository.removeFavorite(movie)
+        }
+    }
+
+    fun getAllFavoriteMovies(): Flow<Result<List<MovieEntity>>> {
+        return moviesRepository.getAllFavoriteMovies().toResult()
+    }
+
 
 
     val genres = moviesRepository.getGenre().toResult()

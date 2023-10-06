@@ -57,8 +57,9 @@ dependencies {
 
     // Room (if you'll be using it for local database operations)
     implementation "androidx.room:room-runtime:2.5.2"
-    kapt 'androidx.room:room-compiler:2.5.2'
+    kapt "androidx.room:room-compiler:2.5.2"
     implementation "androidx.room:room-ktx:2.5.2"
+
 
 
     // Coroutines (if used)

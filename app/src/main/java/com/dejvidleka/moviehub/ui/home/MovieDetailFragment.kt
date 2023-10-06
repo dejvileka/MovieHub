@@ -58,10 +58,10 @@ class MovieDetailFragment : Fragment() {
         originalBackgroundColor = context?.getColor(com.dejvidleka.data.R.color.white)
         hideBottomNavigation()
         setupUIComponents()
-        loadMovieDetails()
         loadMovieCast()
         loadMovieTrailer()
         showSimilarMovies()
+        addMovieToFavorites()
     }
 
 
@@ -121,7 +121,13 @@ class MovieDetailFragment : Fragment() {
             })
     }
 
-    private fun loadMovieDetails() {
+    private fun addMovieToFavorites() {
+        val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
+        binding.addToFavorites.setOnClickListener {
+            mainViewModel.addFavorite(
+                movie = args.movieResult
+            )
+        }
     }
 
     fun getTextColorForBackground(backgroundColor: Int): Int {

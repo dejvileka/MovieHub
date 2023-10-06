@@ -1,8 +1,10 @@
 package com.dejvidleka.data.repo
 
+import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.apiservice.MoviesServices
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
+import com.dejvidleka.data.network.models.MovieEntity
 import com.dejvidleka.data.network.models.MovieResult
 import com.dejvidleka.data.network.models.SimilarMoviesResult
 import com.dejvidleka.data.network.models.TrailerResult
@@ -11,7 +13,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
-    private val moviesService: MoviesServices
+    private val moviesService: MoviesServices,
+    val movieDao: MovieDao
 ) : MoviesRepository {
 
     override fun getMovies(genre: String, page: Int): Flow<List<MovieResult>> {
@@ -57,7 +60,19 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getSimilarMovies(movieId: Int): Flow<List<SimilarMoviesResult>> {
         return flow {
             val response = moviesService.getSimilarMovies(movieId)
-            emit (response.body()?.results ?: emptyList() )
+            emit(response.body()?.results ?: emptyList())
         }
+    }
+
+    override fun getAllFavoriteMovies(): Flow<List<MovieEntity>> {
+      return  movieDao.getAllFavoriteMovies()
+    }
+
+    override suspend fun addFavorite(movie: MovieEntity) {
+        movieDao.insert(movie)
+    }
+
+    override suspend fun removeFavorite(movie: MovieEntity) {
+        movieDao.delete(movie)
     }
 }

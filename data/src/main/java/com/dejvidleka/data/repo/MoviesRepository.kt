@@ -2,6 +2,7 @@ package com.dejvidleka.data.repo
 
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
+import com.dejvidleka.data.network.models.MovieEntity
 import com.dejvidleka.data.network.models.MovieResult
 import com.dejvidleka.data.network.models.SimilarMoviesResult
 import com.dejvidleka.data.network.models.TrailerResult
@@ -20,5 +21,10 @@ interface MoviesRepository {
     fun getTopRated(): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<SimilarMoviesResult>>
+
+    fun getAllFavoriteMovies(): Flow<List<MovieEntity>>
+    suspend fun addFavorite(movie: MovieEntity)
+    suspend fun removeFavorite(movie: MovieEntity)
+
 
 }
