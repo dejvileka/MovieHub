@@ -13,8 +13,11 @@ import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.domain.toResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +31,7 @@ class MainViewModel @Inject constructor(
 
 
     fun addFavorite(movie: MovieEntity) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             moviesRepository.addFavorite(movie)
         }
     }
@@ -37,10 +40,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             moviesRepository.removeFavorite(movie)
         }
-    }
-
-    fun getAllFavoriteMovies(): Flow<Result<List<MovieEntity>>> {
-        return moviesRepository.getAllFavoriteMovies().toResult()
     }
 
 

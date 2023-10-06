@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.dejvidleka.data.network.models.SimilarMovies
+import com.dejvidleka.data.network.models.toEntity
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -125,7 +126,7 @@ class MovieDetailFragment : Fragment() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
         binding.addToFavorites.setOnClickListener {
             mainViewModel.addFavorite(
-                movie = args.movieResult
+                movie = args.movieResult.toEntity()
             )
         }
     }

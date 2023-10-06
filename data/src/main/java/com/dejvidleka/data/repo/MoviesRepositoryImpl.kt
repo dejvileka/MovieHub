@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MoviesServices,
-    val movieDao: MovieDao
+    override val movieDao: MovieDao
 ) : MoviesRepository {
 
     override fun getMovies(genre: String, page: Int): Flow<List<MovieResult>> {
@@ -68,11 +68,12 @@ class MoviesRepositoryImpl @Inject constructor(
       return  movieDao.getAllFavoriteMovies()
     }
 
+
     override suspend fun addFavorite(movie: MovieEntity) {
-        movieDao.insert(movie)
+        movieDao.addMovie(movie)
     }
 
     override suspend fun removeFavorite(movie: MovieEntity) {
-        movieDao.delete(movie)
+        movieDao.deleteMovie(movie)
     }
 }

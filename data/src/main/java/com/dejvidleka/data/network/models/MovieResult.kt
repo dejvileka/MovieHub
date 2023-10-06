@@ -3,6 +3,7 @@ package com.dejvidleka.data.network.models
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,7 +11,6 @@ data class MovieResult(
     val adult: Boolean,
     val backdrop_path: String?=null,
     val genre_ids: List<Int>,
-    @PrimaryKey
     val id: Int,
     val original_language: String,
     val original_title: String,
@@ -27,9 +27,10 @@ data class MovieResult(
 
 fun MovieResult.toEntity(): MovieEntity {
     return MovieEntity(
+        id,
         adult,
         backdrop_path,
-        id,
+        genre_ids,
         original_language,
         original_title,
         overview,
@@ -46,10 +47,11 @@ fun MovieResult.toEntity(): MovieEntity {
 
 @Entity(tableName = "favorite_movies")
 data class MovieEntity(
-    val adult: Boolean,
-    val backdrop_path: String? = null,
     @PrimaryKey
     val id: Int,
+    val adult: Boolean,
+    val backdrop_path: String? = null,
+    val genre_ids: List<Int>,
     val original_language: String,
     val original_title: String,
     val overview: String,
@@ -83,3 +85,4 @@ fun MovieResult.toDomain(): MovieResult {
         isViewMore
     )
 }
+

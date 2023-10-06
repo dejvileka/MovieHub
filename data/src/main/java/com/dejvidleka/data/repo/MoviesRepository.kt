@@ -1,14 +1,18 @@
 package com.dejvidleka.data.repo
 
+import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.models.Cast
 import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.data.network.models.MovieEntity
 import com.dejvidleka.data.network.models.MovieResult
 import com.dejvidleka.data.network.models.SimilarMoviesResult
 import com.dejvidleka.data.network.models.TrailerResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 interface MoviesRepository {
+    val movieDao: MovieDao
     fun getMovies(genre: String, page: Int = 1): Flow<List<MovieResult>>
 
     fun getGenre(): Flow<List<Genre>>
@@ -23,7 +27,12 @@ interface MoviesRepository {
     fun getSimilarMovies(movieId: Int): Flow<List<SimilarMoviesResult>>
 
     fun getAllFavoriteMovies(): Flow<List<MovieEntity>>
-    suspend fun addFavorite(movie: MovieEntity)
+    suspend fun addFavorite(movie: MovieEntity) {
+        withContext(Dispatchers.IO) {
+            movieDao.addMovie(movie)
+        }
+    }
+
     suspend fun removeFavorite(movie: MovieEntity)
 
 
