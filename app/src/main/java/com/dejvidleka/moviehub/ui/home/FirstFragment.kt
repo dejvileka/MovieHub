@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dejvidleka.data.network.models.Genre
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 @AndroidEntryPoint
 class FirstFragment : Fragment() {
 
@@ -57,9 +56,14 @@ class FirstFragment : Fragment() {
             mainViewModel.genres.collect { genres ->
                 when (genres) {
                     is Result.Loading -> {
+                        binding.dimView.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.VISIBLE
+                        delay(2000)
                         Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Success -> {
+                        binding.dimView.visibility = View.GONE
+                        binding.progressBar.visibility = View.GONE
                         genreAdapter.submitList(genres.data.sortedBy { it.id })
                     }
                     is Result.Error -> {
