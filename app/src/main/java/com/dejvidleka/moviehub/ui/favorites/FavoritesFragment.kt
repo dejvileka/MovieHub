@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dejvidleka.moviehub.databinding.FragmentFavoritesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.FavoriteMovieAdapter
+import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     private val viewModel: FavoritesViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentFavoritesBinding
 
     companion object {
@@ -32,7 +34,7 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = FavoriteMovieAdapter()
+        val adapter = FavoriteMovieAdapter(mainViewModel)
         binding.favoritesRV.adapter = adapter
         binding.favoritesRV.layoutManager = LinearLayoutManager(requireContext())
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

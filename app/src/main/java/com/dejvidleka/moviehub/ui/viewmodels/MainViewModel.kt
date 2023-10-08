@@ -35,8 +35,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun removeFavorite(movie: MovieEntity) {
-        viewModelScope.launch {
+    suspend fun removeFavorite(movie: MovieEntity) {
+       CoroutineScope(Dispatchers.IO).launch {
             moviesRepository.removeFavorite(movie)
         }
     }

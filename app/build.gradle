@@ -88,12 +88,11 @@ dependencies {
 
 
 
-
     implementation 'androidx.palette:palette:1.0.0'
 
 // retrofit
 
-
+    implementation 'com.airbnb.android:lottie:6.0.0'
 
 // GSON
 
