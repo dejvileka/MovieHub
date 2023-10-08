@@ -2,13 +2,13 @@ package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dejvidleka.data.network.apiservice.MovieClient
-import com.dejvidleka.data.network.apiservice.MoviesServices
-import com.dejvidleka.data.network.models.Cast
-import com.dejvidleka.data.network.models.MovieEntity
-import com.dejvidleka.data.network.models.MovieResult
-import com.dejvidleka.data.network.models.SimilarMoviesResult
-import com.dejvidleka.data.network.models.TrailerResult
+import com.dejvidleka.data.network.MoviesServices
+import com.dejvidleka.data.local.models.Cast
+import com.dejvidleka.data.local.models.MovieEntity
+import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.TrailerResult
+import com.dejvidleka.data.network.MovieClient
 import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.domain.toResult
@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

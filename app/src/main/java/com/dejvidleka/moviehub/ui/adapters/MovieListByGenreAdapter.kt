@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.moviehub.R
-import com.dejvidleka.data.network.models.Genre
-import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemMovieByCategorieBinding
 import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
 

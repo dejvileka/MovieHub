@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.network.models.MovieEntity
-import com.dejvidleka.data.network.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.MovieEntity
+import com.dejvidleka.data.local.models.SimilarMoviesResult
 import com.dejvidleka.moviehub.databinding.ItemFavoriteMovieBinding
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
 

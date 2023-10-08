@@ -1,18 +1,18 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.network.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.SimilarMoviesResult
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
 
 class SimilarMoviesAdapter : ListAdapter<SimilarMoviesResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(SimilarMoviesDiffUtil()) {
     inner class SimilarMoviesViewHolder(private val itemBinding: ItemSimilarMoviesBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(similarMovies: SimilarMoviesResult) {
             itemBinding.movie = similarMovies
-
         }
 
         /* private fun navigateToDetails(movieResult: MovieResult, view: View) {

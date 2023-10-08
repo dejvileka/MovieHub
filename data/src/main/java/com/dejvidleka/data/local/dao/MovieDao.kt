@@ -2,7 +2,7 @@ package com.dejvidleka.data.local.dao
 
 import kotlinx.coroutines.flow.Flow
 import androidx.room.*
-import com.dejvidleka.data.network.models.MovieEntity
+import com.dejvidleka.data.local.models.MovieEntity
 
 @Dao
 interface MovieDao {

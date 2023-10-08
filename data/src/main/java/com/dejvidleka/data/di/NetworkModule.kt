@@ -1,7 +1,7 @@
 package com.dejvidleka.data.di
 
-import com.dejvidleka.data.network.apiservice.MovieClient
-import com.dejvidleka.data.network.apiservice.MoviesServices
+import com.dejvidleka.data.network.MovieClient
+import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.repo.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides

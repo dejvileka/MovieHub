@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMoreMoviesPerGenreBinding

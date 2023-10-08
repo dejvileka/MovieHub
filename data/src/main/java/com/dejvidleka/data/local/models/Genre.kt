@@ -1,4 +1,4 @@
-package com.dejvidleka.data.network.models
+package com.dejvidleka.data.local.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

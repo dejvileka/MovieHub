@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.network.models.Genre
+import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel

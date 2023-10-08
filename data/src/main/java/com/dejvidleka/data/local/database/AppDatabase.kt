@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.dejvidleka.data.local.dao.MovieDao
-import com.dejvidleka.data.network.models.MovieEntity
-import com.dejvidleka.data.network.models.MovieResult
+import com.dejvidleka.data.local.models.MovieEntity
+import com.dejvidleka.data.local.models.MovieResult
 
 
 @Database(entities = [MovieEntity::class], version = 2)

@@ -1,4 +1,4 @@
-package com.dejvidleka.data.network.apiservice
+package com.dejvidleka.data.network
 
 import androidx.room.Index
 import javax.inject.Inject

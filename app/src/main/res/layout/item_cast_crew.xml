@@ -9,7 +9,7 @@
 
         <variable
             name="cast"
-            type="com.dejvidleka.data.network.models.Cast">
+            type="com.dejvidleka.data.local.models.Cast">
 
         </variable>
         <variable

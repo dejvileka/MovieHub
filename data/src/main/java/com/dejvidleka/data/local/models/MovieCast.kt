@@ -1,4 +1,4 @@
-package com.dejvidleka.data.network.models
+package com.dejvidleka.data.local.models
 
 data class MovieCast(
     val cast: List<Cast>,

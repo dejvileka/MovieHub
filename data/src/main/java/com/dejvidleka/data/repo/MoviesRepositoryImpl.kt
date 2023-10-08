@@ -1,13 +1,13 @@
 package com.dejvidleka.data.repo
 
 import com.dejvidleka.data.local.dao.MovieDao
-import com.dejvidleka.data.network.apiservice.MoviesServices
-import com.dejvidleka.data.network.models.Cast
-import com.dejvidleka.data.network.models.Genre
-import com.dejvidleka.data.network.models.MovieEntity
-import com.dejvidleka.data.network.models.MovieResult
-import com.dejvidleka.data.network.models.SimilarMoviesResult
-import com.dejvidleka.data.network.models.TrailerResult
+import com.dejvidleka.data.network.MoviesServices
+import com.dejvidleka.data.local.models.Cast
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieEntity
+import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.TrailerResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

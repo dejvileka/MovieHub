@@ -1,9 +1,9 @@
 package com.dejvidleka.moviehub.ui.favorites
 
 import androidx.lifecycle.ViewModel
-import com.dejvidleka.data.network.apiservice.MovieClient
-import com.dejvidleka.data.network.apiservice.MoviesServices
-import com.dejvidleka.data.network.models.MovieEntity
+import com.dejvidleka.data.network.MoviesServices
+import com.dejvidleka.data.local.models.MovieEntity
+import com.dejvidleka.data.network.MovieClient
 import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.domain.toResult

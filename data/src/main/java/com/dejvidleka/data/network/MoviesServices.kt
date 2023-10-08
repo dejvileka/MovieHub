@@ -1,11 +1,11 @@
-package com.dejvidleka.data.network.apiservice
+package com.dejvidleka.data.network
 
-import com.dejvidleka.data.network.models.GenreResponse
-import com.dejvidleka.data.network.models.MovieByGenre
-import com.dejvidleka.data.network.models.MovieCast
-import com.dejvidleka.data.network.models.SimilarMovies
-import com.dejvidleka.data.network.models.TopRatedMovies
-import com.dejvidleka.data.network.models.Trailer
+import com.dejvidleka.data.local.models.GenreResponse
+import com.dejvidleka.data.local.models.MovieByGenre
+import com.dejvidleka.data.local.models.MovieCast
+import com.dejvidleka.data.local.models.SimilarMovies
+import com.dejvidleka.data.local.models.TopRatedMovies
+import com.dejvidleka.data.local.models.Trailer
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

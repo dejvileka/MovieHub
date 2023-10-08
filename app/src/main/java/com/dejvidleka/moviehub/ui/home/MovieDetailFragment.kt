@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.dejvidleka.data.network.models.SimilarMovies
-import com.dejvidleka.data.network.models.toEntity
+import com.dejvidleka.data.local.models.SimilarMovies
+import com.dejvidleka.data.local.models.toEntity
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -223,14 +223,14 @@ class MovieDetailFragment : Fragment() {
         val spacing = 16  // Example spacing value, adjust as needed
         val includeEdge = true
         binding.similarMovieRv.addItemDecoration( GridSpacingItemDecoration (spanCount, spacing, includeEdge))
-
         lifecycleScope.launch {
             mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
                 when (result) {
                     is Result.Loading -> showToast("Wait")
                     is Result.Success -> {
                         Log.d("My List", "${result.data}")
-                        similarMoviesAdapter.submitList(result.data)
+                        val filteredMovies= result.data.filter { it.poster_path !=null }
+                        similarMoviesAdapter.submitList(filteredMovies)
                     }
 
                     is Result.Error -> showToast("Shame")

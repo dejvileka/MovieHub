@@ -7,7 +7,7 @@
     <data>
         <variable
             name="genre"
-            type="com.dejvidleka.data.network.models.Genre" />
+            type="com.dejvidleka.data.local.models.Genre" />
     </data>
 
 

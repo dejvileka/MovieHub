@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.network.models.Cast
+import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.moviehub.databinding.ItemCastCrewBinding
 
 class MovieCastAdapter : ListAdapter<Cast, MovieCastAdapter.MovieClassViewHolder>(CastDiffUtil()) {
