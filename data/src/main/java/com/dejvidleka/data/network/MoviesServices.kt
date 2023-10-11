@@ -3,6 +3,8 @@ package com.dejvidleka.data.network
 import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
+import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
 import com.dejvidleka.data.local.models.Trailer
@@ -43,5 +45,9 @@ interface MoviesServices {
         @Path("movie_id") movieId: Int
     ): Response<SimilarMovies>
 
+    @GET("/3/search/movie")
+    suspend fun getSearchResult(
+        @Query("query") query: String
+    ): Response<SearchResultMovies>
 }
 

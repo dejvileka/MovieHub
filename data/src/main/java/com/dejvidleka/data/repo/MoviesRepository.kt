@@ -35,5 +35,7 @@ interface MoviesRepository {
 
     suspend fun removeFavorite(movie: MovieEntity)
 
+    fun getSearchResult(query:String):Flow<List<MovieResult>>
+
 
 }

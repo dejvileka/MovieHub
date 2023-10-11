@@ -45,10 +45,10 @@
         android:label="fragment_get_started"
         tools:layout="@layout/fragment_get_started" />
     <fragment
-        android:id="@+id/seachFragment"
-        android:name="com.dejvidleka.moviehub.ui.search.SeachFragment"
+        android:id="@+id/searchFragment"
+        android:name="com.dejvidleka.moviehub.ui.search.SearchFragment"
         android:label="fragment_seach"
-        tools:layout="@layout/fragment_seach" />
+        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/whatToWatchFragment"
         android:name="com.dejvidleka.moviehub.ui.whattowatch.WhatToWatchFragment"

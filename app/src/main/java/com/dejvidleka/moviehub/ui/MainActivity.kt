@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_search -> {
-                    navController.navigate(R.id.seachFragment)
+                    navController.navigate(R.id.searchFragment)
                     true
                 }
                 R.id.action_favorites -> {

@@ -1,5 +1,6 @@
 package com.dejvidleka.data.repo
 
+import androidx.room.Query
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
@@ -76,4 +77,13 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun removeFavorite(movie: MovieEntity) {
         movieDao.deleteMovie(movie)
     }
+
+    override fun getSearchResult(query: String): Flow<List<MovieResult>> {
+        return flow {
+            val response = moviesService.getSearchResult(query)
+            emit(response.body()?.results ?: emptyList())
+        }
+    }
+
+
 }
