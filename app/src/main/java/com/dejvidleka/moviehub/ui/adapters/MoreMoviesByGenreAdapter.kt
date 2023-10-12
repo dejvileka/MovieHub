@@ -49,7 +49,7 @@ class MoreMoviesByGenreAdapter() :
 
 }
 
-class MoreMovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
+private class MoreMovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
     override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
         return newItem.id == oldItem.id
     }

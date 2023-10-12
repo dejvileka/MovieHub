@@ -25,15 +25,12 @@ class MovieListByGenreAdapter(
             itemBinding.clickListener = View.OnClickListener {
                 navigateToDetails(movieResult, it)
             }
-
-
         }
 
         private fun navigateToDetails(movieResult: MovieResult, view: View) {
             val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
             view.findNavController().navigate(directions)
         }
-
     }
 
     private fun navigateToMoreMovies(genre: Genre, view: View) {
@@ -64,7 +61,7 @@ class MovieListByGenreAdapter(
 
 }
 
-class MovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
+private class MovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
     override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
         return newItem.id == oldItem.id
     }

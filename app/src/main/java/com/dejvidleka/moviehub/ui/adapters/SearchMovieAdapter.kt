@@ -17,7 +17,7 @@ class SearchMovieAdapter : ListAdapter<MovieResult, SearchMovieAdapter.SearchMov
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchMoviesViewHolder {
-        val binding = ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SearchMoviesViewHolder(binding)
     }
 
@@ -25,10 +25,9 @@ class SearchMovieAdapter : ListAdapter<MovieResult, SearchMovieAdapter.SearchMov
         val movieResult = getItem(position)
         holder.bind(movieResult)
     }
-
 }
 
-class SearchResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
+private class SearchResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
     override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
         return oldItem.id == newItem.id
     }
