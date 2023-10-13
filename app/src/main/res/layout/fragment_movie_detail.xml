@@ -24,9 +24,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleGravity="center"
-                app:contentScrim="?attr/colorSurface"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="?attr/colorSurface"
                 app:title="MovieHub"
                 app:titleEnabled="false">
 
@@ -63,7 +61,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="272dp"
                     android:padding="10dp"
-                    android:textColor="#000000"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add to favorites"
-                    android:textColor="@color/colorGreen"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/movie_title" />
@@ -129,7 +125,6 @@
                         android:layout_alignEnd="@+id/circularProgress"
                         android:layout_centerHorizontal="true"
                         android:text="8.5/10"
-                        android:textColor="#000000"
                         android:padding="10dp"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="@id/circularProgress"
@@ -144,7 +139,6 @@
                     android:id="@+id/movie_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
                     android:padding="15dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"

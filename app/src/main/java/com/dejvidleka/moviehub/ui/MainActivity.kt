@@ -1,28 +1,24 @@
 package com.dejvidleka.moviehub.ui
 
-import android.app.ActionBar
-import android.content.res.Configuration
-import android.graphics.Color
-import android.os.Build
+import android.app.Application
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.Window
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.HarmonizedColors
+import com.google.android.material.color.HarmonizedColorsOptions
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,9 +30,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DynamicColors.applyToActivitiesIfAvailable(
+            Application(),
+            com.dejvidleka.data.R.style.Theme_MovieHub
+        );
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        val options = HarmonizedColorsOptions.createMaterialDefaults()
+        HarmonizedColors.applyToContextIfAvailable(this, options)
+//        val harmonizedColor = MaterialColors.harmonizeWithPrimary(this,options)
+
+        HarmonizedColors.applyToContextIfAvailable(this, options);
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -46,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
         window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
 
 

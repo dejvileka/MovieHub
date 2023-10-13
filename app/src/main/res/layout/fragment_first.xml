@@ -23,9 +23,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleGravity="center"
-                app:contentScrim="?attr/colorSurface"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="?attr/colorSurface"
                 app:title="MovieHub"
                 app:titleEnabled="false">
 

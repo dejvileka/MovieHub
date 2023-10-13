@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.toEntity
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
@@ -31,6 +30,7 @@ import com.dejvidleka.moviehub.ui.adapters.SimilarMoviesAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -56,6 +56,7 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context?.let { DynamicColors.wrapContextIfAvailable(it) };
         originalBackgroundColor = context?.getColor(com.dejvidleka.data.R.color.white)
         hideBottomNavigation()
         setupUIComponents()
@@ -67,11 +68,12 @@ class MovieDetailFragment : Fragment() {
 
 
     private fun hideBottomNavigation() {
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility = View.GONE
     }
 
     private fun showBottomNavigation() {
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility =
+            View.VISIBLE
     }
 
     private fun setupUIComponents() {
@@ -101,19 +103,19 @@ class MovieDetailFragment : Fragment() {
 
                     Palette.from(resource).generate { palette ->
                         val vibrantColor = palette?.vibrantSwatch?.rgb
-                        val dominantColor= palette?.dominantSwatch?.rgb
-                        val mainColor= palette?.lightVibrantSwatch?.rgb
-                        if (vibrantColor != null) {
-                            val background = binding.scrollable.background as GradientDrawable
-                            background.setColor(vibrantColor)
-                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.movieDescription.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.moreLikeThisTitle.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
-                        }
+                        val dominantColor = palette?.dominantSwatch?.rgb
+                        val mainColor = palette?.lightVibrantSwatch?.rgb
+//                        if (vibrantColor != null) {
+//                            val background = binding.scrollable.background as GradientDrawable
+//                            background.setColor(vibrantColor)
+//                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.movieDescription.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.moreLikeThisTitle.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
+//                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
+//                        }
                     }
                 }
 

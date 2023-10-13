@@ -1,14 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.MovieHub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryVariant">#F7F7F7</item>
-        <item name="colorOnPrimary">#333333</item>
-        <item name="colorSecondary">#FFEB3B</item>
-        <item name="colorOnSecondary">#333333</item>
-        <item name="colorSurface">#F5F5F5</item>
-        <item name="colorOnSurface">#333333</item>
-        <item name="colorAccent">#FFEB3B</item>
-        <item name="colorPrimaryDark">#E5E5E5</item>
-        <item name="android:colorBackground">#FFFFFF</item>
+    <style name="Base.Theme.MovieHub" parent="Theme.Material3.DynamicColors.DayNight">
+
+
     </style>
+
+
 </resources>
