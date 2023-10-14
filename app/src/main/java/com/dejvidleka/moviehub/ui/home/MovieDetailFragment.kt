@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +32,7 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -50,13 +52,24 @@ class MovieDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val transform = MaterialContainerTransform().apply {
+            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
+            duration = 1300
+            //... other configurations
+        }
+        sharedElementEnterTransition = transform
+        sharedElementReturnTransition = transform
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let { DynamicColors.wrapContextIfAvailable(it) };
+
+        val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
+
+        binding.imageView.transitionName = "thumbnail_${args.movieResult.id}"
+
         originalBackgroundColor = context?.getColor(com.dejvidleka.data.R.color.white)
         hideBottomNavigation()
         setupUIComponents()
@@ -87,7 +100,8 @@ class MovieDetailFragment : Fragment() {
             movieDescription.text = args.movieResult.overview
             castRv.adapter = MovieCastAdapter().also { castAdapter = it }
             castRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            detailImage.loadImageAndExtractColor(args.movieResult.backdrop_path ?: args.movieResult.poster_path)
+
+           detailImage.loadImageAndExtractColor(args.movieResult.poster_path )
         }
     }
 

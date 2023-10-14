@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_home"
+        android:id="@+id/FirstFragment"
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/searchFragment"
         android:icon="@drawable/ic_search"
         android:title="Search" />
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_favorites"
         android:title="Favorites" />
     <item
-        android:id="@+id/action_what_to_watch"
+        android:id="@+id/whatToWatchFragment"
         android:icon="@drawable/ic_what_to_watch"
         android:title="What to watch" />
 

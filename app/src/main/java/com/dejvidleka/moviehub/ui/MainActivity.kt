@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.ActivityMainBinding
@@ -30,16 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DynamicColors.applyToActivitiesIfAvailable(
-            Application(),
-            com.dejvidleka.data.R.style.Theme_MovieHub
-        );
-
-        val options = HarmonizedColorsOptions.createMaterialDefaults()
-        HarmonizedColors.applyToContextIfAvailable(this, options)
-//        val harmonizedColor = MaterialColors.harmonizeWithPrimary(this,options)
-
-        HarmonizedColors.applyToContextIfAvailable(this, options);
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -49,37 +40,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
 
-
-
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.action_home -> {
-                    navController.navigate(R.id.FirstFragment)
-                    true
-                }
-                R.id.action_search -> {
-                    navController.navigate(R.id.searchFragment)
-                    true
-                }
-                R.id.action_favorites -> {
-                    navController.navigate(R.id.favoritesFragment)
-                    true
-                }
-                R.id.action_what_to_watch -> {
-                    navController.navigate(R.id.whatToWatchFragment)
-                    true
-                }
-                else -> false
-            }
-        }
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

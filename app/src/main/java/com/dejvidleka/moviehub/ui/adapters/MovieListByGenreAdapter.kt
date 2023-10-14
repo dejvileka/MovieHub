@@ -3,7 +3,9 @@ package com.dejvidleka.moviehub.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,14 +24,17 @@ class MovieListByGenreAdapter(
     inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
+            val transitionName = "thumbnail_${movieResult.id}"
+            itemBinding.movieImg.transitionName = transitionName
             itemBinding.clickListener = View.OnClickListener {
-                navigateToDetails(movieResult, it)
+                navigateToDetails(movieResult, it, transitionName)
             }
         }
 
-        private fun navigateToDetails(movieResult: MovieResult, view: View) {
+        private fun navigateToDetails(movieResult: MovieResult, view: View, transitionName: String) {
+            val extras = FragmentNavigatorExtras(itemBinding.movieImg to transitionName)
             val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-            view.findNavController().navigate(directions)
+            view.findNavController().navigate(directions, extras)
         }
     }
 
