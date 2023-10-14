@@ -1,8 +1,11 @@
 package com.dejvidleka.moviehub.ui
 
+import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -48,6 +51,9 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
+        val color = ContextCompat.getColor(this, R.color.status_bar_color)
+        adjustStatusBarTextColorBasedOnLuminance(this, color)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -67,5 +73,22 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+    fun adjustStatusBarTextColorBasedOnLuminance(activity: Activity, color: Int) {
+        val red = Color.red(color) / 255.0
+        val green = Color.green(color) / 255.0
+        val blue = Color.blue(color) / 255.0
+
+        val luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
+
+        var flags = activity.window.decorView.systemUiVisibility
+        if (luminance > 0.5) {
+            // The color is light, so set the status bar text/icons to dark
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } else {
+            // The color is dark, so set the status bar text/icons to light
+            flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+        }
+        activity.window.decorView.systemUiVisibility = flags
     }
 }

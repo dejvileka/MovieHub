@@ -24,17 +24,15 @@ class MovieListByGenreAdapter(
     inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
-            val transitionName = "thumbnail_${movieResult.id}"
-            itemBinding.movieImg.transitionName = transitionName
+
             itemBinding.clickListener = View.OnClickListener {
-                navigateToDetails(movieResult, it, transitionName)
+                navigateToDetails(movieResult,it)
             }
         }
 
-        private fun navigateToDetails(movieResult: MovieResult, view: View, transitionName: String) {
-            val extras = FragmentNavigatorExtras(itemBinding.movieImg to transitionName)
+        private fun navigateToDetails(movieResult: MovieResult, view: View) {
             val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-            view.findNavController().navigate(directions, extras)
+            view.findNavController().navigate(directions)
         }
     }
 

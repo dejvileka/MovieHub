@@ -17,11 +17,6 @@
             <argument
                 android:name="movieResult"
                 app:argType="com.dejvidleka.data.local.models.MovieResult" />
-<!--            <nav:animation>-->
-<!--                <nav:sharedElement-->
-<!--                    android:name="thumbnail_{movieResult.id}"-->
-<!--                    android:transitionName="thumbnail_{movieResult.id}" />-->
-<!--            </nav:animation>-->
         </action>
 
         <action

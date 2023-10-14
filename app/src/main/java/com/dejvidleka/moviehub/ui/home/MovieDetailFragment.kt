@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,8 +69,16 @@ class MovieDetailFragment : Fragment() {
 
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
 
+
         binding.imageView.transitionName = "thumbnail_${args.movieResult.id}"
 
+        val typedValue = TypedValue()
+        val theme = context?.theme
+        theme?.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
+        originalBackgroundColor = typedValue.data
+
+        hideBottomNavigation()
+        setupUIComponents()
         hideBottomNavigation()
         setupUIComponents()
         loadMovieCast()
@@ -100,7 +109,7 @@ class MovieDetailFragment : Fragment() {
             castRv.adapter = MovieCastAdapter().also { castAdapter = it }
             castRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-           detailImage.loadImageAndExtractColor(args.movieResult.poster_path )
+            detailImage.loadImageAndExtractColor(args.movieResult.backdrop_path)
         }
     }
 
@@ -118,17 +127,25 @@ class MovieDetailFragment : Fragment() {
                         val vibrantColor = palette?.vibrantSwatch?.rgb
                         val dominantColor = palette?.dominantSwatch?.rgb
                         val mainColor = palette?.lightVibrantSwatch?.rgb
-//                        if (vibrantColor != null) {
-//                            val background = binding.scrollable.background as GradientDrawable
-//                            background.setColor(vibrantColor)
-//                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.movieDescription.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.moreLikeThisTitle.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
-//                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
-//                        }
+                        if (vibrantColor != null) {
+                            val background = binding.scrollable.background as GradientDrawable
+                            background.setColor(vibrantColor)
+                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.movieDescription.setTextColor(
+                                getTextColorForBackground(
+                                    vibrantColor
+                                )
+                            )
+                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.moreLikeThisTitle.setTextColor(
+                                getTextColorForBackground(
+                                    vibrantColor
+                                )
+                            )
+                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
+                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
+                        }
                     }
                 }
 
