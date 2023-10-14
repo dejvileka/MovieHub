@@ -70,7 +70,6 @@ class MovieDetailFragment : Fragment() {
 
         binding.imageView.transitionName = "thumbnail_${args.movieResult.id}"
 
-        originalBackgroundColor = context?.getColor(com.dejvidleka.data.R.color.white)
         hideBottomNavigation()
         setupUIComponents()
         loadMovieCast()

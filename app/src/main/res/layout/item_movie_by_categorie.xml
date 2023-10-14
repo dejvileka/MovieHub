@@ -58,7 +58,6 @@
                 android:textSize="30dp"
                 android:visibility="gone"
                 android:background="@drawable/cardview_movie_title"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/movie_img"
                 app:layout_constraintEnd_toEndOf="@+id/movie_img"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,5 @@
 package com.dejvidleka.moviehub.ui
 
-import android.app.Application
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,9 +14,6 @@ import androidx.navigation.ui.navigateUp
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.color.DynamicColors
-import com.google.android.material.color.HarmonizedColors
-import com.google.android.material.color.HarmonizedColorsOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        supportActionBar?.hide()
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -43,7 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
