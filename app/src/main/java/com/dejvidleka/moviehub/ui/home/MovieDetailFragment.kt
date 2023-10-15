@@ -33,6 +33,7 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -70,11 +71,9 @@ class MovieDetailFragment : Fragment() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
 
 
-        binding.imageView.transitionName = "thumbnail_${args.movieResult.id}"
-
         val typedValue = TypedValue()
         val theme = context?.theme
-        theme?.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
+        theme?.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true)
         originalBackgroundColor = typedValue.data
 
         hideBottomNavigation()
