@@ -17,19 +17,19 @@ import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
 
 
 class MovieListByGenreAdapter(
-    private val genre: Genre
+    private val genre: Genre,
+    private val onItemClick: (MovieResult, View) -> Unit
+
 ) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
 
 
     inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
-
-            itemBinding.clickListener = View.OnClickListener {
-                navigateToDetails(movieResult,it)
+            itemBinding.root.setOnClickListener { view ->
+                onItemClick(movieResult, view)
             }
         }
-
         private fun navigateToDetails(movieResult: MovieResult, view: View) {
             val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
             view.findNavController().navigate(directions)
@@ -53,12 +53,11 @@ class MovieListByGenreAdapter(
             holder.itemBinding.movieTitle.text = "View More"
             holder.itemBinding.movieTitle.visibility = View.VISIBLE
 
-            holder.itemBinding.movieImg.setOnClickListener {
-                navigateToMoreMovies(genre, it)
+            holder.itemBinding.root.setOnClickListener { view ->
+                onItemClick(movieResult, view)
             }
         } else {
             holder.bind(movieResult)
-
         }
     }
 

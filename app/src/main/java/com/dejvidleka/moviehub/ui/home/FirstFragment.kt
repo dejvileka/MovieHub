@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
@@ -56,8 +57,20 @@ class FirstFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
+         genreAdapter = GenreAdapter(
+            mainViewModel = mainViewModel, // your view model
+            lifecycleOwner = viewLifecycleOwner,
+            onMovieClick = { movieResult, view ->
+                val action = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
+                view.findNavController().navigate(action)
+            },
+            onViewMoreClick = { genre, view ->
+                val action = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
+                view.findNavController().navigate(action)
+            }
+        )
 
-        genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
+        // Set this adapter to your RecyclerView
         binding.categoriesRv.adapter = genreAdapter
     }
 

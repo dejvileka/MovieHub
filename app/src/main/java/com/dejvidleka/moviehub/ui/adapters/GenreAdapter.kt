@@ -1,24 +1,26 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner,
+    private val onMovieClick: (movieResult: MovieResult, view: View) -> Unit, // Regular item clicks
+    private val onViewMoreClick: (genre: Genre, view: View) -> Unit,
 ) : ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(genre: Genre) {
@@ -36,7 +38,13 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         val genre = getItem(position)
         holder.bind(genre)
-        val moviesAdapter = MovieListByGenreAdapter(genre)
+        val moviesAdapter = MovieListByGenreAdapter(genre = genre) { movieResult, view ->
+            if (movieResult.isViewMore) {
+                onViewMoreClick(genre, view) // Handle "View More" clicks
+            } else {
+                onMovieClick(movieResult, view) // Handle regular item clicks
+            }
+        }
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
         mainViewModel.setGenre(genre.id.toString())
@@ -47,7 +55,6 @@ class GenreAdapter(
                 when (movieResultsList) {
                     is Result.Loading -> {
                     }
-
                     is Result.Success -> {
                         val sortedMovies = movieResultsList.data.sortedBy { it.id }.toMutableList()
                         if (sortedMovies.isNotEmpty()) {

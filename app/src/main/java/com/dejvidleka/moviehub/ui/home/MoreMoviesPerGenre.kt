@@ -1,7 +1,6 @@
 package com.dejvidleka.moviehub.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMoreMoviesPerGenreBinding
 import com.dejvidleka.moviehub.domain.Result
-import com.dejvidleka.moviehub.domain.toResult
-import com.dejvidleka.moviehub.ui.adapters.MoreMoviesByGenreAdapter
+import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +30,7 @@ class MoreMoviesPerGenre : Fragment() {
     private var _binding: FragmentMoreMoviesPerGenreBinding? = null
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var adapter: MoreMoviesByGenreAdapter
+    private lateinit var adapter: MovieListByGenreAdapter
     private var currentPage = 1
     private val maxPages = 10
 
@@ -42,15 +42,18 @@ class MoreMoviesPerGenre : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hideBottomNavigation()
-
         setupRecyclerView()
         loadMovies()
     }
 
     private fun setupRecyclerView() {
-        adapter = MoreMoviesByGenreAdapter()
+        val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
+        adapter = MovieListByGenreAdapter(genre = args.genre) { movieResult, view ->
+                navigateToDetails(movieResult)
+        }
         binding.allMoviesRv.adapter = adapter
-        binding.allMoviesRv.layoutManager = LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        binding.allMoviesRv.layoutManager =
+            LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
         binding.allMoviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
@@ -60,17 +63,24 @@ class MoreMoviesPerGenre : Fragment() {
         })
     }
 
+    private fun navigateToDetails(movieResult: MovieResult) {
+        // Use the Navigation component to navigate to the Detail screen
+        val directions =
+            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
+        findNavController().navigate(directions)
+    }
+
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
         mainViewModel.setGenre(args.genre.id.toString())
         binding.genreTitle.text = args.genre.name
 
         lifecycleScope.launch {
-            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage).collect { movieResultsList ->
-                when (movieResultsList) {
-                    is Result.Loading -> { /* Show a loading indicator if needed */
-                    }
-
+            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
+                .collect { movieResultsList ->
+                    when (movieResultsList) {
+                        is Result.Loading -> { /* Show a loading indicator if needed */
+                        }
                     is Result.Success -> handleSuccess(movieResultsList.data)
                     is Result.Error -> showToast("Error loading movies")
                 }
