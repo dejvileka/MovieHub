@@ -17,32 +17,35 @@ import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
 
 
 class MovieListByGenreAdapter(
-    private val genre: Genre,
     private val onItemClick: (MovieResult, View) -> Unit
 
 ) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
 
 
-    inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
             itemBinding.root.setOnClickListener { view ->
                 onItemClick(movieResult, view)
             }
         }
-        private fun navigateToDetails(movieResult: MovieResult, view: View) {
-            val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-            view.findNavController().navigate(directions)
-        }
     }
 
-    private fun navigateToMoreMovies(genre: Genre, view: View) {
-        val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
-        view.findNavController().navigate(directions)
-    }
+    /*      private fun navigateToDetails(movieResult: MovieResult, view: View) {
+              val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
+              view.findNavController().navigate(directions)
+          }
+      }
 
+      private fun navigateToMoreMovies(genre: Genre, view: View) {
+          val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
+          view.findNavController().navigate(directions)
+      }
+  */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
-        val binding = ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieResultViewHolder(binding)
     }
 

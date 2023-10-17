@@ -38,7 +38,7 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         val genre = getItem(position)
         holder.bind(genre)
-        val moviesAdapter = MovieListByGenreAdapter(genre = genre) { movieResult, view ->
+        val moviesAdapter = MovieListByGenreAdapter() { movieResult, view ->
             if (movieResult.isViewMore) {
                 onViewMoreClick(genre, view) // Handle "View More" clicks
             } else {

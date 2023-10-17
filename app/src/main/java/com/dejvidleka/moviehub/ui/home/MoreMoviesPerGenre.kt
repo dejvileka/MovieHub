@@ -48,7 +48,7 @@ class MoreMoviesPerGenre : Fragment() {
 
     private fun setupRecyclerView() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
-        adapter = MovieListByGenreAdapter(genre = args.genre) { movieResult, view ->
+        adapter = MovieListByGenreAdapter { movieResult, view ->
                 navigateToDetails(movieResult)
         }
         binding.allMoviesRv.adapter = adapter
@@ -79,7 +79,7 @@ class MoreMoviesPerGenre : Fragment() {
             mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
                 .collect { movieResultsList ->
                     when (movieResultsList) {
-                        is Result.Loading -> { /* Show a loading indicator if needed */
+                        is Result.Loading -> {
                         }
                     is Result.Success -> handleSuccess(movieResultsList.data)
                     is Result.Error -> showToast("Error loading movies")
