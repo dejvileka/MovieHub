@@ -9,17 +9,20 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(), MovieClickListener {
 
     private val mainViewModel: MainViewModel by viewModels()
     private var _binding: FragmentFirstBinding? = null
@@ -87,5 +90,13 @@ class FirstFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onMovieClick(movieResult: MovieResult, view: View) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onViewMoreClick(genre: Genre, view: View) {
+        TODO("Not yet implemented")
     }
 }

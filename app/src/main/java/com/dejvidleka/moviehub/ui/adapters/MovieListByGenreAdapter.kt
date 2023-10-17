@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.adapters
 
+import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,35 +15,28 @@ import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemMovieByCategorieBinding
 import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
 
 class MovieListByGenreAdapter(
-    private val genre: Genre
+    private val genre: Genre,
+    private val onClick: MovieClickListener
 ) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
 
 
-    inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
 
-            itemBinding.clickListener = View.OnClickListener {
-                navigateToDetails(movieResult,it)
+            itemBinding.setClickListener {
+                onClick.onMovieClick(movieResult, it)
             }
         }
-
-        private fun navigateToDetails(movieResult: MovieResult, view: View) {
-            val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-            view.findNavController().navigate(directions)
-        }
     }
-
-    private fun navigateToMoreMovies(genre: Genre, view: View) {
-        val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
-        view.findNavController().navigate(directions)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
-        val binding = ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMovieByCategorieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieResultViewHolder(binding)
     }
 
@@ -54,14 +48,13 @@ class MovieListByGenreAdapter(
             holder.itemBinding.movieTitle.visibility = View.VISIBLE
 
             holder.itemBinding.movieImg.setOnClickListener {
-                navigateToMoreMovies(genre, it)
+                onClick.onViewMoreClick(genre,it)
             }
         } else {
             holder.bind(movieResult)
 
         }
     }
-
 }
 
 private class MovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
