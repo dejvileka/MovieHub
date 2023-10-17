@@ -13,14 +13,14 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.OnMovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
 import kotlinx.coroutines.launch
 
 class GenreAdapter(
     private val mainViewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner,
-    private val onMovieClick: (movieResult: MovieResult, view: View) -> Unit, // Regular item clicks
-    private val onViewMoreClick: (genre: Genre, view: View) -> Unit,
+    private val clickListener: OnMovieClickListener
 ) : ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(genre: Genre) {
@@ -38,13 +38,11 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         val genre = getItem(position)
         holder.bind(genre)
-        val moviesAdapter = MovieListByGenreAdapter() { movieResult, view ->
-            if (movieResult.isViewMore) {
-                onViewMoreClick(genre, view) // Handle "View More" clicks
-            } else {
-                onMovieClick(movieResult, view) // Handle regular item clicks
-            }
-        }
+        val moviesAdapter = MovieListByGenreAdapter(
+            clickListener
+        )
+
+
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
         mainViewModel.setGenre(genre.id.toString())

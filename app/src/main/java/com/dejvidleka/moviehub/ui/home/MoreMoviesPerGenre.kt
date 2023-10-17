@@ -8,24 +8,24 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMoreMoviesPerGenreBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.OnMovieClickListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MoreMoviesPerGenre : Fragment() {
+class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
 
     private var _binding: FragmentMoreMoviesPerGenreBinding? = null
     private val binding get() = _binding!!
@@ -47,10 +47,7 @@ class MoreMoviesPerGenre : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
-        adapter = MovieListByGenreAdapter { movieResult, view ->
-                navigateToDetails(movieResult)
-        }
+        adapter = MovieListByGenreAdapter (clickListener = this)
         binding.allMoviesRv.adapter = adapter
         binding.allMoviesRv.layoutManager =
             LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
@@ -63,12 +60,6 @@ class MoreMoviesPerGenre : Fragment() {
         })
     }
 
-    private fun navigateToDetails(movieResult: MovieResult) {
-        // Use the Navigation component to navigate to the Detail screen
-        val directions =
-            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
-        findNavController().navigate(directions)
-    }
 
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
@@ -115,5 +106,14 @@ class MoreMoviesPerGenre : Fragment() {
         super.onDestroyView()
         showBottomNavigation()
         _binding = null
+    }
+
+    override fun onMovieClick(movieResult: MovieResult, view: View) {
+        val directions =
+            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
+        findNavController().navigate(directions)
+    }
+
+    override fun onViewMoreClick(genre: Genre, view: View) {
     }
 }
