@@ -13,7 +13,7 @@ import com.dejvidleka.moviehub.utils.MovieClickListener
 
 
 class MovieListByGenreAdapter(
-    private val genre: Genre,
+    private val genre: Genre?,
     private val onClick: MovieClickListener,
     private val hasViewMore: Boolean
 ) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
@@ -44,7 +44,7 @@ class MovieListByGenreAdapter(
             holder.itemBinding.movieTitle.visibility = View.VISIBLE
 
             holder.itemBinding.movieImg.setOnClickListener {
-                onClick.onViewMoreClick(genre, it)
+                onClick.onViewMoreClick(genre!!, it)
             }
         } else {
             holder.bind(movieResult)

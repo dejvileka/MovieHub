@@ -263,7 +263,7 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
                 when (result) {
                     is Result.Loading -> showToast("Wait")
                     is Result.Success -> {
-                        Log.d("My List", "${result.data}")
+                        Log.d("Similar movies List", "${result.data}")
                         val filteredMovies= result.data.filter { it.poster_path !=null }
                         similarMoviesAdapter.submitList(filteredMovies)
                     }

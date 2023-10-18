@@ -1,21 +1,20 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.local.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
 
 class SimilarMoviesAdapter :
-    ListAdapter<SimilarMoviesResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(
+    ListAdapter<MovieResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(
         SimilarMoviesDiffUtil()
     ) {
     inner class SimilarMoviesViewHolder(private val itemBinding: ItemSimilarMoviesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(similarMovies: SimilarMoviesResult) {
+        fun bind(similarMovies: MovieResult) {
             itemBinding.movie = similarMovies
         }
 
@@ -33,17 +32,17 @@ class SimilarMoviesAdapter :
     }
 }
 
-private class SimilarMoviesDiffUtil : DiffUtil.ItemCallback<SimilarMoviesResult>() {
+private class SimilarMoviesDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
     override fun areItemsTheSame(
-        oldItem: SimilarMoviesResult,
-        newItem: SimilarMoviesResult
+        oldItem: MovieResult,
+        newItem: MovieResult
     ): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
-        oldItem: SimilarMoviesResult,
-        newItem: SimilarMoviesResult
+        oldItem: MovieResult,
+        newItem: MovieResult
     ): Boolean {
         return oldItem == newItem
     }
