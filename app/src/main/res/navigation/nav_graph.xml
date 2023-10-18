@@ -67,5 +67,12 @@
         <argument
             android:name="genre"
             app:argType="com.dejvidleka.data.local.models.Genre" />
+        <action
+            android:id="@+id/action_moreMoviesPerGenre_to_movie_detail_fragment"
+            app:destination="@id/movie_detail_fragment" >
+            <argument
+                android:name="movieResult"
+                app:argType="com.dejvidleka.data.local.models.MovieResult" />
+        </action>
     </fragment>
 </navigation>

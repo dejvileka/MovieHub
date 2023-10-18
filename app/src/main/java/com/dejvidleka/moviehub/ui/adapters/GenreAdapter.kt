@@ -42,7 +42,7 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         val genre = getItem(position)
         holder.bind(genre)
-        val moviesAdapter = MovieListByGenreAdapter(genre, onClick = this)
+        val moviesAdapter = MovieListByGenreAdapter(genre, onClick = this,hasViewMore = true)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
         mainViewModel.setGenre(genre.id.toString())

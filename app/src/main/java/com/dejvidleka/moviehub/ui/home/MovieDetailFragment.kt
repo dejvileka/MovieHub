@@ -16,12 +16,15 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.toEntity
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
@@ -30,6 +33,7 @@ import com.dejvidleka.moviehub.ui.adapters.GridSpacingItemDecoration
 import com.dejvidleka.moviehub.ui.adapters.MovieCastAdapter
 import com.dejvidleka.moviehub.ui.adapters.SimilarMoviesAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.color.DynamicColors
@@ -40,7 +44,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment : Fragment(),MovieClickListener {
 
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
@@ -251,7 +255,7 @@ class MovieDetailFragment : Fragment() {
         binding.similarMovieRv.layoutManager = GridLayoutManager(this.requireContext(), 3)
         binding.similarMovieRv.adapter = similarMoviesAdapter
         val spanCount = 3
-        val spacing = 16  // Example spacing value, adjust as needed
+        val spacing = 16
         val includeEdge = true
         binding.similarMovieRv.addItemDecoration( GridSpacingItemDecoration (spanCount, spacing, includeEdge))
         lifecycleScope.launch {
@@ -269,6 +273,12 @@ class MovieDetailFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onMovieClick(movieResult: MovieResult, view: View) {
+    }
+
+    override fun onViewMoreClick(genre: Genre, view: View) {
     }
 
 }
