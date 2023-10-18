@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
-class SimilarMoviesAdapter :
+class SimilarMoviesAdapter
+    (private val onClick: MovieClickListener):
     ListAdapter<MovieResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(
         SimilarMoviesDiffUtil()
     ) {
@@ -16,6 +18,9 @@ class SimilarMoviesAdapter :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(similarMovies: MovieResult) {
             itemBinding.movie = similarMovies
+            itemBinding.setClickListener {
+                onClick.onMovieClick(movieResult = similarMovies,it)
+            }
         }
 
     }

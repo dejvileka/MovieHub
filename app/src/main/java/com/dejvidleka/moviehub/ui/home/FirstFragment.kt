@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
-class FirstFragment : Fragment(), MovieClickListener {
+class FirstFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by viewModels()
     private var _binding: FragmentFirstBinding? = null
@@ -92,11 +92,4 @@ class FirstFragment : Fragment(), MovieClickListener {
         _binding = null
     }
 
-    override fun onMovieClick(movieResult: MovieResult, view: View) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onViewMoreClick(genre: Genre, view: View) {
-        TODO("Not yet implemented")
-    }
 }

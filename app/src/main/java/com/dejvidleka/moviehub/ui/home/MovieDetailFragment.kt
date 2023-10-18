@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MovieDetailFragment : Fragment(),MovieClickListener {
+class MovieDetailFragment : Fragment(), MovieClickListener {
 
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
@@ -77,7 +77,11 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
 
         val typedValue = TypedValue()
         val theme = context?.theme
-        theme?.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true)
+        theme?.resolveAttribute(
+            com.google.android.material.R.attr.colorPrimaryContainer,
+            typedValue,
+            true
+        )
         originalBackgroundColor = typedValue.data
 
         hideBottomNavigation()
@@ -110,7 +114,8 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
             binding.movieRating.text = "$rating/10"
             movieDescription.text = args.movieResult.overview
             castRv.adapter = MovieCastAdapter().also { castAdapter = it }
-            castRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            castRv.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             detailImage.loadImageAndExtractColor(args.movieResult.backdrop_path)
         }
@@ -187,6 +192,7 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
                         castAdapter.submitList(result.data)
                         showToast("yai")
                     }
+
                     is Result.Error -> showToast("Shame")
                 }
             }
@@ -251,20 +257,26 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
 
     private fun showSimilarMovies() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
-        similarMoviesAdapter = SimilarMoviesAdapter()
+        similarMoviesAdapter = SimilarMoviesAdapter(onClick = this)
         binding.similarMovieRv.layoutManager = GridLayoutManager(this.requireContext(), 3)
         binding.similarMovieRv.adapter = similarMoviesAdapter
         val spanCount = 3
         val spacing = 16
         val includeEdge = true
-        binding.similarMovieRv.addItemDecoration( GridSpacingItemDecoration (spanCount, spacing, includeEdge))
+        binding.similarMovieRv.addItemDecoration(
+            GridSpacingItemDecoration(
+                spanCount,
+                spacing,
+                includeEdge
+            )
+        )
         lifecycleScope.launch {
             mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
                 when (result) {
                     is Result.Loading -> showToast("Wait")
                     is Result.Success -> {
                         Log.d("Similar movies List", "${result.data}")
-                        val filteredMovies= result.data.filter { it.poster_path !=null }
+                        val filteredMovies = result.data.filter { it.poster_path != null }
                         similarMoviesAdapter.submitList(filteredMovies)
                     }
 
@@ -275,7 +287,9 @@ class MovieDetailFragment : Fragment(),MovieClickListener {
         }
     }
 
+
     override fun onMovieClick(movieResult: MovieResult, view: View) {
+
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
