@@ -6,21 +6,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemMovieByCategorieBinding
-import com.dejvidleka.moviehub.utils.OnMovieClickListener
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
 
 class MovieListByGenreAdapter(
-    private val clickListener: OnMovieClickListener
+    private val genre: Genre?,
+    private val onClick: MovieClickListener,
+    private val hasViewMore: Boolean
 ) : ListAdapter<MovieResult, MovieListByGenreAdapter.MovieResultViewHolder>(MovieResultDiffUtil()) {
+
 
     inner class MovieResultViewHolder(val itemBinding: ItemMovieByCategorieBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
-            itemBinding.root.setOnClickListener {
-                clickListener.onMovieClick(movieResult,it)
+
+            itemBinding.setClickListener {
+                onClick.onMovieClick(movieResult, it)
             }
         }
     }
@@ -32,21 +37,22 @@ class MovieListByGenreAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieResultViewHolder, position: Int) {
+
         val movieResult = getItem(position)
-        if (movieResult.isViewMore) {
+        if (hasViewMore && movieResult.isViewMore) {
             holder.itemBinding.movieTitle.text = "View More"
             holder.itemBinding.movieTitle.visibility = View.VISIBLE
-            holder.itemBinding.root.setOnClickListener {
-               
-                g?.let { genre ->
-                    clickListener.onViewMoreClick(genre, it)
-                }
+
+            holder.itemBinding.movieImg.setOnClickListener {
+                onClick.onViewMoreClick(genre!!, it)
             }
         } else {
             holder.bind(movieResult)
-        }
-    }
 
+        }
+
+
+    }
 }
 
 private class MovieResultDiffUtil : DiffUtil.ItemCallback<MovieResult>() {

@@ -1,12 +1,10 @@
 package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.SimilarMoviesResult
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.network.MovieClient
 import com.dejvidleka.data.repo.MoviesRepository
@@ -66,7 +64,7 @@ class MainViewModel @Inject constructor(
         return moviesRepository.getTrailer(movieId).toResult()
     }
 
-    fun getSimilarMovies(movieId: Int): Flow<Result<List<SimilarMoviesResult>>> {
+    fun getSimilarMovies(movieId: Int): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSimilarMovies(movieId).toResult()
     }
 

@@ -2,31 +2,28 @@ package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieEntity
-import com.dejvidleka.data.local.models.SimilarMoviesResult
-import com.dejvidleka.data.local.models.toEntity
+import com.dejvidleka.data.local.models.toMovieResult
 import com.dejvidleka.moviehub.databinding.ItemFavoriteMovieBinding
-import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
-import com.dejvidleka.moviehub.ui.favorites.FavoritesViewModel
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
 
-class FavoriteMovieAdapter(val mainViewModel: MainViewModel) :
+class FavoriteMovieAdapter(
+    val mainViewModel: MainViewModel,
+    private val onClick: MovieClickListener
+) :
     ListAdapter<MovieEntity, FavoriteMovieAdapter.FavoriteMoviesViewHolder>(FavoriteMoviesDiffUtil()) {
-    inner class FavoriteMoviesViewHolder(private val itemBinding: ItemFavoriteMovieBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class FavoriteMoviesViewHolder(private val itemBinding: ItemFavoriteMovieBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(favorites: MovieEntity) {
             itemBinding.movie = favorites
+            val movieResult = favorites.toMovieResult()
             itemBinding.removeItem.setOnClickListener {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
                     try {
@@ -39,11 +36,13 @@ class FavoriteMovieAdapter(val mainViewModel: MainViewModel) :
                     }
                 }
             }
+            itemBinding.setClickListener{ onClick.onMovieClick(movieResult = movieResult,it) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMoviesViewHolder {
-        val binding = ItemFavoriteMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemFavoriteMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoriteMoviesViewHolder(binding)
     }
 

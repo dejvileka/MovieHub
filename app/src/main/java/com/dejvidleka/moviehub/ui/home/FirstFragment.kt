@@ -8,21 +8,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
+import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
-import com.dejvidleka.moviehub.utils.OnMovieClickListener
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
-class FirstFragment : Fragment() , OnMovieClickListener {
+class FirstFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by viewModels()
     private var _binding: FragmentFirstBinding? = null
@@ -59,12 +59,8 @@ class FirstFragment : Fragment() , OnMovieClickListener {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
-         genreAdapter = GenreAdapter(
-            mainViewModel = mainViewModel,
-            lifecycleOwner = viewLifecycleOwner,
-             clickListener = this)
 
-        // Set this adapter to your RecyclerView
+        genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
     }
 
@@ -96,15 +92,4 @@ class FirstFragment : Fragment() , OnMovieClickListener {
         _binding = null
     }
 
-    override fun onMovieClick(movieResult: MovieResult, view: View) {
-        val directions =
-            FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-        findNavController().navigate(directions)
-    }
-
-    override fun onViewMoreClick(genre: Genre, view: View) {
-        val directions =
-            FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
-        findNavController().navigate(directions)
-    }
 }

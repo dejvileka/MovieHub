@@ -20,7 +20,7 @@ interface MoviesServices {
         @Query("page") page: Int
     ): Response<MovieByGenre>
 
-    @GET("/3/movie/top_rated")
+    @GET("/3/movie/latest")
     suspend fun getTopRated(
     ): Response<TopRatedMovies>
 

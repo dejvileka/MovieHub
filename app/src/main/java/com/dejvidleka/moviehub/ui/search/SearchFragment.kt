@@ -1,4 +1,3 @@
-
 package com.dejvidleka.moviehub.ui.search
 
 import android.os.Bundle
@@ -13,20 +12,25 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentSearchBinding
 import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.SearchMovieAdapter
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), MovieClickListener {
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var adapter: SearchMovieAdapter
-    private var textQuery:String?= null
+    private lateinit var adapter: MovieListByGenreAdapter
+    private var textQuery: String? = null
     private var searchJob: Job? = null
 
     override fun onCreateView(
@@ -39,9 +43,11 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = SearchMovieAdapter()
+
+        adapter = MovieListByGenreAdapter(genre = null, onClick = this, hasViewMore = false)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val searchView = binding.searchView
         searchView.editText.addTextChangedListener(object : TextWatcher {
@@ -60,7 +66,7 @@ class SearchFragment : Fragment() {
     }
 
     fun performSearch(query: String) {
-        textQuery=query
+        textQuery = query
         observeViewModelData()
     }
 
@@ -91,5 +97,16 @@ class SearchFragment : Fragment() {
         searchJob?.invokeOnCompletion {
             Toast.makeText(context, "Search completed or was cancelled", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onMovieClick(movieResult: MovieResult, view: View) {
+        val navigation =
+            SearchFragmentDirections.actionSearchFragmentToMovieDetailFragment(movieResult)
+        view.findNavController().navigate(navigation)
+
+    }
+
+    override fun onViewMoreClick(genre: Genre, view: View) {
+        TODO("Not yet implemented")
     }
 }

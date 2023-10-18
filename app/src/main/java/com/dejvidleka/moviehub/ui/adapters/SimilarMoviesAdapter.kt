@@ -1,34 +1,33 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dejvidleka.data.local.models.SimilarMoviesResult
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
-class SimilarMoviesAdapter : ListAdapter<SimilarMoviesResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(SimilarMoviesDiffUtil()) {
-    inner class SimilarMoviesViewHolder(private val itemBinding: ItemSimilarMoviesBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(similarMovies: SimilarMoviesResult) {
+class SimilarMoviesAdapter
+    (private val onClick: MovieClickListener):
+    ListAdapter<MovieResult, SimilarMoviesAdapter.SimilarMoviesViewHolder>(
+        SimilarMoviesDiffUtil()
+    ) {
+    inner class SimilarMoviesViewHolder(private val itemBinding: ItemSimilarMoviesBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+        fun bind(similarMovies: MovieResult) {
             itemBinding.movie = similarMovies
+            itemBinding.setClickListener {
+                onClick.onMovieClick(movieResult = similarMovies,it)
+            }
         }
 
-        /* private fun navigateToDetails(movieResult: MovieResult, view: View) {
-            val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
-            view.findNavController().navigate(directions)
-        }
-
-    }
-
-    private fun navigateToMoreMovies(genre: Genre, view: View) {
-        val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
-        view.findNavController().navigate(directions)*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimilarMoviesViewHolder {
-        val binding = ItemSimilarMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemSimilarMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SimilarMoviesViewHolder(binding)
     }
 
@@ -38,12 +37,18 @@ class SimilarMoviesAdapter : ListAdapter<SimilarMoviesResult, SimilarMoviesAdapt
     }
 }
 
-private class SimilarMoviesDiffUtil : DiffUtil.ItemCallback<SimilarMoviesResult>() {
-    override fun areItemsTheSame(oldItem: SimilarMoviesResult, newItem: SimilarMoviesResult): Boolean {
+private class SimilarMoviesDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
+    override fun areItemsTheSame(
+        oldItem: MovieResult,
+        newItem: MovieResult
+    ): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: SimilarMoviesResult, newItem: SimilarMoviesResult): Boolean {
+    override fun areContentsTheSame(
+        oldItem: MovieResult,
+        newItem: MovieResult
+    ): Boolean {
         return oldItem == newItem
     }
 

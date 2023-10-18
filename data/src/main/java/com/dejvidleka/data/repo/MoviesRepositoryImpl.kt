@@ -1,13 +1,11 @@
 package com.dejvidleka.data.repo
 
-import androidx.room.Query
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.SimilarMoviesResult
 import com.dejvidleka.data.local.models.TrailerResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -58,7 +56,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSimilarMovies(movieId: Int): Flow<List<SimilarMoviesResult>> {
+    override fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>> {
         return flow {
             val response = moviesService.getSimilarMovies(movieId)
             emit(response.body()?.results ?: emptyList())

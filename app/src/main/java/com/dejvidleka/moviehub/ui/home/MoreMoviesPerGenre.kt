@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,13 +19,13 @@ import com.dejvidleka.moviehub.databinding.FragmentMoreMoviesPerGenreBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
-import com.dejvidleka.moviehub.utils.OnMovieClickListener
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
+class MoreMoviesPerGenre : Fragment(), MovieClickListener {
 
     private var _binding: FragmentMoreMoviesPerGenreBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +34,11 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
     private var currentPage = 1
     private val maxPages = 10
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentMoreMoviesPerGenreBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,12 +46,15 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hideBottomNavigation()
+
         setupRecyclerView()
         loadMovies()
     }
 
     private fun setupRecyclerView() {
-        adapter = MovieListByGenreAdapter (clickListener = this)
+        val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
+
+        adapter = MovieListByGenreAdapter(genre = args.genre, onClick = this, hasViewMore = false)
         binding.allMoviesRv.adapter = adapter
         binding.allMoviesRv.layoutManager =
             LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
@@ -60,7 +67,6 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
         })
     }
 
-
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
         mainViewModel.setGenre(args.genre.id.toString())
@@ -70,12 +76,13 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
             mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
                 .collect { movieResultsList ->
                     when (movieResultsList) {
-                        is Result.Loading -> {
+                        is Result.Loading -> { /* Show a loading indicator if needed */
                         }
-                    is Result.Success -> handleSuccess(movieResultsList.data)
-                    is Result.Error -> showToast("Error loading movies")
+
+                        is Result.Success -> handleSuccess(movieResultsList.data)
+                        is Result.Error -> showToast("Error loading movies")
+                    }
                 }
-            }
         }
     }
 
@@ -93,12 +100,14 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
     }
 
     private fun hideBottomNavigation() {
-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val bottomNavigationView =
+            activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView?.visibility = View.GONE
     }
 
     private fun showBottomNavigation() {
-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val bottomNavigationView =
+            activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView?.visibility = View.VISIBLE
     }
 
@@ -109,9 +118,9 @@ class MoreMoviesPerGenre : Fragment(), OnMovieClickListener {
     }
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
-        val directions =
-            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
-        findNavController().navigate(directions)
+//        val directions =
+//            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
+//        view.findNavController().navigate(directions)
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
