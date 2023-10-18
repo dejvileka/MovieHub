@@ -289,7 +289,8 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
 
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
-
+        val action = MovieDetailFragmentDirections.actionMovieDetailFragmentSelf(movieResult)
+        view.findNavController().navigate(action)
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
