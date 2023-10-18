@@ -13,7 +13,11 @@
 
         <action
             android:id="@+id/action_home_to_movie_detail"
-            app:destination="@id/movie_detail_fragment">
+            app:destination="@id/movie_detail_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
             <argument
                 android:name="movieResult"
                 app:argType="com.dejvidleka.data.local.models.MovieResult" />
@@ -39,7 +43,7 @@
             app:argType="com.dejvidleka.data.local.models.MovieResult" />
         <action
             android:id="@+id/action_movieDetailFragment_self"
-            app:destination="@id/movie_detail_fragment" >
+            app:destination="@id/movie_detail_fragment">
             <argument
                 android:name="movieResult"
                 app:argType="com.dejvidleka.data.local.models.MovieResult" />

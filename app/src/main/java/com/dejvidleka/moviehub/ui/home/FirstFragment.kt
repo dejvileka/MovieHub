@@ -36,13 +36,6 @@ class FirstFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val transform = MaterialContainerTransform().apply {
-            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-            duration = 1000
-        }
-        sharedElementReturnTransition = transform
-
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -71,7 +64,6 @@ class FirstFragment : Fragment() {
                     is Result.Loading -> {
                         binding.dimView.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.VISIBLE
-                        delay(2000)
                         Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Success -> {
