@@ -76,7 +76,7 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         val typedValue = TypedValue()
         val theme = context?.theme
         theme?.resolveAttribute(
-            com.google.android.material.R.attr.colorPrimaryContainer,
+            com.google.android.material.R.attr.colorSecondaryContainer,
             typedValue,
             true
         )

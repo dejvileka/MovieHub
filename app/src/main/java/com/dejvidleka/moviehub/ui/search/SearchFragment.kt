@@ -69,7 +69,6 @@ class SearchFragment : Fragment(), MovieClickListener {
     }
 
     private fun observeViewModelData() {
-
         searchJob?.cancel()
         searchJob = viewLifecycleOwner.lifecycleScope.launch {
             textQuery?.let {

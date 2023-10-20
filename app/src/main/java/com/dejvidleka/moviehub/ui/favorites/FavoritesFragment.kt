@@ -24,10 +24,6 @@ class FavoritesFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentFavoritesBinding
 
-    companion object {
-        fun newInstance() = FavoritesFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,11 +49,8 @@ class FavoritesFragment : Fragment(), MovieClickListener {
 
                     is Result.Error -> {
                     }
-
-
                 }
             }
-
         }
     }
 

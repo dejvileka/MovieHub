@@ -15,12 +15,12 @@ sealed interface Result<T> {
 
 
 fun <T> Flow<T>.toResult(): Flow<Result<T>> {
-    return this.map { value ->
-        Result.Success(value) as Result<T>
+    return this.map<T, Result<T>> { value ->
+        Result.Success(value)
     }.onStart {
-        emit(Result.Loading<T>())
+        emit(Result.Loading())
     }.catch { ex ->
-        emit(Result.Error<T>(ex))
+        emit(Result.Error(ex))
     }
 }
 

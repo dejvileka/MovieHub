@@ -18,6 +18,7 @@ import com.dejvidleka.moviehub.ui.home.FirstFragmentDirections
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,8 @@ class GenreAdapter(
         val moviesAdapter = MovieListByGenreAdapter(genre, onClick = this,hasViewMore = true)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
+        val snapHelper = CarouselSnapHelper()
+        snapHelper.attachToRecyclerView(holder.binding.moviesRv)
         mainViewModel.setGenre(genre.id.toString())
         val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
 

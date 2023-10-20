@@ -21,15 +21,14 @@ object DatabaseModule {
             application,
             AppDatabase::class.java,
             "movie_database"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
     @Singleton
     fun provideMovieDao(
-        database: AppDatabase)
+        database: AppDatabase
+    )
     : MovieDao {
         return database.movieDao()
     }

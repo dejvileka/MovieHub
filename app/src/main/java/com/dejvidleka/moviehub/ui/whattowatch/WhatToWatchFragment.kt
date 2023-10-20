@@ -32,10 +32,6 @@ class WhatToWatchFragment : Fragment() {
             handler.postDelayed(this, 3000)
         }
     }
-
-
-    private lateinit var viewModel: WhatToWatchViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -7,20 +7,13 @@
     tools:context=".ui.search.SearchFragment">
 
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/searchbar_scrolling_view_behavior">
-        <!-- Screen content goes here. -->
-    </androidx.core.widget.NestedScrollView>
-
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.google.android.material.search.SearchBar
             android:id="@+id/search_bar"
-            android:layout_width="60dp"
+            android:layout_width="200dp"
             android:layout_height="60dp"
             android:hint="write here" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -33,7 +26,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
     </com.google.android.material.search.SearchView>
 
 

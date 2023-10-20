@@ -1,5 +1,6 @@
 package com.dejvidleka.data.repo
 
+import android.util.Log
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast

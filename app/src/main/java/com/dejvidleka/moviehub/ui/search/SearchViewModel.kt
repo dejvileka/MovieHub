@@ -11,13 +11,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val moviesRepository: MoviesRepository,
+    private val moviesRepository: MoviesRepository
 
-    ) : ViewModel() {
+) : ViewModel() {
 
 
     fun getSearchResult(query: String): Flow<Result<List<MovieResult>>> {
-        return moviesRepository.getSearchResult(query).toResult()
+        return moviesRepository.getSearchResult(query)
+            .toResult()
     }
 
 }

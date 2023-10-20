@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.MovieHub.Data" parent="Theme.AppCompat.DayNight">
         <!-- Primary brand color. -->
+        <item name="statusBarForeground">@color/material_dynamic_primary20</item>
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
