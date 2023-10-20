@@ -58,22 +58,20 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val transform = MaterialContainerTransform().apply {
-            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
-            duration = 1300
-            //... other configurations
-        }
-        sharedElementEnterTransition = transform
-        sharedElementReturnTransition = transform
+
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideBottomNavigation()
+
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
-
 
         val typedValue = TypedValue()
         val theme = context?.theme
@@ -84,7 +82,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         )
         originalBackgroundColor = typedValue.data
 
-        hideBottomNavigation()
         setupUIComponents()
         hideBottomNavigation()
         setupUIComponents()
