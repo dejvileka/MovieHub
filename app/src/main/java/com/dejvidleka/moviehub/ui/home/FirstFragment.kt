@@ -64,7 +64,6 @@ class FirstFragment : Fragment() {
                     is Result.Loading -> {
                         binding.dimView.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(), "Wait", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Success -> {
                         binding.dimView.visibility = View.GONE

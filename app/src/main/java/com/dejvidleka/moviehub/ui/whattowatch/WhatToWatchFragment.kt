@@ -33,9 +33,6 @@ class WhatToWatchFragment : Fragment() {
         }
     }
 
-    companion object {
-        fun newInstance() = WhatToWatchFragment()
-    }
 
     private lateinit var viewModel: WhatToWatchViewModel
 
@@ -66,7 +63,6 @@ class WhatToWatchFragment : Fragment() {
                     }
 
                     is Result.Loading -> {
-                        Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -75,7 +71,7 @@ class WhatToWatchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        handler.removeCallbacks(update)  // Remove the callback when the view is destroyed.
+        handler.removeCallbacks(update)
     }
 
 }

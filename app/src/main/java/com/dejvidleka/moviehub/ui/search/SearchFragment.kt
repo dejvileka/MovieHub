@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -19,7 +18,6 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentSearchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
-import com.dejvidleka.moviehub.ui.adapters.SearchMovieAdapter
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -78,11 +76,9 @@ class SearchFragment : Fragment(), MovieClickListener {
                 viewModel.getSearchResult(it).collect { result ->
                     when (result) {
                         is Result.Loading -> {
-                            Toast.makeText(context, "Wait for it", Toast.LENGTH_SHORT).show()
                         }
 
                         is Result.Success -> {
-                            Toast.makeText(context, "Its here yaaii", Toast.LENGTH_SHORT).show()
                             adapter.submitList(result.data)
                             Log.d("this new List", "${result.data}")
                         }
@@ -95,7 +91,6 @@ class SearchFragment : Fragment(), MovieClickListener {
             }
         }
         searchJob?.invokeOnCompletion {
-            Toast.makeText(context, "Search completed or was cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 

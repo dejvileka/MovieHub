@@ -184,10 +184,9 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             castFlow.collect { result ->
                 when (result) {
-                    is Result.Loading -> showToast("Wait")
+                    is Result.Loading -> {}
                     is Result.Success -> {
                         castAdapter.submitList(result.data)
-                        showToast("yai")
                     }
 
                     is Result.Error -> showToast("Shame")
@@ -203,7 +202,7 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             trailerFlow.collect { result ->
                 when (result) {
-                    is Result.Loading -> showToast("Wait")
+                    is Result.Loading -> {}
                     is Result.Success -> playTrailer(result.data.key)
                     is Result.Error -> showToast("Shame")
                 }
@@ -270,7 +269,7 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         lifecycleScope.launch {
             mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
                 when (result) {
-                    is Result.Loading -> showToast("Wait")
+                    is Result.Loading -> {}
                     is Result.Success -> {
                         Log.d("Similar movies List", "${result.data}")
                         val filteredMovies = result.data.filter { it.poster_path != null }
