@@ -19,6 +19,7 @@ import com.dejvidleka.moviehub.databinding.FragmentSearchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.utils.MovieClickListener
+import com.google.android.material.carousel.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -44,8 +45,7 @@ class SearchFragment : Fragment(), MovieClickListener {
 
         adapter = MovieListByGenreAdapter(genre = null, onClick = this, hasViewMore = false)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.layoutManager =CarouselLayoutManager()
 
         val searchView = binding.searchView
         searchView.editText.addTextChangedListener(object : TextWatcher {

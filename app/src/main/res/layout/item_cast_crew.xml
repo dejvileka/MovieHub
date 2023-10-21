@@ -19,7 +19,7 @@
     </data>
 
 
-    <com.google.android.material.carousel.MaskableFrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/rv_element"
         android:layout_width="130dp"
         android:layout_height="280dp"
@@ -72,6 +72,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </com.google.android.material.carousel.MaskableFrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

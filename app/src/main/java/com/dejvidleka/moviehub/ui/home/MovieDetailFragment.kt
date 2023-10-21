@@ -36,6 +36,7 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialContainerTransform
