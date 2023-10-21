@@ -49,14 +49,11 @@ class SearchFragment : Fragment(), MovieClickListener {
 
         val searchView = binding.searchView
         searchView.editText.addTextChangedListener(object : TextWatcher {
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 performSearch(s.toString())
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -101,6 +98,5 @@ class SearchFragment : Fragment(), MovieClickListener {
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
-        TODO("Not yet implemented")
     }
 }

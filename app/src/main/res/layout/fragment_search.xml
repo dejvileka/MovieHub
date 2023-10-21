@@ -7,29 +7,39 @@
     tools:context=".ui.search.SearchFragment">
 
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:hint="write here" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_anchor="@id/search_bar">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
-    </com.google.android.material.search.SearchView>
+            app:layout_behavior="@string/searchbar_scrolling_view_behavior">
+            <!-- Screen content goes here. -->
+        </androidx.core.widget.NestedScrollView>
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="hint" />
+        </com.google.android.material.appbar.AppBarLayout>
 
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="search"
+            app:layout_anchor="@id/search_bar">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="TEST"
+                android:textSize="20sp"
+                android:layout_height="wrap_content"/>
+          <androidx.recyclerview.widget.RecyclerView
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+              android:id="@+id/recyclerView"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"/>
+
+        </com.google.android.material.search.SearchView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -55,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="30dp"
-                android:visibility="gone"
                 android:background="@drawable/cardview_movie_title"
                 app:layout_constraintBottom_toBottomOf="@+id/movie_img"
                 app:layout_constraintEnd_toEndOf="@+id/movie_img"
