@@ -46,7 +46,7 @@ class GenreAdapter(
         val moviesAdapter = MovieListByGenreAdapter(genre, onClick = this,hasViewMore = true)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
-        val snapHelper = CarouselSnapHelper()
+        val snapHelper = CarouselSnapHelper(false)
         snapHelper.attachToRecyclerView(holder.binding.moviesRv)
         mainViewModel.setGenre(genre.id.toString())
         val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
@@ -54,9 +54,7 @@ class GenreAdapter(
         lifecycleOwner.lifecycleScope.launch {
             moviesFlow.collect { movieResultsList ->
                 when (movieResultsList) {
-                    is Result.Loading -> {
-                    }
-
+                    is Result.Loading -> {}
                     is Result.Success -> {
                         val sortedMovies = movieResultsList.data.sortedBy { it.id }.toMutableList()
                         if (sortedMovies.isNotEmpty()) {
@@ -65,9 +63,7 @@ class GenreAdapter(
                         }
                         moviesAdapter.submitList(sortedMovies)
                     }
-
-                    is Result.Error -> {
-                    }
+                    is Result.Error -> {}
                 }
             }
         }

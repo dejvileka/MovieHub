@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.moviehub.databinding.ItemMovieByCategorieBinding
 import com.dejvidleka.moviehub.databinding.ItemSimilarMoviesBinding
 import com.dejvidleka.moviehub.utils.MovieClickListener
 

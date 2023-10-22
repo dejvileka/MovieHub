@@ -20,6 +20,7 @@ import androidx.navigation.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -37,6 +38,9 @@ import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.dejvidleka.moviehub.utils.VideoHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.CarouselStrategy
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialContainerTransform
@@ -252,21 +256,13 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
         _binding = null
     }
 
+
     private fun showSimilarMovies() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
+        binding.similarMovieRv.layoutManager = CarouselLayoutManager()
         similarMoviesAdapter = SimilarMoviesAdapter(onClick = this)
         binding.similarMovieRv.layoutManager = GridLayoutManager(this.requireContext(), 3)
         binding.similarMovieRv.adapter = similarMoviesAdapter
-        val spanCount = 3
-        val spacing = 16
-        val includeEdge = true
-        binding.similarMovieRv.addItemDecoration(
-            GridSpacingItemDecoration(
-                spanCount,
-                spacing,
-                includeEdge
-            )
-        )
         lifecycleScope.launch {
             mainViewModel.getSimilarMovies(args.movieResult.id).collect { result ->
                 when (result) {
@@ -279,7 +275,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
 
                     is Result.Error -> showToast("Shame")
                 }
-
             }
         }
     }

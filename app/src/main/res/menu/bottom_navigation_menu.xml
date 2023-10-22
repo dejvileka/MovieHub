@@ -3,18 +3,18 @@
     <item
         android:id="@+id/FirstFragment"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="" />
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/ic_search"
-        android:title="Search" />
+        android:title="" />
     <item
         android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_favorites"
-        android:title="Favorites" />
+        android:title="" />
     <item
         android:id="@+id/whatToWatchFragment"
         android:icon="@drawable/ic_what_to_watch"
-        android:title="What to watch" />
+        android:title="" />
 
 </menu>

@@ -157,7 +157,7 @@
                     android:id="@+id/webView"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/trailer_title" />
@@ -180,9 +180,10 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+
                     app:layout_constraintTop_toBottomOf="@+id/textView"
                     tools:listitem="@layout/item_cast_crew"
-                    tools:orientation="horizontal" />
+                    tools:orientation="vertical" />
 
                 <TextView
                     android:id="@+id/more_like_this_title"
@@ -197,6 +198,8 @@
                     android:id="@+id/similarMovieRv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/item_cast_crew"
                     app:layout_constraintTop_toBottomOf="@id/more_like_this_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

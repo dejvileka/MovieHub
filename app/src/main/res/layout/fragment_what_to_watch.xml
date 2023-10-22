@@ -20,65 +20,54 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/categories"
+        <com.google.android.material.chip.ChipGroup
+            android:layout_margin="10dp"
+            app:singleSelection="true"
+            android:id="@+id/chip_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/categories"
-                    android:gravity="center"
-                    android:text="All" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/movies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/categories"
-                    android:gravity="center"
-                    android:text="Movies" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/shows"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_1_all"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/material_dynamic_primary20"
-                android:layout_weight="1">
+                android:checked="false"
+                android:text="all" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Shows" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_2_movies"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:background="@color/material_dynamic_primary20"
+                android:checked="true"
+                android:text="Movies" />
 
-        </LinearLayout>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_3_shows"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/material_dynamic_primary20"
+                android:checked="false"
+                android:text="Shows" />
 
-        <!-- Banner Carousel -->
-        <!-- ... You can use a ViewPager2 or similar -->
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/material_dynamic_primary20"
+                android:checked="false"
+                android:text="Favorites" />
+
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/bannerCarousel"
             android:layout_width="match_parent"
@@ -86,7 +75,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categories" />
+            app:layout_constraintTop_toBottomOf="@id/chip_categories" />
 
         <!-- Genres/ Categories -->
         <!-- ... Horizontal RecyclerView or ChipGroup -->
