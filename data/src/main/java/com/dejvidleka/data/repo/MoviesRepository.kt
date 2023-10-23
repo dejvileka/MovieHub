@@ -8,6 +8,7 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 interface MoviesRepository {
@@ -21,7 +22,7 @@ interface MoviesRepository {
     fun getTrailer(movieId: Int): Flow<TrailerResult>
 
 
-    fun getTopRated(): Flow<List<MovieResult>>
+    fun getTopRated(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
 

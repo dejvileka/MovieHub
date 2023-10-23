@@ -50,9 +50,9 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTopRated(): Flow<List<MovieResult>> {
+    override fun getTopRated(categry: String): Flow<List<MovieResult>> {
         return flow {
-            val response = moviesService.getTopRated()
+            val response = moviesService.getTopRated(categry)
             emit(response.body()?.movieResults ?: emptyList())
         }
     }

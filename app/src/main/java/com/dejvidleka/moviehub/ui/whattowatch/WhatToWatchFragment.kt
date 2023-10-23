@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -27,9 +29,7 @@ class WhatToWatchFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private val update = object : Runnable {
         override fun run() {
-            val nextItem = (viewPager.currentItem + 1) % (viewPager.adapter?.itemCount ?: 1)
-            viewPager.setCurrentItem(nextItem, true)
-            handler.postDelayed(this, 3000)
+
         }
     }
     override fun onCreateView(
@@ -47,18 +47,30 @@ class WhatToWatchFragment : Fragment() {
         viewPager = binding.bannerCarousel
         viewPager.adapter = adapter
         handler.postDelayed(update, 3000)
-        viewLifecycleOwner.lifecycleScope.launch {
+        binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
+            val category = when (checkedId) {
+                R.id.chip_2_movies -> "movie"
+                R.id.chip_3_shows -> "tv"
+                else -> return@setOnCheckedChangeListener
+            }
+            mainViewModel.updateCategory(category)
+        }
 
-            mainViewModel.topMovies.collect { topMovie ->
-                when (topMovie) {
+        // Here, you collect the topRatedMovies StateFlow from your ViewModel
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.topRatedMovies.collect { result ->
+                when (result) {
                     is Result.Success -> {
-                            adapter.submitList(topMovie.data )
+                        adapter.submitList(result.data)
                     }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }
-
                     is Result.Loading -> {
+                        // handle loading state
+                    }
+                    null -> {
+                        // handle the initial state or do nothing
                     }
                 }
             }

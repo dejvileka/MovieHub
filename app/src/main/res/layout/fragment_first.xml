@@ -53,51 +53,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_categories"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_1_all"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/material_dynamic_primary20"
-                        android:checked="false"
-                        android:text="all" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_2_movies"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/material_dynamic_primary20"
-                        android:checked="true"
-                        android:text="Movies" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_3_shows"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/material_dynamic_primary20"
-                        android:checked="false"
-                        android:text="Shows" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/material_dynamic_primary20"
-                        android:checked="false"
-                        android:text="Favorites" />
-
-
-                </com.google.android.material.chip.ChipGroup>
 
 
                 <androidx.viewpager2.widget.ViewPager2
@@ -107,7 +62,7 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chip_categories" />
+                    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
 
                 <androidx.recyclerview.widget.RecyclerView

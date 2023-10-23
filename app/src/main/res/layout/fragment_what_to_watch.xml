@@ -28,21 +28,12 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_1_all"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/material_dynamic_primary20"
-                android:checked="false"
-                android:text="all" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_2_movies"
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/material_dynamic_primary20"
                 android:checked="true"
                 android:text="Movies" />
 
@@ -51,17 +42,8 @@
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/material_dynamic_primary20"
                 android:checked="false"
                 android:text="Shows" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/material_dynamic_primary20"
-                android:checked="false"
-                android:text="Favorites" />
 
 
 
@@ -71,20 +53,56 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/bannerCarousel"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="600dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chip_categories" />
 
-        <!-- Genres/ Categories -->
-        <!-- ... Horizontal RecyclerView or ChipGroup -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_categories_top_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bannerCarousel"
+            app:singleSelection="true">
 
-        <!-- Recently Watched Movies -->
-        <!-- ... Horizontal RecyclerView -->
 
-        <!-- Recommended Movies -->
-        <!-- ... Vertical RecyclerView -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_2_topRated"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Top Rated" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_3_popular"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="Popular" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_3_latest"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="Latest" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_3_now_playing"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="Now Playing" />
+
+
+        </com.google.android.material.chip.ChipGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

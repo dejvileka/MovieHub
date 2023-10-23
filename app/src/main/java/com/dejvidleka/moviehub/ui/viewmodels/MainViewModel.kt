@@ -1,6 +1,7 @@
 package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.MovieEntity
@@ -15,6 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +32,21 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+    private val _category = MutableStateFlow("movie")
+
+    private val _topRatedMovies = _category.flatMapLatest { category ->
+        moviesRepository.getTopRated(category).toResult()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = Result.Loading()
+    )
+
+    val topRatedMovies: StateFlow<Result<List<MovieResult>>> = _topRatedMovies
+
+    fun updateCategory(category: String) {
+        _category.value = category
+    }
     fun addFavorite(movie: MovieEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             moviesRepository.addFavorite(movie)
@@ -34,16 +54,13 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun removeFavorite(movie: MovieEntity) {
-       CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             moviesRepository.removeFavorite(movie)
         }
     }
 
-
-
     val genres = moviesRepository.getGenre().toResult()
 
-    val topMovies = moviesRepository.getTopRated().toResult()
 
     private val _selectedGenreId = MutableStateFlow<String?>(null)
 

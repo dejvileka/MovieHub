@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,6 +63,7 @@ class GenreAdapter(
                             sortedMovies[sortedMovies.size - 1] = lastMovie
                         }
                         moviesAdapter.submitList(sortedMovies)
+                        Log.d("shows", "${sortedMovies}")
                     }
                     is Result.Error -> {}
                 }

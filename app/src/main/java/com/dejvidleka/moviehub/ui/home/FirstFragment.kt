@@ -44,7 +44,6 @@ class FirstFragment : Fragment() {
         }
     }
 
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -62,32 +61,8 @@ class FirstFragment : Fragment() {
 
         setupRecyclerView()
         observeViewModelData()
-        setUpViewPager()
     }
 
-    private fun setUpViewPager(){
-
-        adapter = ViewPagerAdapter()
-        viewPager = binding.bannerCarousel
-        viewPager.adapter = adapter
-        handler.postDelayed(update, 3000)
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            mainViewModel.topMovies.collect { topMovie ->
-                when (topMovie) {
-                    is Result.Success -> {
-                        adapter.submitList(topMovie.data )
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-                    }
-
-                    is Result.Loading -> {
-                    }
-                }
-            }
-        }
-    }
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -9,7 +9,7 @@ class MovieClient @Inject constructor(
 ) {
     suspend fun getGenres()= services.getGenre()
     suspend fun getMovies(genre: String, page: Int) = services.getMovies(genre, page,)
-    suspend fun getTopRatedMovies() = services.getTopRated()
+//    suspend fun getTopRatedMovies() = services.getTopRated()
     suspend fun getTrailerForMovie(movieId:Int) = services.getTrailer(movieId)
     suspend fun getTrailer(movieId: Int) = services.getTrailer(movieId)
 
