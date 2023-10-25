@@ -17,16 +17,16 @@ class MoviesRepositoryImpl @Inject constructor(
     override val movieDao: MovieDao
 ) : MoviesRepository {
 
-    override fun getMovies(genre: String, page: Int): Flow<List<MovieResult>> {
+    override fun getMovies(categry: String,genre: String, page: Int): Flow<List<MovieResult>> {
         return flow {
-            val response = moviesService.getMovies(genre, page)
+            val response = moviesService.getMovies(categry,genre, page)
             emit(response.body()?.movieResults ?: emptyList())
         }
     }
 
-    override fun getGenre(): Flow<List<Genre>> {
+    override fun getGenre(categry: String): Flow<List<Genre>> {
         return flow {
-            val response = moviesService.getGenre()
+            val response = moviesService.getGenre(categry)
             emit(response.body()?.genres ?: emptyList())
         }
     }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.viewpager2.widget.ViewPager2
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
 import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -70,24 +71,30 @@ class FirstFragment : Fragment() {
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
 
-
-        genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
+        val isShow = false
+        genreAdapter = GenreAdapter(isShow,mainViewModel, viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
+        binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
+            val category = when (checkedId) {
+                R.id.chip_2_movies_first -> "movie"
+                R.id.chip_3_shows_first -> "tv"
+                else -> return@setOnCheckedChangeListener
+            }
+            mainViewModel.updateCategory(category)
+        }
     }
 
     private fun observeViewModelData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.genres.collect { genres ->
-                when (genres) {
+            mainViewModel.genre.collect { result ->
+                when (result) {
                     is Result.Loading -> {
-                        binding.dimView.visibility = View.VISIBLE
-                        binding.progressBar.visibility = View.VISIBLE
                     }
+
                     is Result.Success -> {
-                        binding.dimView.visibility = View.GONE
-                        binding.progressBar.visibility = View.GONE
-                        genreAdapter.submitList(genres.data.sortedBy { it.id })
+                        genreAdapter.submitList(result.data.sortedBy { it.id })
                     }
+
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }

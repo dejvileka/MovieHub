@@ -13,9 +13,9 @@ import kotlinx.coroutines.withContext
 
 interface MoviesRepository {
     val movieDao: MovieDao
-    fun getMovies(genre: String, page: Int = 1): Flow<List<MovieResult>>
+    fun getMovies(category: String,genre: String, page: Int = 1): Flow<List<MovieResult>>
 
-    fun getGenre(): Flow<List<Genre>>
+    fun getGenre(category: String): Flow<List<Genre>>
 
     fun getCast(movieId: Int): Flow<List<Cast>>
 

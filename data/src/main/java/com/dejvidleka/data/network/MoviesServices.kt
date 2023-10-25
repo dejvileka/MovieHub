@@ -14,8 +14,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesServices {
-    @GET("/3/discover/tv")
+    @GET("/3/discover/{category}")
     suspend fun getMovies(
+        @Path("category") category: String,
         @Query("with_genres") genre: String,
         @Query("page") page: Int
     ): Response<MovieByGenre>
@@ -37,9 +38,10 @@ interface MoviesServices {
     ): Response<Trailer>
 
 
-    @GET("/3/genre/tv/list")
+    @GET("/3/genre/{category}/list")
     suspend fun getGenre(
-    ): Response<GenreResponse>
+        @Path("category") category: String,
+        ): Response<GenreResponse>
 
     @GET("/3/movie/{movie_id}/similar")
     suspend fun getSimilarMovies(

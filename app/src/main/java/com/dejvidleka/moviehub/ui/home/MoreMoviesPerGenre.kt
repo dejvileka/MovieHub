@@ -56,34 +56,34 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
 
         adapter = MovieListByGenreAdapter(genre = args.genre, onClick = this, hasViewMore = false)
         binding.allMoviesRv.adapter = adapter
-        binding.allMoviesRv.layoutManager =
-            LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
-        binding.allMoviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
-                    loadMovies()
-                }
-            }
-        })
+//        binding.allMoviesRv.layoutManager =
+//            LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+//        binding.allMoviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
+//                    loadMovies()
+//                }
+//            }
+//        })
     }
 
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
-        mainViewModel.setGenre(args.genre.id.toString())
-        binding.genreTitle.text = args.genre.name
-
-        lifecycleScope.launch {
-            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
-                .collect { movieResultsList ->
-                    when (movieResultsList) {
-                        is Result.Loading -> { /* Show a loading indicator if needed */
-                        }
-
-                        is Result.Success -> handleSuccess(movieResultsList.data)
-                        is Result.Error -> showToast("Error loading movies")
-                    }
-                }
-        }
+//        mainViewModel.setGenre(args.genre.id.toString())
+//        binding.genreTitle.text = args.genre.name
+//
+//        lifecycleScope.launch {
+//            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
+//                .collect { movieResultsList ->
+//                    when (movieResultsList) {
+//                        is Result.Loading -> { /* Show a loading indicator if needed */
+//                        }
+//
+//                        is Result.Success -> handleSuccess(movieResultsList.data)
+//                        is Result.Error -> showToast("Error loading movies")
+//                    }
+//                }
+//        }
     }
 
     private fun handleSuccess(movies: List<MovieResult>) {
