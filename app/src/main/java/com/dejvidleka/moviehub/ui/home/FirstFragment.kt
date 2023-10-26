@@ -71,9 +71,9 @@ class FirstFragment : Fragment() {
         binding.categoriesRv.layoutManager = layoutManager
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val isShow = false
-        genreAdapter = GenreAdapter(isShow,mainViewModel, viewLifecycleOwner)
+        genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
+        mainViewModel.updateCategory("movie")
         binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
             val category = when (checkedId) {
                 R.id.chip_2_movies_first -> "movie"

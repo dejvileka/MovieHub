@@ -1,6 +1,7 @@
 package com.dejvidleka.moviehub.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,6 +36,8 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
     private lateinit var adapter: MovieListByGenreAdapter
     private var currentPage = 1
     private val maxPages = 10
+    private val snapHelper = CarouselSnapHelper()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,36 +59,31 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
     private fun setupRecyclerView() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
 
-        adapter = MovieListByGenreAdapter(genre = args.genre, onClick = this, hasViewMore = false)
+        adapter = MovieListByGenreAdapter(args.genre, onClick = this, hasViewMore = true)
         binding.allMoviesRv.adapter = adapter
-//        binding.allMoviesRv.layoutManager =
-//            LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
-//        binding.allMoviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
-//                    loadMovies()
-//                }
-//            }
-//        })
+        binding.allMoviesRv.layoutManager = CarouselLayoutManager()
+        snapHelper.attachToRecyclerView(binding.allMoviesRv)
+        mainViewModel.setGenre(args.genre.id.toString())
     }
 
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
-//        mainViewModel.setGenre(args.genre.id.toString())
-//        binding.genreTitle.text = args.genre.name
-//
-//        lifecycleScope.launch {
-//            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
-//                .collect { movieResultsList ->
-//                    when (movieResultsList) {
-//                        is Result.Loading -> { /* Show a loading indicator if needed */
-//                        }
-//
-//                        is Result.Success -> handleSuccess(movieResultsList.data)
-//                        is Result.Error -> showToast("Error loading movies")
-//                    }
-//                }
-//        }
+        mainViewModel.setGenre(args.genre.id.toString())
+        binding.genreTitle.text = args.genre.name
+        val moviesFlow = mainViewModel.moviesForGenre(args.genre.id.toString())
+        lifecycleScope.launch {
+            moviesFlow.collect { movieResultsList ->
+                when (movieResultsList) {
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        handleSuccess(movieResultsList.data)
+                        Log.d("More movies adapter", "${movieResultsList.data}")
+                    }
+
+                    is Result.Error -> showToast("Error loading movies")
+                }
+            }
+        }
     }
 
     private fun handleSuccess(movies: List<MovieResult>) {

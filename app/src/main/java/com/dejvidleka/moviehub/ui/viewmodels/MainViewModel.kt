@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-
 class MainViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val services: MoviesServices,
@@ -35,7 +34,9 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _category = MutableStateFlow("movie")
+    private val _category = MutableStateFlow("")
+    private val category: StateFlow<String> = _category
+
 
     private val _topRatedMovies = _category.flatMapLatest { category ->
         moviesRepository.getTopRated(category).toResult()
@@ -52,12 +53,15 @@ class MainViewModel @Inject constructor(
         initialValue = Result.Loading()
     )
 
+
     val topRatedMovies: StateFlow<Result<List<MovieResult>>> = _topRatedMovies
     val genre: StateFlow<Result<List<Genre>>> = _genres
 
     fun updateCategory(category: String) {
         _category.value = category
+
     }
+
     fun addFavorite(movie: MovieEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             moviesRepository.addFavorite(movie)
@@ -71,11 +75,18 @@ class MainViewModel @Inject constructor(
     }
 
 
-
     private val _selectedGenreId = MutableStateFlow<String?>(null)
 
 
+    fun setGenre(genreId: String) {
+        _selectedGenreId.value = genreId
+    }
 
+    fun moviesForGenre(genreId: String, page: Int = 1): Flow<Result<List<MovieResult>>> {
+        return category.flatMapLatest {
+            moviesRepository.getMovies(it, genreId, page).toResult()
+        }
+    }
 
     fun castForMovie(movieId: Int): Flow<Result<List<Cast>>> {
         return moviesRepository.getCast(movieId).toResult()
@@ -88,27 +99,5 @@ class MainViewModel @Inject constructor(
     fun getSimilarMovies(movieId: Int): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSimilarMovies(movieId).toResult()
     }
-
-    val moviesForSelectedGenre: Flow<Result<List<MovieResult>>> = _category
-        .combine(_selectedGenreId) { category, genreId ->
-            Pair(category, genreId)
-        }.flatMapLatest { (category, genreId) ->
-            genreId?.let {
-                moviesRepository.getMovies(category, it).toResult()
-            } ?: flowOf(Result.Success(emptyList())) // or any other default state
-        }.stateIn(viewModelScope, SharingStarted.Lazily, Result.Loading())
-
-    // ... other functions ...
-
-    fun setGenre(genreId: String) {
-        _selectedGenreId.value = genreId
-    }
-    fun moviesForGenre(category: String, genreId: String): Flow<Result<List<MovieResult>>> {
-        return moviesRepository.getMovies(category, genreId).toResult()
-    }
-    private val _selectedCategory = MutableStateFlow("movie")
-    val selectedCategory: StateFlow<String> = _selectedCategory
-
-
 }
 
