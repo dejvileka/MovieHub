@@ -5,13 +5,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
+
+
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="search"
+            app:layout_anchor="@id/search_bar">
+
+            <androidx.recyclerview.widget.RecyclerView
+
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.search.SearchView>
 
         <View
             android:id="@+id/dimView"
@@ -19,7 +33,7 @@
             android:layout_height="match_parent"
             android:background="#aa000000"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
@@ -41,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
@@ -52,13 +67,23 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="hint"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
                 <com.google.android.material.chip.ChipGroup
                     android:layout_margin="10dp"
                     app:singleSelection="true"
                     android:id="@+id/chip_categories"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle">
+                    app:layout_constraintTop_toBottomOf="@id/search_bar">
 
 
                     <com.google.android.material.chip.Chip
@@ -77,12 +102,7 @@
                         android:checked="false"
                         android:text="Shows" />
 
-
-
                 </com.google.android.material.chip.ChipGroup>
-
-
-
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categories_rv"

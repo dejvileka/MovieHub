@@ -24,10 +24,11 @@ class GenreAdapter(
     private val mainViewModel: MainViewModel,
     private val lifecycleOwner: LifecycleOwner
 ) : MovieClickListener, ListAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreDiffUtil()) {
-    private val snapHelper = CarouselSnapHelper()
+
 
     inner class GenreViewHolder(val binding: ItemCategoriesBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        val snapHelper = CarouselSnapHelper(false)
         fun bind(genre: Genre) {
             binding.genre = genre
             binding.executePendingBindings()
@@ -46,7 +47,8 @@ class GenreAdapter(
         val moviesAdapter = MovieListByGenreAdapter(genre, onClick = this, hasViewMore = true)
         holder.binding.moviesRv.adapter = moviesAdapter
         holder.binding.moviesRv.layoutManager = CarouselLayoutManager()
-        snapHelper.attachToRecyclerView(holder.binding.moviesRv)
+        holder.snapHelper.attachToRecyclerView(holder.binding.moviesRv)
+
         mainViewModel.setGenre(genre.id.toString())
         val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
 
@@ -89,4 +91,15 @@ class GenreAdapter(
         val directions = FirstFragmentDirections.actionFirstFragmentToMoreMoviesPerGenre(genre)
         view.findNavController().navigate(directions)
     }
+
+    private fun isSnapHelperAttached(recyclerView: RecyclerView): Boolean {
+        val snapHelper = CarouselSnapHelper(false)
+        return try {
+            snapHelper.attachToRecyclerView(recyclerView)
+            false
+        } catch (e: IllegalStateException) {
+            true
+        }
+    }
+
 }

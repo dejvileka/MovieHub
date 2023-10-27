@@ -11,7 +11,6 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -58,12 +57,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         adjustStatusBarTextColorBasedOnLuminance(this, backgroundColor)
+
+
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(com.dejvidleka.moviehub.R.menu.menu_main, menu)
         return true
     }
     private fun getThemeColor(@AttrRes attrRes: Int): Int {
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-    fun adjustStatusBarTextColorBasedOnLuminance(activity: Activity, color: Int) {
+    private fun adjustStatusBarTextColorBasedOnLuminance(activity: Activity, color: Int) {
         val red = Color.red(color) / 255.0
         val green = Color.green(color) / 255.0
         val blue = Color.blue(color) / 255.0
