@@ -2,6 +2,7 @@ package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Query
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
@@ -98,6 +99,9 @@ class MainViewModel @Inject constructor(
 
     fun getSimilarMovies(movieId: Int): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSimilarMovies(movieId).toResult()
+    }
+    fun getSearchResult(query: String):Flow<Result<List<MovieResult>>>{
+        return moviesRepository.getSearchResult(query).toResult()
     }
 }
 
