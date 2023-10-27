@@ -59,30 +59,37 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
     private fun setupRecyclerView() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
 
-        adapter = MovieListByGenreAdapter(args.genre, onClick = this, hasViewMore = true)
+        adapter = MovieListByGenreAdapter(genre = args.genre, onClick = this, hasViewMore = false)
         binding.allMoviesRv.adapter = adapter
-        binding.allMoviesRv.layoutManager = CarouselLayoutManager()
-        snapHelper.attachToRecyclerView(binding.allMoviesRv)
-        mainViewModel.setGenre(args.genre.id.toString())
+        binding.allMoviesRv.layoutManager =
+            LinearLayoutManager(context, GridLayoutManager.VERTICAL, false)
+        binding.allMoviesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
+                    loadMovies()
+                }
+            }
+        })
     }
 
     private fun loadMovies() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
         mainViewModel.setGenre(args.genre.id.toString())
         binding.genreTitle.text = args.genre.name
-        val moviesFlow = mainViewModel.moviesForGenre(args.genre.id.toString())
-        lifecycleScope.launch {
-            moviesFlow.collect { movieResultsList ->
-                when (movieResultsList) {
-                    is Result.Loading -> {}
-                    is Result.Success -> {
-                        handleSuccess(movieResultsList.data)
-                        Log.d("More movies adapter", "${movieResultsList.data}")
-                    }
 
-                    is Result.Error -> showToast("Error loading movies")
+        lifecycleScope.launch {
+            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
+                .collect { movieResultsList ->
+                    when (movieResultsList) {
+                        is Result.Loading -> {
+                        }
+
+                        is Result.Success -> {
+                            handleSuccess(movieResultsList.data)
+                        Log.d("hey", "${movieResultsList.data}")}
+                        is Result.Error -> showToast("Error loading movies")
+                    }
                 }
-            }
         }
     }
 
