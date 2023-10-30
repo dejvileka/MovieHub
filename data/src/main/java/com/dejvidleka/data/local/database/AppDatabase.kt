@@ -10,7 +10,7 @@ import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 
 
-@Database(entities = [MovieEntity::class], version = 2)
+@Database(entities = [MovieEntity::class], version = 3)
 @TypeConverters(GenreIdListTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
