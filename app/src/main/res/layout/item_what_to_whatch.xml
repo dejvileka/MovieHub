@@ -17,37 +17,32 @@
     </data>
 
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/rv_element"
+        android:layout_width="120dp"
+        android:layout_height="180dp"
+        android:padding="5dp"
+        android:onClick="@{clickListener}"
+        app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="200dp">
 
 
-            <ImageView
-                android:id="@+id/movie_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{movie.backdrop_path}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/movie_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:visibility="gone"
-                android:background="@drawable/cardview_movie_title"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
-                app:layout_constraintEnd_toEndOf="@+id/movie_img"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_img" />
-        </androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/movie_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/movie"
+        android:clipToOutline="true"
+        android:background="@drawable/cardview_movies"
+        app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+        android:scaleType="centerCrop"
+        app:imageUrl="@{movie.poster_path}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

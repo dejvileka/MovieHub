@@ -19,6 +19,7 @@ import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.google.android.material.carousel.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -64,7 +65,6 @@ class WhatToWatchFragment : Fragment() {
             val section = when (checkedId) {
                 R.id.chip_2_topRated -> "top_rated"
                 R.id.chip_3_popular -> "popular"
-                R.id.chip_3_latest -> "latest"
                 R.id.chip_3_now_playing -> "now_playing"
                 else -> return@setOnCheckedChangeListener
             }
@@ -93,7 +93,7 @@ class WhatToWatchFragment : Fragment() {
     private fun populationTopMovies(){
         topMovieAdapter= TopMovieAdapter()
         binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= GridLayoutManager(this.requireContext(),3)
+        binding.topRatedRv.layoutManager= GridLayoutManager(context,3)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.topRatedMovies.collect { result ->
                 when (result) {
