@@ -24,7 +24,7 @@ interface MoviesServices {
     @GET("/3/{category}/{section}")
     suspend fun getTopRated(
         @Path("category") category: String,
-        @Query("section") section:String
+        @Path("section") section:String
     ): Response<TopRatedMovies>
 
 
