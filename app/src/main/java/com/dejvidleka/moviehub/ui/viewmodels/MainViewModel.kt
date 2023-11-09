@@ -35,8 +35,12 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _category = MutableStateFlow("")
+    private val _category = MutableStateFlow("movie")
     private val category: StateFlow<String> = _category
+
+
+    private val _section= MutableStateFlow("upcoming")
+    private val section: StateFlow<String> = _category
 
 
     private val _topRatedMovies = _category.flatMapLatest { category ->
@@ -46,6 +50,8 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.Lazily,
         initialValue = Result.Loading()
     )
+
+
     private val _genres = _category.flatMapLatest { category ->
         moviesRepository.getGenre(category).toResult()
     }.stateIn(
