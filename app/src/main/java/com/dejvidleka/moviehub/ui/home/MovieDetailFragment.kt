@@ -216,7 +216,7 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
     }
 
     private fun playTrailer(trailerKey: String) {
-        val videoUrl = "https://www.youtube.com/embed/$trailerKey?autoplay=1"
+        val videoUrl = "https://www.youtube.com/embed/$trailerKey?autoplay=0"
         binding.webView.apply {
             settings.apply {
                 javaScriptEnabled = true
