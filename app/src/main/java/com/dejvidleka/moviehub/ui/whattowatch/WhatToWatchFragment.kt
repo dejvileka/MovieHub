@@ -18,6 +18,7 @@ import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
+import com.dejvidleka.moviehub.ui.adapters.TrendingCarosel
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -32,6 +33,7 @@ class WhatToWatchFragment : Fragment() {
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var topMovieAdapter: TopMovieAdapter
+    private lateinit var trendingMovieAdapter:TrendingCarosel
     private val handler = Handler(Looper.getMainLooper())
     private val update = object : Runnable {
         override fun run() {
@@ -89,6 +91,7 @@ class WhatToWatchFragment : Fragment() {
             }
         }
         populationTopMovies()
+        populateCard()
 
     }
     private fun populationTopMovies(){
@@ -107,14 +110,29 @@ class WhatToWatchFragment : Fragment() {
                     }
                     is Result.Loading -> {
                     }
-                    null -> {
-                    }
                 }
             }
         }
     }
     private fun populateCard(){
-
+        trendingMovieAdapter= TrendingCarosel()
+        binding.trendingCarosel.adapter=topMovieAdapter
+        binding.trendingCarosel.layoutManager= CarouselLayoutManager()
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.topRatedMovies.collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Log.d("top list", result.data.toString())
+                        trendingMovieAdapter.submitList(result.data)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                    }
+                    is Result.Loading -> {
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
