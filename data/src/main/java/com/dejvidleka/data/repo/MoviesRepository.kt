@@ -23,6 +23,7 @@ interface MoviesRepository {
 
 
     fun getTopRated(category: String,section: String): Flow<List<MovieResult>>
+    fun getTrending(section: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
 

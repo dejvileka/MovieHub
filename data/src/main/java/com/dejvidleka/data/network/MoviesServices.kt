@@ -21,6 +21,11 @@ interface MoviesServices {
         @Query("page") page: Int
     ): Response<MovieByGenre>
 
+    @GET("/3/trending/section/day")
+    suspend fun getTrending(
+        @Path("section") category: String,
+    ): Response<MovieByGenre>
+
     @GET("/3/{category}/{section}")
     suspend fun getTopRated(
         @Path("category") category: String,
