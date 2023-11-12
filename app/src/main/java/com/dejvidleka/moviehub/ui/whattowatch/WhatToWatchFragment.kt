@@ -113,6 +113,9 @@ class WhatToWatchFragment : Fragment() {
             }
         }
     }
+    private fun populateCard(){
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
