@@ -13,12 +13,31 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
->
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/bannerCarousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/movie_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/interstellar"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -30,7 +49,8 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/bannerCarousel" />
+
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_categories"
@@ -58,22 +78,12 @@
                         android:text="Shows" />
 
                 </com.google.android.material.chip.ChipGroup>
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/bannerCarousel"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chip_categories" />
-
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_categories_top_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/bannerCarousel"
+                    app:layout_constraintTop_toBottomOf="@id/movie_img"
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
