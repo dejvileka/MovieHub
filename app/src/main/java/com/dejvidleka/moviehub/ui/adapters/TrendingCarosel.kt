@@ -20,7 +20,7 @@ class TrendingCarosel :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder {
-        val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context))
         return TrendingViewHolder(binding)
     }
 
