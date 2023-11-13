@@ -11,29 +11,35 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingCarosel
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
+import com.dejvidleka.moviehub.ui.search.SearchFragmentDirections
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WhatToWatchFragment : Fragment() {
+class WhatToWatchFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var topMovieAdapter: TopMovieAdapter
-    private lateinit var trendingMovieAdapter:TrendingCarosel
+    private lateinit var trendingMovieAdapter: TrendingCarosel
     private val handler = Handler(Looper.getMainLooper())
     private val update = object : Runnable {
         override fun run() {
@@ -52,9 +58,9 @@ class WhatToWatchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ViewPagerAdapter()
-        viewPager = binding.bannerCarousel
-        viewPager.adapter = adapter
-        handler.postDelayed(update, 3000)
+//        viewPager = binding.bannerCarousel
+//        viewPager.adapter = adapter
+//        handler.postDelayed(update, 3000)
         binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
             val category = when (checkedId) {
                 R.id.chip_2_movies -> "movie"
@@ -117,12 +123,12 @@ class WhatToWatchFragment : Fragment() {
     private fun populateCard(){
         trendingMovieAdapter= TrendingCarosel()
         binding.trendingCarosel.adapter=topMovieAdapter
-        binding.trendingCarosel.layoutManager= CarouselLayoutManager()
+        binding.trendingCarosel.layoutManager= LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.topRatedMovies.collect { result ->
+            mainViewModel.getTrending().collect { result ->
                 when (result) {
                     is Result.Success -> {
-                        Log.d("top list", result.data.toString())
+                        Log.d("trending", result.data.toString())
                         trendingMovieAdapter.submitList(result.data)
                     }
                     is Result.Error -> {
@@ -138,6 +144,15 @@ class WhatToWatchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacks(update)
+    }
+
+    override fun onMovieClick(movieResult: MovieResult, view: View) {
+        val navigation =
+            WhatToWatchFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
+        view.findNavController().navigate(navigation)
+    }
+
+    override fun onViewMoreClick(genre: Genre, view: View) {
     }
 
 }

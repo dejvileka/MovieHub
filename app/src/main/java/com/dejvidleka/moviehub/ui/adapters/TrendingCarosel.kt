@@ -10,26 +10,26 @@ import com.dejvidleka.moviehub.databinding.ItemTrendingMoviesBinding
 
 class TrendingCarosel :
     ListAdapter<MovieResult, TrendingCarosel.TrendingViewHolder>(TrendingDiffUtil()) {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): TrendingCarosel.TrendingViewHolder {
-        val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context))
-        return TrendingViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: TrendingCarosel.TrendingViewHolder, position: Int) {
-        val movieResult = getItem(position)
-        holder.bind(movieResult)
-    }
 
 
     inner class TrendingViewHolder(val binding: ItemTrendingMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieResult: MovieResult) {
-           binding.movie= movieResult
+            binding.movie = movieResult
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder {
+        val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TrendingViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: TrendingViewHolder, position: Int) {
+        val movieResult = getItem(position)
+        holder.bind(movieResult)
+    }
+
+
 }
 
 private class TrendingDiffUtil : DiffUtil.ItemCallback<MovieResult>() {

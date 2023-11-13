@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="movie"
-            type="com.dejvidleka.data.local.models.MovieResult"></variable>
+            type="com.dejvidleka.data.local.models.MovieResult">
 
+        </variable>
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener" />
+            type="android.view.View.OnClickListener">
+        </variable>
     </data>
 
-    <com.google.android.material.carousel.MaskableFrameLayout
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/rv_element"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{clickListener}"
+        android:layout_height="match_parent"
         android:padding="10dp"
+        android:onClick="@{clickListener}"
         app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,11 +32,37 @@
             android:layout_height="match_parent"
             app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
 
+
             <ImageView
                 android:id="@+id/movie_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:imageUrl="@{movie.poster_path}" />
+                android:adjustViewBounds="true"
+                tools:src="@drawable/movie"
+                android:clipToOutline="true"
+                android:background="@drawable/cardview_movies"
+                app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{movie.poster_path}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:visibility="gone"
+                android:background="#66000000"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
+                app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/movie_img" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.carousel.MaskableFrameLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

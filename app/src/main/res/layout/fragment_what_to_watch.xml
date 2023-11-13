@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollable"
             android:layout_width="match_parent"
@@ -20,7 +21,7 @@
                 android:layout_height="match_parent">
 
 
-                <androidx.viewpager2.widget.ViewPager2
+         <!--       <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/bannerCarousel"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
@@ -28,17 +29,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
+-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trending_carosel"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:src="@drawable/interstellar"
-                    android:scaleType="fitXY"
+                    android:orientation="horizontal"
                     tools:listitem="@layout/item_trending_movies"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/chip_categories" />
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -50,7 +50,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/bannerCarousel" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <com.google.android.material.chip.ChipGroup

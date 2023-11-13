@@ -40,7 +40,7 @@ class MainViewModel @Inject constructor(
 
 
     private val _section = MutableStateFlow("top_rated")
-    private val section: StateFlow<String> = _section
+    val section: StateFlow<String> = _section
 
     private val _topRatedMovies = _category.combine(_section) { category, section ->
         Pair(category, section)
@@ -71,6 +71,7 @@ class MainViewModel @Inject constructor(
     fun updateSection(section: String) {
         _section.value = section
     }
+
 
     fun addFavorite(movie: MovieEntity) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -111,6 +112,9 @@ class MainViewModel @Inject constructor(
     }
     fun getSearchResult(query: String):Flow<Result<List<MovieResult>>>{
         return moviesRepository.getSearchResult(query).toResult()
+    }
+    fun getTrending():Flow<Result<List<MovieResult>>>{
+        return moviesRepository.getTrending().toResult()
     }
 }
 

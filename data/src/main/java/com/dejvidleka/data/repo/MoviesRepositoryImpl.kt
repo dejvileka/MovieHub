@@ -57,9 +57,9 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTrending(section: String): Flow<List<MovieResult>> {
+    override fun getTrending(): Flow<List<MovieResult>> {
         return flow {
-            val response = moviesService.getTrending(section)
+            val response = moviesService.getTrending()
             emit(response.body()?.movieResults ?: emptyList())
         }
     }
