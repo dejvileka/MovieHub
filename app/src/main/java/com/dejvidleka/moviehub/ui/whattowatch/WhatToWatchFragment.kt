@@ -20,16 +20,12 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
-import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
-import com.dejvidleka.moviehub.ui.adapters.TrendingCarosel
+import com.dejvidleka.moviehub.ui.adapters.TrendingCarousel
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
-import com.dejvidleka.moviehub.ui.search.SearchFragmentDirections
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
-import com.google.android.material.carousel.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,7 +35,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var topMovieAdapter: TopMovieAdapter
-    private lateinit var trendingMovieAdapter: TrendingCarosel
+    private lateinit var trendingMovieAdapter: TrendingCarousel
     private val handler = Handler(Looper.getMainLooper())
     private val update = object : Runnable {
         override fun run() {
@@ -121,9 +117,9 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
         }
     }
     private fun populateCard(){
-        trendingMovieAdapter= TrendingCarosel()
-        binding.trendingCarosel.adapter=topMovieAdapter
-        binding.trendingCarosel.layoutManager= LinearLayoutManager(context)
+        trendingMovieAdapter= TrendingCarousel()
+        binding.trendingCarosel.adapter=trendingMovieAdapter
+        binding.trendingCarosel.layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.getTrending().collect { result ->
                 when (result) {

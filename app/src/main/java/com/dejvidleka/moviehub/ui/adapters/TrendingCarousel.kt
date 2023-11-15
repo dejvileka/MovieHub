@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemTrendingMoviesBinding
 
-class TrendingCarosel :
-    ListAdapter<MovieResult, TrendingCarosel.TrendingViewHolder>(TrendingDiffUtil()) {
+class TrendingCarousel :
+    ListAdapter<MovieResult, TrendingCarousel.TrendingViewHolder>(TrendingDiffUtil()) {
 
 
     inner class TrendingViewHolder(val binding: ItemTrendingMoviesBinding) :
