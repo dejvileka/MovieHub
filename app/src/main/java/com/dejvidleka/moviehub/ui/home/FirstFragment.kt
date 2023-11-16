@@ -25,7 +25,6 @@ import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
-import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.search.SearchFragmentDirections
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener

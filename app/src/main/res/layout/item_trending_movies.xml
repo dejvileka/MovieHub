@@ -27,8 +27,8 @@
                 android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/movie_img"
-                android:layout_width="360dp"
-                android:layout_height="550dp"
+                android:layout_width="320dp"
+                android:layout_height="520dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/cardview_movies"
                 android:scaleType="fitXY"

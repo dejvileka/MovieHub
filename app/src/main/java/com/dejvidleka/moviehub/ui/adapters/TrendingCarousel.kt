@@ -1,14 +1,18 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemTrendingMoviesBinding
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
-class TrendingCarousel :
+class TrendingCarousel(
+    private val onClick: MovieClickListener
+) :
     ListAdapter<MovieResult, TrendingCarousel.TrendingViewHolder>(TrendingDiffUtil()) {
 
 
@@ -16,9 +20,9 @@ class TrendingCarousel :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieResult: MovieResult) {
             binding.movie = movieResult
+            binding.root.setOnClickListener { onClick.onMovieClick(movieResult, it) }
         }
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder {
         val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context))
         return TrendingViewHolder(binding)

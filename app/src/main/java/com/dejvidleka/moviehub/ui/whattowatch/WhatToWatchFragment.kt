@@ -13,8 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
@@ -22,20 +21,16 @@ import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingCarousel
-import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.carousel.CarouselStrategy
-import com.google.android.material.carousel.HeroCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WhatToWatchFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var adapter: ViewPagerAdapter
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var topMovieAdapter: TopMovieAdapter
     private lateinit var trendingMovieAdapter: TrendingCarousel
@@ -56,10 +51,6 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ViewPagerAdapter()
-//        viewPager = binding.bannerCarousel
-//        viewPager.adapter = adapter
-//        handler.postDelayed(update, 3000)
         binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
             val category = when (checkedId) {
                 R.id.chip_2_movies -> "movie"
@@ -77,23 +68,6 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
                 else -> return@setOnCheckedChangeListener
             }
             mainViewModel.updateSection(section)
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.topRatedMovies.collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        adapter.submitList(result.data)
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-                    }
-                    is Result.Loading -> {
-                    }
-                    null -> {
-                    }
-                }
-            }
         }
         populationTopMovies()
         populateCard()
@@ -120,7 +94,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
         }
     }
     private fun populateCard(){
-        trendingMovieAdapter= TrendingCarousel()
+        trendingMovieAdapter= TrendingCarousel(this)
         binding.trendingCarosel.adapter=trendingMovieAdapter
         binding.trendingCarosel.layoutManager= CarouselLayoutManager()
         val snapHelper = CarouselSnapHelper(false)
@@ -155,5 +129,6 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
 
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
+
 
 }
