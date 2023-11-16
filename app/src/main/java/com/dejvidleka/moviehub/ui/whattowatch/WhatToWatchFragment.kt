@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
@@ -25,6 +25,10 @@ import com.dejvidleka.moviehub.ui.adapters.TrendingCarousel
 import com.dejvidleka.moviehub.ui.adapters.ViewPagerAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.CarouselStrategy
+import com.google.android.material.carousel.HeroCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,7 +37,6 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var binding: FragmentWhatToWatchBinding
-    private lateinit var viewPager: ViewPager2
     private lateinit var topMovieAdapter: TopMovieAdapter
     private lateinit var trendingMovieAdapter: TrendingCarousel
     private val handler = Handler(Looper.getMainLooper())
@@ -119,14 +122,16 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private fun populateCard(){
         trendingMovieAdapter= TrendingCarousel()
         binding.trendingCarosel.adapter=trendingMovieAdapter
-        binding.trendingCarosel.layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.trendingCarosel.layoutManager= CarouselLayoutManager()
+        val snapHelper = CarouselSnapHelper(false)
+        snapHelper.attachToRecyclerView(binding.trendingCarosel)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.getTrending().collect { result ->
                 when (result) {
                     is Result.Success -> {
                         Log.d("trending", result.data.toString())
                         trendingMovieAdapter.submitList(result.data)
-                    }
+                        }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }
