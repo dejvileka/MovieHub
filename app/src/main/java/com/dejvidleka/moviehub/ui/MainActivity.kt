@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // Remove this line if you want your status bar to have the same color as your app's background
         // window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
 
-        val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorTertiaryContainer)
+        val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSurfaceContainerHigh)
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

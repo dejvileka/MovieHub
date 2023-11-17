@@ -23,7 +23,6 @@ class MovieListByGenreAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
-
             itemBinding.setClickListener {
                 onClick.onMovieClick(movieResult, it)
             }

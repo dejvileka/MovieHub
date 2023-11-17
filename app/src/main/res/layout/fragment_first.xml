@@ -62,6 +62,7 @@
                     android:text="movieHub"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:textColor="?attr/colorSurfaceContainer"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

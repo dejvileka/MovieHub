@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorTertiaryContainer"
+    android:background="?attr/colorSecondary"
     android:fitsSystemWindows="true"
     style="@style/ThemeOverlay.Material3.DynamicColors.Light"
     tools:context=".ui.MainActivity">
@@ -26,7 +26,7 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="?attr/colorTertiaryContainer"
+        android:background="?attr/colorOnSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.Material3.BottomSheet.Modal"
         android:layout_gravity="bottom"

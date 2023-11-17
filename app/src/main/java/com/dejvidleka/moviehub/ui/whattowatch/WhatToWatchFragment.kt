@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.whattowatch
 
+import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
@@ -25,6 +29,8 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.carousel.HeroCarouselStrategy
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,7 +82,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private fun populationTopMovies(){
         topMovieAdapter= TopMovieAdapter()
         binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= GridLayoutManager(context,3)
+        binding.topRatedRv.layoutManager= GridLayoutManager(context,2)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.topRatedMovies.collect { result ->
                 when (result) {
