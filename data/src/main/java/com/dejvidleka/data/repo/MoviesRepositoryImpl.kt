@@ -1,6 +1,5 @@
 package com.dejvidleka.data.repo
 
-import android.util.Log
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
@@ -19,7 +18,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMovies(categry: String,genre: String, page: Int): Flow<List<MovieResult>> {
         return flow {
-            val response = moviesService.getMovies(categry,genre, page)
+            val response = moviesService.getMovies(categry, "301766,18321,445,7344,33451,33432,284609,267122,280017,155477",genre, page)
             emit(response.body()?.movieResults ?: emptyList())
         }
     }

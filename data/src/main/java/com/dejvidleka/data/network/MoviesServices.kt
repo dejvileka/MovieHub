@@ -3,7 +3,6 @@ package com.dejvidleka.data.network
 import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
-import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
@@ -17,6 +16,7 @@ interface MoviesServices {
     @GET("/3/discover/{category}")
     suspend fun getMovies(
         @Path("category") category: String,
+        @Query("without_keywords") withoutKeywords: String,
         @Query("with_genres") genre: String,
         @Query("page") page: Int
     ): Response<MovieByGenre>

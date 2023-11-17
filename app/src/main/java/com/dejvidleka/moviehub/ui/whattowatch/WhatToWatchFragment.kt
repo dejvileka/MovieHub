@@ -64,7 +64,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
             val section = when (checkedId) {
                 R.id.chip_2_topRated -> "top_rated"
                 R.id.chip_3_popular -> "popular"
-                R.id.chip_3_now_playing -> "now_playing"
+                R.id.chip_3_now_playing -> "latest"
                 else -> return@setOnCheckedChangeListener
             }
             mainViewModel.updateSection(section)
