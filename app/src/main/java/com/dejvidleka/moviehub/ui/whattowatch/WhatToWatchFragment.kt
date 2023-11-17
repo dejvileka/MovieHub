@@ -82,7 +82,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private fun populationTopMovies(){
         topMovieAdapter= TopMovieAdapter()
         binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= GridLayoutManager(context,2)
+        binding.topRatedRv.layoutManager= LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.topRatedMovies.collect { result ->
                 when (result) {

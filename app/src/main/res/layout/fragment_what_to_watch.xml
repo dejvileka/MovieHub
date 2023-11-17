@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -114,8 +114,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chip_categories_top_genres"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
@@ -123,5 +121,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
 </layout>

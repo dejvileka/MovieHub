@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.dejvidleka.data.local.models.MovieResult">
+
+        </variable>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"></variable>
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp">
+
+        <LinearLayout
+            android:layout_width="420dp"
+            android:layout_height="420dp"
+            android:layout_margin="20dp"
+            android:orientation="vertical" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@{movie.overview}"
+            android:scaleType="fitCenter"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            app:imageUrl="@{movie.backdrop_path}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.title}"
+
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorSurfaceContainer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/more_like_this"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorSurfaceContainer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/more_like_this"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorSurfaceContainer" />
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</layout>
