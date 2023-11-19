@@ -56,7 +56,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
     private lateinit var similarMoviesAdapter: SimilarMoviesAdapter
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var castAdapter: MovieCastAdapter
-    private var originalBackgroundColor: Int? = null
 
 
     override fun onCreateView(
@@ -77,15 +76,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val typedValue = TypedValue()
-        val theme = context?.theme
-        theme?.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondaryContainer,
-            typedValue,
-            true
-        )
-        originalBackgroundColor = typedValue.data
 
         setupUIComponents()
         hideBottomNavigation()
@@ -133,30 +123,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     this@loadImageAndExtractColor.setImageBitmap(resource)
 
-                    Palette.from(resource).generate { palette ->
-                        val vibrantColor = palette?.vibrantSwatch?.rgb
-                        val dominantColor = palette?.dominantSwatch?.rgb
-                        val mainColor = palette?.lightVibrantSwatch?.rgb
-                        if (vibrantColor != null) {
-                            val background = binding.scrollable.background as GradientDrawable
-                            background.setColor(vibrantColor)
-                            binding.movieTitle.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.movieDescription.setTextColor(
-                                getTextColorForBackground(
-                                    vibrantColor
-                                )
-                            )
-                            binding.textView.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.moreLikeThisTitle.setTextColor(
-                                getTextColorForBackground(
-                                    vibrantColor
-                                )
-                            )
-                            binding.movieRating.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.userRating.setTextColor(getTextColorForBackground(vibrantColor))
-                            binding.trailerTitle.setTextColor(getTextColorForBackground(vibrantColor))
-                        }
-                    }
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -172,15 +138,6 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
             )
         }
     }
-
-    fun getTextColorForBackground(backgroundColor: Int): Int {
-        val red = Color.red(backgroundColor)
-        val green = Color.green(backgroundColor)
-        val blue = Color.blue(backgroundColor)
-        val luminance = 0.299 * red + 0.587 * green + 0.114 * blue
-        return if (luminance > 128) Color.BLACK else Color.WHITE
-    }
-
 
     private fun loadMovieCast() {
         val args = MovieDetailFragmentArgs.fromBundle(requireArguments())
@@ -239,20 +196,13 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
     }
 
     override fun onPause() {
-        originalBackgroundColor?.let {
-            val background = binding.scrollable.background as? GradientDrawable
-            background?.setColor(it)
-        }
         super.onPause()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         showBottomNavigation()
-        originalBackgroundColor?.let {
-            val background = binding.scrollable.background as? GradientDrawable
-            background?.setColor(it)
-        }
+
         _binding = null
     }
 
