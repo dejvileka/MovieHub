@@ -70,7 +70,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
             val section = when (checkedId) {
                 R.id.chip_2_topRated -> "top_rated"
                 R.id.chip_3_popular -> "popular"
-                R.id.chip_3_now_playing -> "latest"
+                R.id.chip_3_now_playing -> "now_playing"
                 else -> return@setOnCheckedChangeListener
             }
             mainViewModel.updateSection(section)
@@ -80,9 +80,9 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
 
     }
     private fun populationTopMovies(){
-        topMovieAdapter= TopMovieAdapter()
+        topMovieAdapter= TopMovieAdapter(this)
         binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= LinearLayoutManager(context)
+        binding.topRatedRv.layoutManager= GridLayoutManager(context,1)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.topRatedMovies.collect { result ->
                 when (result) {

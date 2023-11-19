@@ -16,63 +16,64 @@
             type="android.view.View.OnClickListener"></variable>
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.carousel.MaskableFrameLayout
         android:id="@+id/card"
         style="?attr/materialCardViewFilledStyle"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp">
 
-        <LinearLayout
-            android:layout_width="420dp"
-            android:layout_height="420dp"
-            android:layout_margin="20dp"
-            android:orientation="vertical" />
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="200dp">-->
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@{movie.overview}"
-            android:scaleType="fitCenter"
-            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-            app:imageUrl="@{movie.backdrop_path}" />
+            <ImageView
+                android:id="@+id/movie_img"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="@{movie.overview}"
+                android:scaleType="fitXY"
+                app:imageUrl="@{movie.backdrop_path}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearLayout2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="16dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/movie_img">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{movie.title}"
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@{movie.title}"-->
+<!--                    android:textAppearance="?attr/textAppearanceTitleMedium"-->
+<!--                    android:textColor="?attr/colorSurfaceContainer" />-->
 
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorSurfaceContainer" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:text="@string/more_like_this"-->
+<!--                android:textAppearance="?attr/textAppearanceBodyMedium"-->
+<!--                android:textColor="?attr/colorSurfaceContainer" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/more_like_this"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorSurfaceContainer" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:text="@string/more_like_this"-->
+<!--                    android:textAppearance="?attr/textAppearanceBodyMedium"-->
+<!--                    android:textColor="?attr/colorSurfaceContainer" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/more_like_this"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorSurfaceContainer" />
+<!--            </LinearLayout>-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        </LinearLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.carousel.MaskableFrameLayout>
 
 
 </layout>
