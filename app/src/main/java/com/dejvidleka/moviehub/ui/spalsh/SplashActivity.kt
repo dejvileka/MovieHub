@@ -11,6 +11,7 @@ import android.content.Intent
 
 import android.os.Handler
 import android.view.WindowManager
+import com.dejvidleka.moviehub.ui.login.LogInActvity
 import dagger.hilt.android.AndroidEntryPoint
 
 class SplashActivity : AppCompatActivity(){
@@ -31,7 +32,7 @@ class SplashActivity : AppCompatActivity(){
 
     private fun navigateToMainScreen() {
         Handler().postDelayed({
-            val nextScreenIntent = Intent(this, MainActivity::class.java)
+            val nextScreenIntent = Intent(this, LogInActvity::class.java)
             startActivity(nextScreenIntent)
             finish()
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
