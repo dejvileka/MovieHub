@@ -5,10 +5,7 @@
     style="@style/ThemeOverlay.Material3.DynamicColors.Light"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.MainActivity">
-
+    android:fitsSystemWindows="true">
 
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"

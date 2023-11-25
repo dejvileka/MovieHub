@@ -3,7 +3,6 @@ package com.dejvidleka.moviehub.ui.spalsh
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.dejvidleka.moviehub.databinding.ActivitySplashBinding
-import com.dejvidleka.moviehub.ui.MainActivity
 import com.dejvidleka.moviehub.utils.SPLASH_DELAY
 
 
@@ -11,7 +10,7 @@ import android.content.Intent
 
 import android.os.Handler
 import android.view.WindowManager
-import com.dejvidleka.moviehub.ui.login.LogInActvity
+import com.dejvidleka.moviehub.ui.login.LogInActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 class SplashActivity : AppCompatActivity(){
@@ -32,7 +31,7 @@ class SplashActivity : AppCompatActivity(){
 
     private fun navigateToMainScreen() {
         Handler().postDelayed({
-            val nextScreenIntent = Intent(this, LogInActvity::class.java)
+            val nextScreenIntent = Intent(this, LogInActivity::class.java)
             startActivity(nextScreenIntent)
             finish()
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
