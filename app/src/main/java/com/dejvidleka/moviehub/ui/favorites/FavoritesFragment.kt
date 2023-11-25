@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
@@ -36,7 +37,7 @@ class FavoritesFragment : Fragment(), MovieClickListener {
         super.onViewCreated(view, savedInstanceState)
         val adapter = FavoriteMovieAdapter(mainViewModel, onClick = this)
         binding.favoritesRV.adapter = adapter
-        binding.favoritesRV.layoutManager = LinearLayoutManager(requireContext())
+        binding.favoritesRV.layoutManager = GridLayoutManager(requireContext(),20)
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getAllFavoriteMovies().collect { result ->
                 when (result) {
