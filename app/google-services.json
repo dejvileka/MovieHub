@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117393209664",
+    "project_id": "moviehub-51be8",
+    "storage_bucket": "moviehub-51be8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117393209664:android:600afdc4f203bb5bdc22a5",
+        "android_client_info": {
+          "package_name": "com.dejvidleka.moviehub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiR6wmXt2O4Ut8bnD3xAwVlFZxW505IDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
