@@ -98,4 +98,12 @@
                 app:argType="com.dejvidleka.data.local.models.MovieResult" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.dejvidleka.moviehub.ui.login.LogInFragment"
+        android:label="LogInFragment" >
+        <action
+            android:id="@+id/action_logInFragment_to_whatToWatchFragment"
+            app:destination="@id/whatToWatchFragment" />
+    </fragment>
 </navigation>
