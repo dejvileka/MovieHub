@@ -59,7 +59,4 @@ class RegisterFragment : Fragment() {
         }
     }
 
-
-
-
 }
