@@ -15,7 +15,7 @@ private lateinit var binding: LogInActvityBinding
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, LogInFragment.newInstance())
+                .replace(R.id.container, RegisterFragment.newInstance())
                 .commitNow()
         }
     }
