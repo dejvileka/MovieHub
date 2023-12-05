@@ -46,6 +46,7 @@ class FavoriteMovieAdapter(
         return FavoriteMoviesViewHolder(binding)
     }
 
+
     override fun onBindViewHolder(holder: FavoriteMoviesViewHolder, position: Int) {
         val moviesResult = getItem(position)
         holder.bind(moviesResult)
