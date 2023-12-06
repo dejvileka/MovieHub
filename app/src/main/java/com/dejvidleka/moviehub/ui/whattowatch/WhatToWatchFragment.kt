@@ -31,6 +31,7 @@ import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.HeroCarouselStrategy
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -66,15 +67,29 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
             mainViewModel.updateCategory(category)
         }
 
-       binding.chipCategoriesTopGenres.setOnCheckedChangeListener { group, checkedId ->
-            val section = when (checkedId) {
-                R.id.chip_2_topRated -> "top_rated"
-                R.id.chip_3_popular -> "popular"
-                R.id.chip_3_now_playing -> "now_playing"
-                else -> return@setOnCheckedChangeListener
+
+
+        binding.chipCategoriesTopGenres.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    val section = when (it.position) {
+                        0 -> "top_rated"
+                        1 -> "popular"
+                        2 -> "now_playing"
+                        else -> return
+                    }
+                    mainViewModel.updateSection(section = section)
+                }
             }
-            mainViewModel.updateSection(section)
-        }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
         populationTopMovies()
         populateCard()
 

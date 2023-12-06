@@ -74,7 +74,42 @@
                         android:text="Shows" />
 
                 </com.google.android.material.chip.ChipGroup>
-                <com.google.android.material.chip.ChipGroup
+                <!--           <com.google.android.material.chip.ChipGroup
+                               android:id="@+id/chip_categories_top_genres"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               app:layout_constraintStart_toStartOf="parent"
+                               app:layout_constraintTop_toBottomOf="@id/trending_carosel"
+                               app:singleSelection="true">
+
+                               <com.google.android.material.chip.Chip
+                                   android:id="@+id/chip_2_topRated"
+                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:checked="true"
+                                   android:text="Top Rated" />
+
+                               <com.google.android.material.chip.Chip
+                                   android:id="@+id/chip_3_popular"
+                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:checked="false"
+                                   android:text="Popular" />
+
+
+                               <com.google.android.material.chip.Chip
+                                   android:id="@+id/chip_3_now_playing"
+                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:checked="false"
+                                   android:text="Now Playing" />
+
+                           </com.google.android.material.chip.ChipGroup>-->
+
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/chip_categories_top_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,33 +117,29 @@
                     app:layout_constraintTop_toBottomOf="@id/trending_carosel"
                     app:singleSelection="true">
 
-                    <com.google.android.material.chip.Chip
+                    <com.google.android.material.tabs.TabItem
                         android:id="@+id/chip_2_topRated"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Top Rated" />
+                        android:text="Top Rated"
+                        />
 
-                    <com.google.android.material.chip.Chip
+                    <com.google.android.material.tabs.TabItem
                         android:id="@+id/chip_3_popular"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:text="Popular" />
+                        android:text="Popular"
+                        />
 
-
-                    <com.google.android.material.chip.Chip
+                    <com.google.android.material.tabs.TabItem
                         android:id="@+id/chip_3_now_playing"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:text="Now Playing" />
+                        android:text="Now Playing"
+                        />
 
-                </com.google.android.material.chip.ChipGroup>
-
+                </com.google.android.material.tabs.TabLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/top_rated_rv"
                     android:layout_width="match_parent"
