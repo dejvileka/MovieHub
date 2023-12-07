@@ -13,10 +13,8 @@ private lateinit var binding: LogInActvityBinding
         super.onCreate(savedInstanceState)
         binding= LogInActvityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, LogInFragment.newInstance())
-                .commitNow()
-        }
+            supportFragmentManager.beginTransaction().replace(R.id.container, LogInFragment.newInstance()).commit()
+
+
     }
 }

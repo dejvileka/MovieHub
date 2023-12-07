@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -14,12 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentLogInBinding
 import com.dejvidleka.moviehub.ui.MainActivity
-import com.dejvidleka.moviehub.ui.whattowatch.WhatToWatchFragmentDirections
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 class LogInFragment : Fragment() {
@@ -88,25 +86,28 @@ class LogInFragment : Fragment() {
     }
 
 
-    private fun navigate(){
+    private fun navigate() {
         val fullText = getString(R.string.new_to_platform)
         val spannableString = SpannableString(fullText)
 
-        val clickablePart = "Create an account" // The part of the text to make clickable
+        val clickablePart = "Create an account"
         val clickablePartStart = fullText.indexOf(clickablePart)
         val clickablePartEnd = clickablePartStart + clickablePart.length
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                val navigation =
-                    LogInFragmentDirections.actionLogInFragmentToWhatToWatchFragment()
-                view?.findNavController()?.navigate(navigation)
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container, RegisterFragment())?.commit()
             }
 
+            @SuppressLint("PrivateResource")
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                ds.isUnderlineText = false // Set to true if you want underlined text
-                ds.color = ContextCompat.getColor(requireContext(), androidx.browser.R.color.browser_actions_bg_grey) // Set your color
+                ds.isUnderlineText = false
+                ds.color = ContextCompat.getColor(
+                    requireContext(),
+                    androidx.browser.R.color.browser_actions_bg_grey
+                )
             }
         }
 
@@ -114,8 +115,7 @@ class LogInFragment : Fragment() {
 
         val textView = binding.createAcountText
         textView.text = spannableString
-        textView.movementMethod = LinkMovementMethod.getInstance() // This line is important to make the link clickable
-
+        textView.movementMethod = LinkMovementMethod.getInstance()
     }
 }
 

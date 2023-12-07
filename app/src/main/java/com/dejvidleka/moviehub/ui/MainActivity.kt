@@ -2,7 +2,6 @@ package com.dejvidleka.moviehub.ui
 
 import android.app.Activity
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Menu
@@ -22,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -33,29 +33,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Hide the ActionBar
         supportActionBar?.hide()
-
-        // Set up your layout
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Set up BottomNavigationView and NavController
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         bottomNavigationView = findViewById(R.id.bottom_navigation)
-
-        // Remove this line if you want your status bar to have the same color as your app's background
-        // window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
-
         val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSurfaceContainerHigh)
-
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = backgroundColor
-        }
-
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = backgroundColor
         adjustStatusBarTextColorBasedOnLuminance(this, backgroundColor)
 
 
@@ -63,8 +50,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(com.dejvidleka.moviehub.R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
     private fun getThemeColor(@AttrRes attrRes: Int): Int {
@@ -94,10 +80,8 @@ class MainActivity : AppCompatActivity() {
 
         var flags = activity.window.decorView.systemUiVisibility
         if (luminance > 0.5) {
-            // The color is light, so set the status bar text/icons to dark
             flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
-            // The color is dark, so set the status bar text/icons to light
             flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         }
         activity.window.decorView.systemUiVisibility = flags

@@ -1,8 +1,6 @@
 package com.dejvidleka.moviehub.ui.home
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,27 +13,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.viewpager2.widget.ViewPager2
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFirstBinding
-import com.dejvidleka.moviehub.databinding.FragmentMovieDetailBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.GenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
-import com.dejvidleka.moviehub.ui.search.SearchFragmentDirections
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class FirstFragment : Fragment(), MovieClickListener {
 
@@ -43,19 +35,9 @@ class FirstFragment : Fragment(), MovieClickListener {
     private var _binding: FragmentFirstBinding? = null
     private lateinit var genreAdapter: GenreAdapter
     private lateinit var adapter: MovieListByGenreAdapter
-    private lateinit var viewPager: ViewPager2
-    private val handler = Handler(Looper.getMainLooper())
     private var searchJob: Job? = null
     private var textQuery: String? = null
 
-
-    private val update = object : Runnable {
-        override fun run() {
-            val nextItem = (viewPager.currentItem + 1) % (viewPager.adapter?.itemCount ?: 1)
-            viewPager.setCurrentItem(nextItem, true)
-            handler.postDelayed(this, 3000)
-        }
-    }
 
     private val binding get() = _binding!!
 
@@ -144,7 +126,7 @@ class FirstFragment : Fragment(), MovieClickListener {
         genreAdapter = GenreAdapter(mainViewModel, viewLifecycleOwner)
         binding.categoriesRv.adapter = genreAdapter
         mainViewModel.updateCategory("movie")
-        binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
+        binding.chipCategories.setOnCheckedChangeListener { _, checkedId ->
             val category = when (checkedId) {
                 R.id.chip_2_movies_first -> "movie"
                 R.id.chip_3_shows_first -> "tv"

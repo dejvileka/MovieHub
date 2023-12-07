@@ -105,5 +105,23 @@
         <action
             android:id="@+id/action_logInFragment_to_whatToWatchFragment"
             app:destination="@id/whatToWatchFragment" />
+        <action
+            android:id="@+id/action_logInFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.dejvidleka.moviehub.ui.login.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_whatToWatchFragment"
+            app:destination="@id/whatToWatchFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/logInActivity"
+        android:name="com.dejvidleka.moviehub.ui.login.LogInActivity"
+        android:label="LogInActivity" />
 </navigation>
