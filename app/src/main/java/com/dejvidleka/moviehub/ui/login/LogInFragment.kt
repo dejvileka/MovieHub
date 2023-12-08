@@ -104,10 +104,6 @@ class LogInFragment : Fragment() {
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
                 ds.isUnderlineText = false
-                ds.color = ContextCompat.getColor(
-                    requireContext(),
-                    androidx.browser.R.color.browser_actions_bg_grey
-                )
             }
         }
 
