@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentLogInBinding
 import com.dejvidleka.moviehub.ui.MainActivity
@@ -114,4 +113,3 @@ class LogInFragment : Fragment() {
         textView.movementMethod = LinkMovementMethod.getInstance()
     }
 }
-
