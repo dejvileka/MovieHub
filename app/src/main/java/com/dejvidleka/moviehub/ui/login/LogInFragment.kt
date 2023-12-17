@@ -3,6 +3,7 @@ package com.dejvidleka.moviehub.ui.login
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import com.dejvidleka.data.local.models.UserData
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -18,6 +19,7 @@ import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentLogInBinding
 import com.dejvidleka.moviehub.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LogInFragment : Fragment() {
 
@@ -73,12 +75,39 @@ class LogInFragment : Fragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val user = FirebaseAuth.getInstance().currentUser
-                        Toast.makeText(context, "${user?.email}", Toast.LENGTH_SHORT).show()
+                        fetchUserData( user?.uid){userData ->
+                            navigateToMainActivity(userData)
+                        }
+                        Toast.makeText(context, "Auth successful", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
+    }
+
+    private fun fetchUserData(userId: String?, callback: (UserData) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        userId.let {
+            if (it != null) {
+                firestore.collection("users").document(it).get().addOnSuccessListener { document ->
+                    val userData = document.toObject(UserData::class.java)
+                    userData.let {
+                        if (it != null) {
+                            callback(it)
+                        }
+
+                    }
+                }.addOnFailureListener { }
+            }
+        }
+    }
+
+    private fun navigateToMainActivity(userData: UserData) {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra("userData",userData)
+        }
+        startActivity(intent)
     }
 
     private fun navigate() {

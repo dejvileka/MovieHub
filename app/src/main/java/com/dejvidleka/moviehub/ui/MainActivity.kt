@@ -3,6 +3,8 @@ package com.dejvidleka.moviehub.ui
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import com.dejvidleka.data.local.models.UserData
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
@@ -25,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -32,7 +36,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val userData = intent.getParcelableExtra<UserData>("userData")
+        if (userData != null) {
+            Log.d("MainActivity hello there", "User data retrieved: $userData")
+            // Use userData as needed
+        } else {
+            Log.d("MainActivity hello there", "User data is null")
+            // Handle the case where userData is null
+        }
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
