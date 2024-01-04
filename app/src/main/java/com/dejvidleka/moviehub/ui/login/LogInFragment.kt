@@ -9,6 +9,7 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,7 +77,7 @@ class LogInFragment : Fragment() {
                     if (task.isSuccessful) {
                         val user = FirebaseAuth.getInstance().currentUser
                         fetchUserData( user?.uid){userData ->
-                            navigateToMainActivity(userData)
+                            navigateToMainActivity(userData!!)
                         }
                         Toast.makeText(context, "Auth successful", Toast.LENGTH_SHORT).show()
                     } else {
@@ -86,22 +87,24 @@ class LogInFragment : Fragment() {
         }
     }
 
-    private fun fetchUserData(userId: String?, callback: (UserData) -> Unit) {
+    private fun fetchUserData(userId: String?, callback: (UserData?) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
-        userId.let {
-            if (it != null) {
-                firestore.collection("users").document(it).get().addOnSuccessListener { document ->
-                    val userData = document.toObject(UserData::class.java)
-                    userData.let {
-                        if (it != null) {
-                            callback(it)
-                        }
-
-                    }
-                }.addOnFailureListener { }
-            }
+        if (userId == null) {
+            callback(null)
+            return
         }
+
+        firestore.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                val userData = document.toObject(UserData::class.java)
+                callback(userData)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("fetchUserData", "Error fetching user data", exception)
+                callback(null)
+            }
     }
+
 
     private fun navigateToMainActivity(userData: UserData) {
         val intent = Intent(context, MainActivity::class.java).apply {
