@@ -145,6 +145,7 @@ class FirstFragment : Fragment(), MovieClickListener {
 
                     is Result.Success -> {
                         genreAdapter.submitList(result.data.sortedBy { it.id })
+                        Log.d("my list", "${result.data}")
                     }
 
                     is Result.Error -> {
