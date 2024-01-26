@@ -79,8 +79,10 @@
                     android:layout_margin="10dp"
                     app:singleSelection="true"
                     android:id="@+id/chip_categories"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toStartOf="@id/filters_button"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/search_bar">
 
 
@@ -101,6 +103,16 @@
                         android:text="Shows" />
 
                 </com.google.android.material.chip.ChipGroup>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filters_button"
+                    android:layout_width="0dp"
+                    android:background="@color/material_dynamic_neutral0"
+                    android:layout_height="wrap_content"
+                    android:text="filters"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/chip_categories"
+                    app:layout_constraintTop_toTopOf="@id/chip_categories" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categories_rv"

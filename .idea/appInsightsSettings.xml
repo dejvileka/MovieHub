@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.dejvidleka.moviehub" />
+                  <option name="mobileSdkAppId" value="1:117393209664:android:600afdc4f203bb5bdc22a5" />
+                  <option name="projectId" value="moviehub-51be8" />
+                  <option name="projectNumber" value="117393209664" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
