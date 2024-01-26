@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dejvidleka.moviehub.utils.DraggableCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.favorites.FavoritesFragment">
+    tools:context=".ui.favorites.FavoritesFragment"
+    android:orientation="vertical"
+    android:padding="16dp">
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRV"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-</com.dejvidleka.moviehub.utils.DraggableCoordinatorLayout>
+
+
+        <!-- SearchView for Actor Name -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_actor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Search Actor Name"
+            app:iconifiedByDefault="false" />
+
+        <!-- ChipGroup for Actor Selection -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_actors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="8dp"
+            app:singleSelection="true">
+
+            <!-- Dynamically add Chips here based on available actors -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Age Rating Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Select Age Rating" />
+
+    <SeekBar
+        android:id="@+id/seekbar_age_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="16" />
+
+    <!-- TextView to Display Selected Age -->
+    <TextView
+        android:id="@+id/textview_selected_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 years"
+        android:layout_marginTop="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Select Year" />
+
+        <Spinner
+            android:id="@+id/spinner_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/years_array" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="Discover Movies" />
+
+
+</LinearLayout>
