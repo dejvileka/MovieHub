@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -117,9 +118,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
     private fun populateCard(){
         trendingMovieAdapter= TrendingCarousel(this)
         binding.trendingCarosel.adapter=trendingMovieAdapter
-        binding.trendingCarosel.layoutManager= CarouselLayoutManager()
-        val snapHelper = CarouselSnapHelper(false)
-        snapHelper.attachToRecyclerView(binding.trendingCarosel)
+        binding.trendingCarosel.layoutManager= LinearLayoutManager(this.requireContext(),HORIZONTAL,false)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.getTrending().collect { result ->
                 when (result) {
@@ -147,9 +146,7 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
             WhatToWatchFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(navigation)
     }
-
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
-
 
 }
