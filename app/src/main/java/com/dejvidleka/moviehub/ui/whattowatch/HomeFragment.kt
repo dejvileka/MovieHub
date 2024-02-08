@@ -1,6 +1,6 @@
 package com.dejvidleka.moviehub.ui.whattowatch
 
-import android.graphics.drawable.GradientDrawable.Orientation
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,28 +16,24 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingCarousel
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
-import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.carousel.HeroCarouselStrategy
-import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class WhatToWatchFragment : Fragment(), MovieClickListener {
+class HomeFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var topMovieAdapter: TopMovieAdapter
@@ -61,8 +57,8 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
 
         binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
             val category = when (checkedId) {
-                R.id.chip_2_movies -> "movie"
-                R.id.chip_3_shows -> "tv"
+                com.dejvidleka.moviehub.R.id.chip_2_movies -> "movie"
+                com.dejvidleka.moviehub.R.id.chip_3_shows -> "tv"
                 else -> return@setOnCheckedChangeListener
             }
             mainViewModel.updateCategory(category)
@@ -115,17 +111,25 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
             }
         }
     }
-    private fun populateCard(){
-        trendingMovieAdapter= TrendingCarousel(this)
-        binding.trendingCarosel.adapter=trendingMovieAdapter
-        binding.trendingCarosel.layoutManager= LinearLayoutManager(this.requireContext(),HORIZONTAL,false)
+    private fun populateCard() {
+        val marginSize =
+            resources.getDimensionPixelSize(com.dejvidleka.moviehub.R.dimen.margin)
+
+        trendingMovieAdapter = TrendingCarousel(this)
+        val snapHelper = PagerSnapHelper()
+        binding.trendingCarosel.adapter = trendingMovieAdapter
+        binding.trendingCarosel.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+        snapHelper.attachToRecyclerView(binding.trendingCarosel)
+
+        binding.trendingCarosel.addItemDecoration(MarginItemDecoration(marginSize))
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.getTrending().collect { result ->
                 when (result) {
                     is Result.Success -> {
                         Log.d("trending", result.data.toString())
                         trendingMovieAdapter.submitList(result.data)
-                        }
+                    }
+
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }
@@ -143,10 +147,31 @@ class WhatToWatchFragment : Fragment(), MovieClickListener {
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
         val navigation =
-            WhatToWatchFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
+            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(navigation)
     }
+
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
 
 }
+
+
+class MarginItemDecoration(private val marginSize: Int) : ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        outRect.left = marginSize
+        outRect.right = marginSize
+        outRect.bottom = marginSize
+
+        // Add top margin only for the first item to avoid double space between items
+        if (parent.getChildAdapterPosition(view) == 0) {
+            outRect.top = marginSize
+        }
+    }
+}
+
