@@ -7,24 +7,28 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.moviehub.databinding.ItemPosterBinding
+import com.dejvidleka.moviehub.databinding.ItemTrendingMoviesBinding
+import com.dejvidleka.moviehub.utils.MovieClickListener
 
-class ViewPagerAdapter() :
-    ListAdapter<MovieResult, ViewPagerAdapter.ViewPagerViewHolder>(MovieResultDiffUtil()) {
+class TrendingViewPager(
+    val onClick: MovieClickListener
+) :
+    ListAdapter<MovieResult, TrendingViewPager.ViewPagerViewHolder>(MovieResultDiffUtil()) {
 
 
-    inner class ViewPagerViewHolder(private val itemBinding: ItemPosterBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class ViewPagerViewHolder(private val itemBinding: ItemTrendingMoviesBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
             itemBinding.clickListener = View.OnClickListener {
             }
 
+            itemBinding.setClickListener {  onClick}
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTrendingMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewPagerViewHolder(binding)
     }
 

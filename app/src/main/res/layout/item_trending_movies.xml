@@ -18,20 +18,23 @@
         </variable>
     </data>
 
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-            <ImageView
-                android:id="@+id/movie_img"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/cardview_movies"
-                app:imageUrl="@{movie.backdrop_path}"
-                app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+    <ImageView
+        android:id="@+id/movie_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:background="@drawable/cardview_movies"
+        android:layout_margin="2dp"
+        app:imageUrl="@{movie.poster_path}"
+        android:adjustViewBounds="true"
+        app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.cardview.widget.CardView>
 </layout>

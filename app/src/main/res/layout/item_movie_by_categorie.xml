@@ -40,6 +40,7 @@
                 android:adjustViewBounds="true"
                 tools:src="@drawable/movie"
                 android:clipToOutline="true"
+                android:elevation="10dp"
                 android:background="@drawable/cardview_movies"
                 app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
                 android:scaleType="centerCrop"

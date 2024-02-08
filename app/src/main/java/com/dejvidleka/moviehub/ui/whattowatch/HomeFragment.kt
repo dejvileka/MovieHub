@@ -13,22 +13,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.viewpager2.widget.ViewPager2
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
-import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
-import com.dejvidleka.moviehub.ui.adapters.TrendingCarousel
+import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
+import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -36,14 +35,10 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentWhatToWatchBinding
-    private lateinit var topMovieAdapter: TopMovieAdapter
-    private lateinit var trendingMovieAdapter: TrendingCarousel
+    private lateinit var topMovieAdapter: MovieListByGenreAdapter
+    private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
-    private val update = object : Runnable {
-        override fun run() {
-
-        }
-    }
+    private val update = Runnable { }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,85 +50,94 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.chipCategories.setOnCheckedChangeListener { group, checkedId ->
-            val category = when (checkedId) {
-                com.dejvidleka.moviehub.R.id.chip_2_movies -> "movie"
-                com.dejvidleka.moviehub.R.id.chip_3_shows -> "tv"
-                else -> return@setOnCheckedChangeListener
-            }
-            mainViewModel.updateCategory(category)
-        }
-
-
-
-        binding.chipCategoriesTopGenres.addOnTabSelectedListener(object :
-            TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    val section = when (it.position) {
-                        0 -> "top_rated"
-                        1 -> "popular"
-                        2 -> "now_playing"
-                        else -> return
-                    }
-                    mainViewModel.updateSection(section = section)
+        binding.chipCategories.addOnTabSelectedListener(
+            object :
+                TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
                 }
-            }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        val category = when (it.position) {
+                            0 -> "movie"
+                            1 -> "tv"
+                            else -> return
+                        }
+                        mainViewModel.updateCategory(category)
+                    }
+                }
+            })
 
-        })
-        populationTopMovies()
+        binding.chipCategoriesTopGenres.addOnTabSelectedListener(
+            object :
+                TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        val section = when (it.position) {
+                            0 -> "top_rated"
+                            1 -> "popular"
+                            2 -> "now_playing"
+                            else -> return
+                        }
+                        mainViewModel.updateSection(section = section)
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+            })
+//        populationTopMovies()
         populateCard()
 
     }
-    private fun populationTopMovies(){
-        topMovieAdapter= TopMovieAdapter(this)
-        binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= GridLayoutManager(context,2)
-        viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.topRatedMovies.collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        Log.d("top list", result.data.toString())
-                        topMovieAdapter.submitList(result.data)
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-                    }
-                    is Result.Loading -> {
-                    }
-                }
-            }
-        }
-    }
+
+    //    private fun populationTopMovies(){
+//        topMovieAdapter= MovieListByGenreAdapter(this)
+//        binding.topRatedRv.adapter=topMovieAdapter
+//        binding.topRatedRv.layoutManager= GridLayoutManager(context,2)
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            mainViewModel.topRatedMovies.collect { result ->
+//                when (result) {
+//                    is Result.Success -> {
+//                        Log.d("top list", result.data.toString())
+//                        topMovieAdapter.submitList(result.data)
+//                    }
+//                    is Result.Error -> {
+//                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+//                    }
+//                    is Result.Loading -> {
+//                    }
+//                }
+//            }
+//        }
+//    }
     private fun populateCard() {
-        val marginSize =
-            resources.getDimensionPixelSize(com.dejvidleka.moviehub.R.dimen.margin)
-
-        trendingMovieAdapter = TrendingCarousel(this)
-        val snapHelper = PagerSnapHelper()
+        trendingMovieAdapter = TrendingViewPager(this)
         binding.trendingCarosel.adapter = trendingMovieAdapter
-        binding.trendingCarosel.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        snapHelper.attachToRecyclerView(binding.trendingCarosel)
 
-        binding.trendingCarosel.addItemDecoration(MarginItemDecoration(marginSize))
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.getTrending().collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        Log.d("trending", result.data.toString())
-                        trendingMovieAdapter.submitList(result.data)
-                    }
+            mainViewModel.category.collectLatest {
+                mainViewModel.getTrending(category = it).collect { result ->
 
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-                    }
-                    is Result.Loading -> {
+                    when (result) {
+                        is Result.Success -> {
+                            Log.d("trending", result.data.toString())
+                            trendingMovieAdapter.submitList(result.data)
+                        }
+
+                        is Result.Error -> {
+                            Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                        }
+
+                        is Result.Loading -> {
+                        }
                     }
                 }
             }
@@ -168,7 +172,6 @@ class MarginItemDecoration(private val marginSize: Int) : ItemDecoration() {
         outRect.right = marginSize
         outRect.bottom = marginSize
 
-        // Add top margin only for the first item to avoid double space between items
         if (parent.getChildAdapterPosition(view) == 0) {
             outRect.top = marginSize
         }

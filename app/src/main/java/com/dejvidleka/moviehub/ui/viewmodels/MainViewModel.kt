@@ -36,11 +36,11 @@ class MainViewModel @Inject constructor(
 
 
     private val _category = MutableStateFlow("movie")
-    private val category: StateFlow<String> = _category
+ val category: StateFlow<String> = _category
 
 
     private val _section = MutableStateFlow("top_rated")
-    val section: StateFlow<String> = _section
+    private val section: StateFlow<String> = _section
 
     private val _topRatedMovies = _category.combine(_section) { category, section ->
         Pair(category, section)
@@ -113,8 +113,8 @@ class MainViewModel @Inject constructor(
     fun getSearchResult(query: String):Flow<Result<List<MovieResult>>>{
         return moviesRepository.getSearchResult(query).toResult()
     }
-    fun getTrending():Flow<Result<List<MovieResult>>>{
-        return moviesRepository.getTrending().toResult()
+    fun getTrending(category: String):Flow<Result<List<MovieResult>>>{
+        return moviesRepository.getTrending(category).toResult()
     }
 }
 

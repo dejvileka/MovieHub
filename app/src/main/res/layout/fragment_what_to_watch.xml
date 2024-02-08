@@ -20,99 +20,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/trending_carosel"
                     android:layout_width="match_parent"
+                    android:adjustViewBounds="true"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
                     android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
+                    android:layout_marginHorizontal= "7dp"
+                    tools:layout_height="500dp"
+                    android:layout_margin="2dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+                    app:layout_constraintTop_toBottomOf="@+id/chip_categories" />
 
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:paddingHorizontal="15dp"
-                    android:text="movieHub"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="cinoHub"
                     android:textColor="?attr/colorSurfaceContainer"
                     android:textSize="40sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/chip_categories"
+                    app:layout_constraintTop_toBottomOf="@id/chip_categories"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <com.google.android.material.chip.ChipGroup
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/chip_categories"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitle"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingHorizontal="8dp"
+                    style="@style/Widget.MaterialComponents.TabLayout.Colored"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintBottom_toTopOf="@id/trending_carosel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:singleSelection="true">
 
 
-                    <com.google.android.material.chip.Chip
+                    <com.google.android.material.tabs.TabItem
                         android:id="@+id/chip_2_movies"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="Movies" />
 
-                    <com.google.android.material.chip.Chip
+                    <com.google.android.material.tabs.TabItem
                         android:id="@+id/chip_3_shows"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="false"
                         android:text="Shows" />
 
-                </com.google.android.material.chip.ChipGroup>
-                <!--           <com.google.android.material.chip.ChipGroup
-                               android:id="@+id/chip_categories_top_genres"
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content"
-                               app:layout_constraintStart_toStartOf="parent"
-                               app:layout_constraintTop_toBottomOf="@id/trending_carosel"
-                               app:singleSelection="true">
-
-                               <com.google.android.material.chip.Chip
-                                   android:id="@+id/chip_2_topRated"
-                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"
-                                   android:checked="true"
-                                   android:text="Top Rated" />
-
-                               <com.google.android.material.chip.Chip
-                                   android:id="@+id/chip_3_popular"
-                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"
-                                   android:checked="false"
-                                   android:text="Popular" />
-
-
-                               <com.google.android.material.chip.Chip
-                                   android:id="@+id/chip_3_now_playing"
-                                   style="@style/Widget.Material3.Chip.Filter.Elevated"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"
-                                   android:checked="false"
-                                   android:text="Now Playing" />
-
-                           </com.google.android.material.chip.ChipGroup>-->
+                </com.google.android.material.tabs.TabLayout>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/chip_categories_top_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TabLayout.Colored"
+
                     app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="5dp"
                     app:layout_constraintTop_toBottomOf="@id/trending_carosel"
                     app:singleSelection="true">
 
