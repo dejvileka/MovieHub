@@ -1,7 +1,6 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,19 +9,18 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemTrendingMoviesBinding
 import com.dejvidleka.moviehub.utils.MovieClickListener
 
-class TrendingViewPager(
-    val onClick: MovieClickListener
-) :
-    ListAdapter<MovieResult, TrendingViewPager.ViewPagerViewHolder>(MovieResultDiffUtil()) {
+class TrendingViewPager(val onClick: MovieClickListener) :
+    ListAdapter<MovieResult, TrendingViewPager
+    .ViewPagerViewHolder>(MovieResultDiffUtil()) {
 
 
-    inner class ViewPagerViewHolder(private val itemBinding: ItemTrendingMoviesBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class ViewPagerViewHolder(private val itemBinding: ItemTrendingMoviesBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieResult) {
             itemBinding.movie = movieResult
-            itemBinding.clickListener = View.OnClickListener {
+            itemBinding.movieImg.setOnClickListener {
+                onClick.onMovieClick(movieResult, it)
             }
-
-            itemBinding.setClickListener {  onClick}
         }
 
     }
@@ -34,11 +32,8 @@ class TrendingViewPager(
 
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-
         val movieResult = getItem(position)
-
         holder.bind(movieResult)
-
 
     }
 

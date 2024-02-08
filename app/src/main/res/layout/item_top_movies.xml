@@ -7,40 +7,97 @@
 
         <variable
             name="movie"
-            type="com.dejvidleka.data.local.models.MovieResult">
-
-        </variable>
+            type="com.dejvidleka.data.local.models.MovieResult" />
 
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"></variable>
+            type="android.view.View.OnClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         style="?attr/materialCardViewElevatedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_margin="30dp"
         android:elevation="5dp">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="Bullet Train"
+                    android:layout_gravity="center_horizontal"
+                    app:layout_constraintBottom_toTopOf="movie_genre"
+                    app:layout_constraintEnd_toStartOf="@id/movie_img"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_genre"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    tools:text="Bullet Train"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toTopOf="movie_rating"
+                    app:layout_constraintEnd_toStartOf="@id/movie_img"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@id/movie_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_rating"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    tools:text="Bullet Train"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_horizontal"
+                    app:layout_constraintBottom_toTopOf="movie_duration"
+                    app:layout_constraintEnd_toStartOf="@id/movie_img"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movie_genre" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/movie_duration"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="where_to_watch"
+                        tools:text="Bullet Train"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/movie_rating" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/where_to_watch"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:text="Bullet Train"
+                        app:layout_constraintEnd_toStartOf="@id/movie_img"
+                        app:layout_constraintStart_toEndOf="@id/movie_duration"
+                        app:layout_constraintTop_toBottomOf="@id/movie_rating" />
+
             <ImageView
                 android:id="@+id/movie_img"
-                android:layout_width="200dp"
-                android:layout_height="160dp"
+                style="@style/ShapeAppearance.Material3.Corner.ExtraLarge"
+                android:layout_width="150dp"
                 android:clipToOutline="true"
+                android:layout_height="220dp"
                 android:contentDescription="@{movie.overview}"
                 android:scaleType="fitXY"
-                app:imageUrl="@{movie.backdrop_path}"
+                android:layout_marginTop="-20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="-20dp"
+                app:imageUrl="@{movie.poster_path}"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

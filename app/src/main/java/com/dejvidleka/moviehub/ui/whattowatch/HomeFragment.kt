@@ -77,9 +77,10 @@ class HomeFragment : Fragment(), MovieClickListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
                         val section = when (it.position) {
-                            0 -> "top_rated"
-                            1 -> "popular"
-                            2 -> "now_playing"
+                            1 -> "top_rated"
+                            2 -> "popular"
+                            3 -> "now_playing"
+                            4 -> "now_playing"
                             else -> return
                         }
                         mainViewModel.updateSection(section = section)
