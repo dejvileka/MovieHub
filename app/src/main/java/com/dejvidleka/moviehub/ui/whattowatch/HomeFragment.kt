@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.viewpager2.widget.ViewPager2
@@ -21,6 +22,7 @@ import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
+import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
@@ -35,7 +37,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentWhatToWatchBinding
-    private lateinit var topMovieAdapter: MovieListByGenreAdapter
+    private lateinit var topMovieAdapter: TopMovieAdapter
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
@@ -77,10 +79,10 @@ class HomeFragment : Fragment(), MovieClickListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
                         val section = when (it.position) {
+                            0 -> "top_rated"
                             1 -> "top_rated"
                             2 -> "popular"
                             3 -> "now_playing"
-                            4 -> "now_playing"
                             else -> return
                         }
                         mainViewModel.updateSection(section = section)
@@ -94,31 +96,31 @@ class HomeFragment : Fragment(), MovieClickListener {
                 }
 
             })
-//        populationTopMovies()
+        populationTopMovies()
         populateCard()
 
     }
 
-    //    private fun populationTopMovies(){
-//        topMovieAdapter= MovieListByGenreAdapter(this)
-//        binding.topRatedRv.adapter=topMovieAdapter
-//        binding.topRatedRv.layoutManager= GridLayoutManager(context,2)
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            mainViewModel.topRatedMovies.collect { result ->
-//                when (result) {
-//                    is Result.Success -> {
-//                        Log.d("top list", result.data.toString())
-//                        topMovieAdapter.submitList(result.data)
-//                    }
-//                    is Result.Error -> {
-//                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-//                    }
-//                    is Result.Loading -> {
-//                    }
-//                }
-//            }
-//        }
-//    }
+        private fun populationTopMovies(){
+        topMovieAdapter= TopMovieAdapter(this)
+        binding.topRatedRv.adapter=topMovieAdapter
+        binding.topRatedRv.layoutManager= LinearLayoutManager(context)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.topRatedMovies.collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Log.d("top list", result.data.toString())
+                        topMovieAdapter.submitList(result.data)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                    }
+                    is Result.Loading -> {
+                    }
+                }
+            }
+        }
+    }
     private fun populateCard() {
         trendingMovieAdapter = TrendingViewPager(this)
         binding.trendingCarosel.adapter = trendingMovieAdapter
