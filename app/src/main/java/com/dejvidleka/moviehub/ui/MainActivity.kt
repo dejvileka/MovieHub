@@ -1,14 +1,11 @@
 package com.dejvidleka.moviehub.ui
 
-import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import com.dejvidleka.data.local.models.UserData
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
@@ -53,8 +50,7 @@ class MainActivity : AppCompatActivity() {
         val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSurfaceContainerHigh)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//        window.statusBarColor = backgroundColor
-//        adjustStatusBarTextColorBasedOnLuminance(this, backgroundColor)
+        window.statusBarColor = backgroundColor
 
 
     }
@@ -81,20 +77,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-    }
-    private fun adjustStatusBarTextColorBasedOnLuminance(activity: Activity, color: Int) {
-        val red = Color.red(color) / 255.0
-        val green = Color.green(color) / 255.0
-        val blue = Color.blue(color) / 255.0
-
-        val luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
-
-        var flags = activity.window.decorView.systemUiVisibility
-        if (luminance > 0.5) {
-            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        }
-        activity.window.decorView.systemUiVisibility = flags
     }
 }

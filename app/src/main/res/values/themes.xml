@@ -5,5 +5,7 @@
             <item name="colorPrimaryContainer">@color/overlay_light_primaryContainer</item>
             <item name="colorOnPrimaryContainer">@color/overlay_light_onPrimaryContainer</item>
             <item name="android:statusBarColor">@color/status_bar_color</item>
+            <item name="android:windowLightStatusBar">true</item>
+
         </style>
     </resources>
