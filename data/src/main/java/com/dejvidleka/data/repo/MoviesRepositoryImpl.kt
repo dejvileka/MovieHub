@@ -4,6 +4,7 @@ import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
@@ -67,6 +68,13 @@ class MoviesRepositoryImpl @Inject constructor(
         return flow {
             val response = moviesService.getSimilarMovies(movieId)
             emit(response.body()?.results ?: emptyList())
+        }
+    }
+
+    override fun getMovieDetails(movieId: Int): Flow<MovieDetails>{
+        return flow {
+            val response= moviesService.getDetails(movieId)
+            response.body()?.let { emit(it) }
         }
     }
 

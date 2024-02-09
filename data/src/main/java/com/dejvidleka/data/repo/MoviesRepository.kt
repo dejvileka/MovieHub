@@ -3,6 +3,7 @@ package com.dejvidleka.data.repo
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
@@ -26,6 +27,7 @@ interface MoviesRepository {
     fun getTrending(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
+    fun getMovieDetails(movieId: Int): Flow<MovieDetails>
 
     fun getAllFavoriteMovies(): Flow<List<MovieEntity>>
     suspend fun addFavorite(movie: MovieEntity) {

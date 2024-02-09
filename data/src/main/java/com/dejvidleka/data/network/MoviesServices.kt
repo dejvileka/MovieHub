@@ -3,6 +3,8 @@ package com.dejvidleka.data.network
 import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
+import com.dejvidleka.data.local.models.MovieDetails
+import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
@@ -37,6 +39,10 @@ interface MoviesServices {
     suspend fun getCast(
         @Path("movie_id") movieId: Int,
     ): Response<MovieCast>
+ @GET("/3/movie/{movie_id}")
+    suspend fun getDetails(
+        @Path("movie_id") movieId: Int,
+    ): Response<MovieDetails>
 
     @GET("/3/movie/{movie_id}/videos")
     suspend fun getTrailer(

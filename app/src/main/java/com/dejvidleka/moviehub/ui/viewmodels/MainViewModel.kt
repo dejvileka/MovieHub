@@ -6,6 +6,7 @@ import androidx.room.Query
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
@@ -109,6 +110,9 @@ class MainViewModel @Inject constructor(
 
     fun getSimilarMovies(movieId: Int): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSimilarMovies(movieId).toResult()
+    }
+    fun getMovieId(movieId: Int): Flow<Result<MovieDetails>>{
+        return moviesRepository.getMovieDetails(movieId).toResult()
     }
     fun getSearchResult(query: String):Flow<Result<List<MovieResult>>>{
         return moviesRepository.getSearchResult(query).toResult()
