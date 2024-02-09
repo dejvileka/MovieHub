@@ -60,7 +60,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="272dp"
                     android:padding="10dp"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +70,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add to favorites"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/movie_title" />
@@ -91,7 +89,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="UserRating"
-                        android:textColor="?attr/colorSurfaceContainer"
                         android:paddingVertical="8dp"
                         android:textSize="22sp"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +123,6 @@
                         android:layout_alignEnd="@+id/circularProgress"
                         android:layout_centerHorizontal="true"
                         android:text="8.5/10"
-                        android:textColor="?attr/colorSurfaceContainer"
                         android:padding="10dp"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="@id/circularProgress"
@@ -141,7 +137,6 @@
                     android:id="@+id/movie_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:padding="15dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +150,6 @@
                     android:padding="10dp"
                     android:text="Trailer"
                     android:textSize="22sp"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rating_section" />
@@ -175,7 +169,6 @@
                     android:padding="10dp"
                     android:text="Cast"
                     android:layout_marginTop="10dp"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/webView" />
@@ -195,7 +188,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/more_like_this"
-                    android:textColor="?attr/colorSurfaceContainer"
                     android:padding="10dp"
                     android:textSize="22sp"
                     app:layout_constraintTop_toBottomOf="@id/cast_rv" />

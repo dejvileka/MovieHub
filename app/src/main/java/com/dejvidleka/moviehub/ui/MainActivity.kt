@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSurfaceContainerHigh)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = backgroundColor
-        adjustStatusBarTextColorBasedOnLuminance(this, backgroundColor)
+//        window.statusBarColor = backgroundColor
+//        adjustStatusBarTextColorBasedOnLuminance(this, backgroundColor)
 
 
     }

@@ -39,7 +39,6 @@
                 android:focusable="true"
                 android:checkable="true"
                 style="@style/Widget.Material3.CardView.Elevated"
-                app:cardBackgroundColor="?attr/colorButtonNormal"
                 android:layout_marginTop="20dp"
                 app:cardElevation="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,9 +59,10 @@
                         android:paddingHorizontal="20dp"
                         android:text="@{movie.title}"
                         android:textSize="25sp"
+                        app:layout_constraintEnd_toEndOf="@+id/movie_rating_stars"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Bullet Train"/>
+                        tools:text="Bullet Train" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/movie_genre"
@@ -83,6 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:paddingTop="3dp"
                         android:layout_margin="10dp"
                         android:paddingStart="10dp"
                         android:paddingBottom="10dp"
@@ -92,7 +93,7 @@
 
                     <LinearLayout
                         android:id="@+id/movie_rating_stars"
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="10dp"
@@ -105,17 +106,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="3dp"
                             android:gravity="center"
                             android:text="@{String.format(`%.1f`, movie.vote_average)}"
                             tools:text="8.0" />
 
                         <TextView
                             android:layout_width="wrap_content"
+                            android:padding="3dp"
+                            tools:text="(234543)"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@{`(` + movie.vote_count+`)`}"
                             />
                         <RatingBar
+                            android:padding="3dp"
                             android:id="@+id/movieRatingBar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
