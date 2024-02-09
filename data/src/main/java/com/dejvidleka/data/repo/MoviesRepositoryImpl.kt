@@ -8,6 +8,7 @@ import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
+import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -74,6 +75,12 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getMovieDetails(movieId: Int): Flow<MovieDetails>{
         return flow {
             val response= moviesService.getDetails(movieId)
+            response.body()?.let { emit(it) }
+        }
+    }
+    override fun getTvDetails(tvId: Int): Flow<TvDetails>{
+        return flow {
+            val response= moviesService.getDetailsTv(tvId)
             response.body()?.let { emit(it) }
         }
     }

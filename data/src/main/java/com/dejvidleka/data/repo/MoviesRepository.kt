@@ -7,6 +7,7 @@ import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.TrailerResult
+import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,12 +23,12 @@ interface MoviesRepository {
 
     fun getTrailer(movieId: Int): Flow<TrailerResult>
 
-
     fun getTopRated(category: String,section: String): Flow<List<MovieResult>>
     fun getTrending(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
     fun getMovieDetails(movieId: Int): Flow<MovieDetails>
+    fun getTvDetails(movieId: Int): Flow<TvDetails>
 
     fun getAllFavoriteMovies(): Flow<List<MovieEntity>>
     suspend fun addFavorite(movie: MovieEntity) {

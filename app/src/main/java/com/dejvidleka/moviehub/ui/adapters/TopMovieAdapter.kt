@@ -3,17 +3,24 @@ package com.dejvidleka.moviehub.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemTopMoviesBinding
+import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
+import kotlinx.coroutines.launch
 
 
 class TopMovieAdapter(
+    private val mainViewModel: MainViewModel,
     private val onClick: MovieClickListener,
-) : ListAdapter<MovieResult, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
+    private val lifecycleOwner: LifecycleOwner,
+
+    ) : ListAdapter<MovieResult, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
     inner class MovieResultViewHolder(val itemBinding: ItemTopMoviesBinding) :
@@ -39,9 +46,21 @@ class TopMovieAdapter(
         holder.itemBinding.movieImg.setOnClickListener {
             onClick.onMovieClick(movieResult, it)
         }
+        if (mainViewModel.category.value == "movie") {
+            lifecycleOwner.lifecycleScope.launch {
+                mainViewModel.getMovieDetails(movieResult.id).collect {
+                    holder.itemBinding.movieDurationLenth.text = it
+                }
+            }
+        } else {
+            lifecycleOwner.lifecycleScope.launch {
+                mainViewModel.getTvDetails(movieResult.id).collect {
+                    holder.itemBinding.movieDurationLenth.text = it
+                    holder.itemBinding.movieDuration.text = "Number of episodes:"
+                }
+            }
+        }
     }
-
-
 }
 
 

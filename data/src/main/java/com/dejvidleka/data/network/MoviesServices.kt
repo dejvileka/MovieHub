@@ -9,6 +9,7 @@ import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
 import com.dejvidleka.data.local.models.Trailer
+import com.dejvidleka.data.local.models.TvDetails
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -43,6 +44,11 @@ interface MoviesServices {
     suspend fun getDetails(
         @Path("movie_id") movieId: Int,
     ): Response<MovieDetails>
+
+ @GET("/3/tv/{tv_id}")
+    suspend fun getDetailsTv(
+        @Path("tv_id") movieId: Int,
+    ): Response<TvDetails>
 
     @GET("/3/movie/{movie_id}/videos")
     suspend fun getTrailer(

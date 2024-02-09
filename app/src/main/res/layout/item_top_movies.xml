@@ -78,101 +78,98 @@
                         app:layout_constraintTop_toBottomOf="@+id/movie_title"
                         tools:text="Comedy/Action" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/movie_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingTop="3dp"
-                        android:layout_margin="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="Rating:"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/movie_genre" />
-
                     <LinearLayout
-                        android:id="@+id/movie_rating_stars"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="10dp"
-                        android:orientation="horizontal"
-                        android:paddingBottom="10dp"
-                        app:layout_constraintStart_toEndOf="@+id/movie_rating"
-                        app:layout_constraintTop_toBottomOf="@id/movie_genre"
-                        tools:text="Bullet Train">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/movie_genre">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            android:gravity="center"
-                            android:text="@{String.format(`%.1f`, movie.vote_average)}"
-                            tools:text="8.0" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:padding="3dp"
-                            tools:text="(234543)"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@{`(` + movie.vote_count+`)`}"
-                            />
-                        <RatingBar
-                            android:padding="3dp"
-                            android:id="@+id/movieRatingBar"
+                        <LinearLayout
+                            android:id="@+id/movie_rating_stars"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:numStars="5"
-                            android:stepSize="0.5"
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:rating="@{movie.vote_average}"  />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:text="Bullet Train">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/movie_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Rating:"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/movie_genre" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{String.format(`%.1f`, movie.vote_average)}"
+                                tools:text="8.0" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@{`(` + movie.vote_count+`)`}"
+                                tools:text="(234543)" />
+
+                            <RatingBar
+                                android:id="@+id/movieRatingBar"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:numStars="5"
+                                android:rating="@{movie.vote_average}"
+                          />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/movie_duration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Duration:"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/movie_duration_lenth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="10dp"
+                                app:layout_constraintStart_toEndOf="@+id/movie_duration"
+                                app:layout_constraintTop_toBottomOf="@+id/movie_rating"
+                                tools:text="120 min" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/where_to_watch"
+                                android:layout_width="wrap_content"
+                                android:padding="10dp"
+                                android:layout_height="wrap_content"
+                                android:text="Where to watch:"
+                                app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/netflix" />
+                        </LinearLayout>
                     </LinearLayout>
-
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/movie_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginStart="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="Duration:"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/movie_rating" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/movie_duration_lenth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:paddingBottom="10dp"
-                        app:layout_constraintStart_toEndOf="@+id/movie_duration"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars"
-                        tools:text="120 min" />
-
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/where_to_watch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="Where to watch:"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_duration" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:src="@drawable/netflix"
-                        app:layout_constraintStart_toEndOf="@+id/where_to_watch"
-                        app:layout_constraintTop_toTopOf="@+id/where_to_watch" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
