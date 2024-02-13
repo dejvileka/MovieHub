@@ -114,6 +114,7 @@ dependencies {
 
 
     implementation project(':data')
+    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.9.0'
 
 
 }
