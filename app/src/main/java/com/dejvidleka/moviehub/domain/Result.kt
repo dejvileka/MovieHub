@@ -20,6 +20,7 @@ fun <T> Flow<T>.toResult(): Flow<Result<T>> {
     }.onStart {
         emit(Result.Loading())
     }.catch { ex ->
+        ex.printStackTrace()
         emit(Result.Error(ex))
     }
 }

@@ -55,6 +55,7 @@ class FirstFragment : Fragment(), MovieClickListener {
         setupRecyclerView()
         observeViewModelData()
         setUpSearch()
+
     }
 
     private fun setUpSearch() {

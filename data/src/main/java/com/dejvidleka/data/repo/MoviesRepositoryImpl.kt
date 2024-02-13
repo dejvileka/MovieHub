@@ -4,14 +4,20 @@ import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.ProvidersResponse
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
+import com.dejvidleka.data.local.models.toMovieData
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MoviesServices,
@@ -51,10 +57,18 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTopRated(category: String, section:String): Flow<List<MovieResult>> {
+    override fun getTopRated(category: String, section:String): Flow<List<MovieData>> {
         return flow {
-            val response = moviesService.getTopRated(category, section)
-            emit(response.body()?.movieResults ?: emptyList())
+            val movies = moviesService.getTopRated(category, section).movieResults.map {
+                it.toMovieData()
+            }
+            movies.forEach { movie ->
+                val providers = moviesService.getProviders(category, movie.id)
+                val length = moviesService.getDetails(movie.id)
+                movie.results = providers.results
+                movie.runtime = length.runtime
+            }
+            emit(movies)
         }
     }
 
@@ -72,12 +86,6 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovieDetails(movieId: Int): Flow<MovieDetails>{
-        return flow {
-            val response= moviesService.getDetails(movieId)
-            response.body()?.let { emit(it) }
-        }
-    }
     override fun getTvDetails(tvId: Int): Flow<TvDetails>{
         return flow {
             val response= moviesService.getDetailsTv(tvId)
@@ -104,6 +112,7 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(response.body()?.results ?: emptyList())
         }
     }
+
 
 
 }

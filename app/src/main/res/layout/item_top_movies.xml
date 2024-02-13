@@ -7,11 +7,12 @@
 
         <variable
             name="movie"
-            type="com.dejvidleka.data.local.models.MovieResult" />
+            type="com.dejvidleka.data.local.models.MovieData" />
 
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,10 +165,18 @@
                                 android:text="Where to watch:"
                                 app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
 
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/prpvider_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Where to watch:"
+                                app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@drawable/netflix" />
+                                app:imageUrl='@{movie.results.get("US").flatrate[0].logo_path}' />
                         </LinearLayout>
                     </LinearLayout>
 

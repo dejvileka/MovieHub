@@ -8,28 +8,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemTopMoviesBinding
+import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import kotlinx.coroutines.launch
 
 
 class TopMovieAdapter(
-    private val mainViewModel: MainViewModel,
-    private val onClick: MovieClickListener,
-    private val lifecycleOwner: LifecycleOwner,
-
-    ) : ListAdapter<MovieResult, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
+    private val onClick: MovieClickListener
+    ) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
     inner class MovieResultViewHolder(val itemBinding: ItemTopMoviesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(movieResult: MovieResult) {
+        fun bind(movieResult: MovieData) {
             itemBinding.movie = movieResult
-            itemBinding.setClickListener {
-                onClick.onMovieClick(movieResult, it)
-            }
+            itemBinding.movieDurationLenth.text = movieResult.runtime.toString()
+            val providerName =
+                movieResult.results["US"]?.flatrate?.first()?.provider_name
+            itemBinding.prpviderName.text = providerName
         }
     }
 
@@ -43,33 +43,20 @@ class TopMovieAdapter(
 
         val movieResult = getItem(position)
         holder.bind(movieResult)
-        holder.itemBinding.movieImg.setOnClickListener {
-            onClick.onMovieClick(movieResult, it)
-        }
-        if (mainViewModel.category.value == "movie") {
-            lifecycleOwner.lifecycleScope.launch {
-                mainViewModel.getMovieDetails(movieResult.id).collect {
-                    holder.itemBinding.movieDurationLenth.text = it
-                }
-            }
-        } else {
-            lifecycleOwner.lifecycleScope.launch {
-                mainViewModel.getTvDetails(movieResult.id).collect {
-                    holder.itemBinding.movieDurationLenth.text = it
-                    holder.itemBinding.movieDuration.text = "Number of episodes:"
-                }
-            }
-        }
+//        holder.itemBinding.movieImg.setOnClickListener {
+//            onClick.onMovieClick(movieResult, it)
+//        }
+
     }
 }
 
 
-private class TopMovieDiffUtil : DiffUtil.ItemCallback<MovieResult>() {
-    override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+private class TopMovieDiffUtil : DiffUtil.ItemCallback<MovieData>() {
+    override fun areItemsTheSame(oldItem: MovieData, newItem: MovieData): Boolean {
         return newItem.id == oldItem.id
     }
 
-    override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+    override fun areContentsTheSame(oldItem: MovieData, newItem: MovieData): Boolean {
         return newItem == oldItem
 
     }

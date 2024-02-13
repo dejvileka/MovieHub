@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 
 
@@ -17,6 +18,15 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .into(imgView)
     }
 }
+
+@BindingAdapter("imageUrl")
+fun bindImageProvider(imageView: ImageView, imageUrl: LiveData<String>?) {
+    imageUrl?.value?.let { url ->
+        Glide.with(imageView.context).load(url).into(imageView)
+    }
+}
+
+
 @BindingAdapter("maxCharacters")
 fun TextView.maxCharacters(maxCharacters: Int) {
     var text = text.toString()

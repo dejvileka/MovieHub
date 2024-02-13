@@ -3,9 +3,11 @@ package com.dejvidleka.data.repo
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.ProvidersResponse
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +25,10 @@ interface MoviesRepository {
 
     fun getTrailer(movieId: Int): Flow<TrailerResult>
 
-    fun getTopRated(category: String,section: String): Flow<List<MovieResult>>
+    fun getTopRated(category: String,section: String): Flow<List<MovieData>>
     fun getTrending(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
-    fun getMovieDetails(movieId: Int): Flow<MovieDetails>
     fun getTvDetails(movieId: Int): Flow<TvDetails>
 
     fun getAllFavoriteMovies(): Flow<List<MovieEntity>>
@@ -40,6 +41,7 @@ interface MoviesRepository {
     suspend fun removeFavorite(movie: MovieEntity)
 
     fun getSearchResult(query:String):Flow<List<MovieResult>>
+
 
 
 }

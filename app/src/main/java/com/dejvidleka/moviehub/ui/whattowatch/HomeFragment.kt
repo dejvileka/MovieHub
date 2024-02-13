@@ -100,7 +100,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
         private fun populationTopMovies(){
-        topMovieAdapter= TopMovieAdapter(mainViewModel,this,this)
+        topMovieAdapter= TopMovieAdapter(this)
         binding.topRatedRv.adapter=topMovieAdapter
         binding.topRatedRv.layoutManager= LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -151,9 +151,9 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
-        val navigation =
-            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
-        view.findNavController().navigate(navigation)
+//        val navigation =
+//            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
+//        view.findNavController().navigate(navigation)
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
