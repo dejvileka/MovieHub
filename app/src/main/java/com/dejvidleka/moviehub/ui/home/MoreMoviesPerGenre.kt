@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentMoreMoviesPerGenreBinding
@@ -128,6 +129,9 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
 //        val directions =
 //            MoreMoviesPerGenreDirections.actionMoreMoviesPerGenreToMovieDetailFragment(movieResult)
 //        view.findNavController().navigate(directions)
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {

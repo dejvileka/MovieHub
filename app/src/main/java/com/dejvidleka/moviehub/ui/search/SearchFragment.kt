@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentSearchBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -95,6 +96,9 @@ class SearchFragment : Fragment(), MovieClickListener {
             SearchFragmentDirections.actionSearchFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(navigation)
 
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {

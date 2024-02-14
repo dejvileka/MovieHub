@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.toEntity
 import com.dejvidleka.moviehub.R
@@ -233,6 +234,9 @@ class MovieDetailFragment : Fragment(), MovieClickListener {
     override fun onMovieClick(movieResult: MovieResult, view: View) {
         val action = MovieDetailFragmentDirections.actionMovieDetailFragmentSelf(movieResult)
         view.findNavController().navigate(action)
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {

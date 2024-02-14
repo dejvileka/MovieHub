@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.R
 import com.dejvidleka.moviehub.databinding.FragmentFavoritesBinding
@@ -68,6 +69,9 @@ class FavoritesFragment : Fragment(), MovieClickListener {
         val directions =
             FavoritesFragmentDirections.actionFavoritesFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(directions)
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
     }
 
 

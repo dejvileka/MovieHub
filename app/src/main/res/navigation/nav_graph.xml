@@ -68,10 +68,17 @@
         android:id="@+id/homeFragment"
         android:name="com.dejvidleka.moviehub.ui.whattowatch.HomeFragment"
         android:label="fragment_what_to_watch"
-        tools:layout="@layout/fragment_what_to_watch" >
+        tools:layout="@layout/fragment_what_to_watch">
+        <argument
+            android:name="movieData"
+            app:argType="com.dejvidleka.data.local.models.MovieData"/>
         <action
             android:id="@+id/action_whatToWatchFragment_to_movie_detail_fragment"
-            app:destination="@id/movie_detail_fragment" />
+            app:destination="@id/movie_detail_fragment">
+            <argument
+                android:name="movieData"
+                app:argType="com.dejvidleka.data.local.models.MovieData" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"

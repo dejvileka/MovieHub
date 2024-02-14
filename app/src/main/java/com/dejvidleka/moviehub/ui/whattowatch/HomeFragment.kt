@@ -1,6 +1,5 @@
 package com.dejvidleka.moviehub.ui.whattowatch
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,9 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -151,9 +149,12 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
-//        val navigation =
-//            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
-//        view.findNavController().navigate(navigation)
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
+        val navigation =
+            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieData = movieData)
+        view.findNavController().navigate(navigation)
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
@@ -161,21 +162,4 @@ class HomeFragment : Fragment(), MovieClickListener {
 
 }
 
-
-class MarginItemDecoration(private val marginSize: Int) : ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
-        outRect.left = marginSize
-        outRect.right = marginSize
-        outRect.bottom = marginSize
-
-        if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.top = marginSize
-        }
-    }
-}
 

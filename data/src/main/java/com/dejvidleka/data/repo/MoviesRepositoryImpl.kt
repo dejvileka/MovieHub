@@ -5,19 +5,14 @@ import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
-import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.ProvidersResponse
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import com.dejvidleka.data.local.models.toMovieData
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesService: MoviesServices,

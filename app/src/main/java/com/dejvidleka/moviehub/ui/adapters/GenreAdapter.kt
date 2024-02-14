@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.ItemCategoriesBinding
 import com.dejvidleka.moviehub.domain.Result
@@ -85,6 +86,10 @@ class GenreAdapter(
     override fun onMovieClick(movieResult: MovieResult, view: View) {
         val directions = FirstFragmentDirections.actionHomeToMovieDetail(movieResult)
         view.findNavController().navigate(directions)
+    }
+
+    override fun onMovieClickNew(movieData: MovieData, view: View) {
+
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
