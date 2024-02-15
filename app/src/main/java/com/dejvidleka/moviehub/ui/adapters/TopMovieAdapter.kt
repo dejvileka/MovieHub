@@ -1,18 +1,23 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 
+import android.app.Activity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.moviehub.databinding.ItemTopMoviesBinding
+import com.dejvidleka.moviehub.utils.Image_URL
 import com.dejvidleka.moviehub.utils.MovieClickListener
 
 
 class TopMovieAdapter(
-    private val onClick: MovieClickListener
+    private val onClick: MovieClickListener,
+    private val context: Activity
     ) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
@@ -24,11 +29,20 @@ class TopMovieAdapter(
             }
             itemBinding.movie = movieResult
             itemBinding.movieDurationLenth.text = movieResult.runtime.toString()
-            val providerName =
-                movieResult.results["US"]?.flatrate?.first()?.provider_name
-            itemBinding.prpviderName.text = providerName
+            val logoPath = movieResult.results["AL"]?.flatrate?.firstOrNull()?.logo_path
+
+            if (!logoPath.isNullOrEmpty()) {
+                val fullImageUrl = Image_URL + logoPath
+                Glide.with(itemView.context).load(fullImageUrl).into(itemBinding.providerLogo)
+                itemBinding.providerLogo.visibility = View.VISIBLE
+                itemBinding.providerName.visibility = View.GONE
+            } else {
+                itemBinding.providerLogo.visibility = View.GONE
+                itemBinding.providerName.visibility = View.VISIBLE
+            }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
         val binding =
@@ -40,9 +54,6 @@ class TopMovieAdapter(
 
         val movieResult = getItem(position)
         holder.bind(movieResult)
-//        holder.itemBinding.movieImg.setOnClickListener {
-//            onClick.onMovieClick(movieResult, it)
-//        }
 
     }
 }

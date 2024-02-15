@@ -166,17 +166,18 @@
                                 app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
 
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/prpvider_name"
+                                android:id="@+id/provider_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:padding="10dp"
-                                android:text="Where to watch:"
+                                android:text="Not available in your Country"
                                 app:layout_constraintTop_toBottomOf="@+id/movie_rating_stars" />
 
                             <ImageView
+                                android:id="@+id/provider_logo"
                                 android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                app:imageUrl='@{movie.results.get("US").flatrate[0].logo_path}' />
+                                android:layout_height="30dp"/>
                         </LinearLayout>
                     </LinearLayout>
 
