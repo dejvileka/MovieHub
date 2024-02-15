@@ -149,12 +149,13 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
+        val navigation =
+            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment( movieResult)
+        view.findNavController().navigate(navigation)
     }
 
     override fun onMovieClickNew(movieData: MovieData, view: View) {
-        val navigation =
-            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieData = movieData)
-        view.findNavController().navigate(navigation)
+
     }
 
     override fun onViewMoreClick(genre: Genre, view: View) {
