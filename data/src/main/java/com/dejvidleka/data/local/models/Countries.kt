@@ -1,5 +1,5 @@
 package com.dejvidleka.data.local.models
 
 data class Countries(
-    val results: List<Result>
+    val results: List<Regions>
 )

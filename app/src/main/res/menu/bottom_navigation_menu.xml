@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_favorites"
         android:title="Favorites" />
     <item
-        android:id="@+id/more"
+        android:id="@+id/moreFragment"
         android:icon="@android:drawable/ic_menu_more"
         android:title="More" />
 

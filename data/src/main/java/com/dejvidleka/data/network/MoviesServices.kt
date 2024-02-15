@@ -1,10 +1,12 @@
 package com.dejvidleka.data.network
 
+import com.dejvidleka.data.local.models.Countries
 import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
 import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.ProvidersResponse
+import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
@@ -77,5 +79,9 @@ interface MoviesServices {
         @Path("category") category: String,
         @Path("movie_id") movieId: Int
     ): ProvidersResponse
+
+    @GET("/3/watch/providers/regions")
+    suspend fun getRegions(): Response<Countries>
+
 }
 

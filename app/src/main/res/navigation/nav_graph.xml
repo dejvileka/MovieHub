@@ -127,4 +127,13 @@
         android:id="@+id/logInActivity"
         android:name="com.dejvidleka.moviehub.ui.login.LogInActivity"
         android:label="LogInActivity" />
+    <fragment
+        android:id="@+id/personalizationsFragment"
+        android:name="com.dejvidleka.moviehub.ui.login.PersonalizationsFragment"
+        android:label="PersonalizationsFragment" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.dejvidleka.moviehub.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" />
 </navigation>

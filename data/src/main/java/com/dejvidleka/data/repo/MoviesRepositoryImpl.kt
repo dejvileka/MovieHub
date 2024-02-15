@@ -1,15 +1,16 @@
 package com.dejvidleka.data.repo
 
 import com.dejvidleka.data.local.dao.MovieDao
-import com.dejvidleka.data.network.MoviesServices
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import com.dejvidleka.data.local.models.toMovieData
+import com.dejvidleka.data.network.MoviesServices
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -32,6 +33,12 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(response.body()?.genres ?: emptyList())
         }
     }
+    override fun getRegions(): Flow<List<Regions>> {
+        return flow {
+            val response = moviesService.getRegions()
+            emit(response.body()?.results ?: emptyList())        }
+    }
+
 
     override fun getCast(movieId: Int): Flow<List<Cast>> {
         return flow {
@@ -66,6 +73,7 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(movies)
         }
     }
+
 
     override fun getTrending(category: String): Flow<List<MovieResult>> {
         return flow {

@@ -36,10 +36,8 @@ class MainActivity : AppCompatActivity() {
         val userData = intent.getParcelableExtra<UserData>("userData")
         if (userData != null) {
             Log.d("MainActivity hello there", "User data retrieved: $userData")
-            // Use userData as needed
         } else {
             Log.d("MainActivity hello there", "User data is null")
-            // Handle the case where userData is null
         }
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)

@@ -6,6 +6,7 @@ import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.repo.MoviesRepository
 import com.dejvidleka.moviehub.domain.Result
@@ -52,7 +53,11 @@ class MainViewModel @Inject constructor(
         initialValue = Result.Loading()
     )
 
+
     val genre: StateFlow<Result<List<Genre>>> = _genres
+
+    private val _regions= moviesRepository.getRegions().toResult()
+    val regions: Flow<Result<List<Regions>>> = _regions
 
     fun updateCategory(category: String) {
         _category.value = category
@@ -106,5 +111,8 @@ class MainViewModel @Inject constructor(
     fun getTrending(category: String): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getTrending(category).toResult()
     }
+//    fun getRegions(): Flow<Result<List<Regions>>>{
+//        return moviesRepository.getRegions().toResult()
+//    }
 
 }

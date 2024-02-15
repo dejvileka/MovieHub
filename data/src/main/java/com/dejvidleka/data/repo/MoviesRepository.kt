@@ -4,15 +4,13 @@ import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
-import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.ProvidersResponse
+import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 interface MoviesRepository {
@@ -26,6 +24,7 @@ interface MoviesRepository {
     fun getTrailer(movieId: Int): Flow<TrailerResult>
 
     fun getTopRated(category: String,section: String): Flow<List<MovieData>>
+    fun getRegions(): Flow<List<Regions>>
     fun getTrending(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>
