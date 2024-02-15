@@ -17,7 +17,6 @@ import com.dejvidleka.moviehub.utils.MovieClickListener
 
 class TopMovieAdapter(
     private val onClick: MovieClickListener,
-    private val context: Activity
     ) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 

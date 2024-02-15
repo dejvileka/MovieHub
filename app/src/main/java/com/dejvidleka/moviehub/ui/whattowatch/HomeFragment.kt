@@ -98,7 +98,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
         private fun populationTopMovies(){
-        topMovieAdapter= TopMovieAdapter(this, context = this.requireActivity())
+        topMovieAdapter= TopMovieAdapter(this)
         binding.topRatedRv.adapter=topMovieAdapter
         binding.topRatedRv.layoutManager= LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
