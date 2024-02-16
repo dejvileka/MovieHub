@@ -11,8 +11,14 @@ import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import com.dejvidleka.data.local.models.toMovieData
 import com.dejvidleka.data.network.MoviesServices
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
@@ -50,6 +56,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getTrailer(movieId: Int): Flow<TrailerResult> {
         return flow {
             val response = moviesService.getTrailer(movieId)
+
             val trailer = response.body()
             if (trailer != null) {
                 emit(trailer.results.first())
@@ -62,18 +69,23 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun getTopRated(category: String, section:String): Flow<List<MovieData>> {
         return flow {
             val movies = moviesService.getTopRated(category, section).movieResults.map {
-                it.toMovieData()
-            }
-            movies.forEach { movie ->
-                val providers = moviesService.getProviders(category, movie.id)
-                val length = moviesService.getDetails(movie.id)
-                movie.results = providers.results
-                movie.runtime = length.runtime
-            }
+                it.toMovieData()}
+                coroutineScope {
+                    val semaphore = Semaphore(permits = 5)
+                    movies.map { movie ->
+                        launch {
+                            semaphore.withPermit {
+                                val providersDeferred = async { moviesService.getProviders(category, movie.id) }
+                                val detailsDeferred = async { moviesService.getDetails(movie.id) }
+                                movie.results = providersDeferred.await().results
+                                movie.runtime = detailsDeferred.await().runtime
+                            }
+                        }
+                    }.joinAll()
+                }
             emit(movies)
         }
     }
-
 
     override fun getTrending(category: String): Flow<List<MovieResult>> {
         return flow {
@@ -115,7 +127,4 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(response.body()?.results ?: emptyList())
         }
     }
-
-
-
 }
