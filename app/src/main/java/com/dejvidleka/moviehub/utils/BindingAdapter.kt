@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 
 @BindingAdapter("imageUrl")
@@ -13,7 +14,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val baseURL = "https://image.tmdb.org/t/p/w500"
         val fullURL = baseURL + it
-        Glide.with(imgView.context)
+        Glide
+            .with(imgView.context)
             .load(fullURL)
             .into(imgView)
     }
