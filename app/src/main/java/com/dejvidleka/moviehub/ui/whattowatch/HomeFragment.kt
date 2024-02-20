@@ -106,7 +106,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                 when (result) {
                     is Result.Success -> {
                         Log.d("top list", result.data.toString())
-                        binding.placeholder.root.visibility= View.GONE
+                        binding.placeHolder.visibility= View.GONE
                         topMovieAdapter.submitList(result.data)
                         binding.topRatedRv.visibility= View.VISIBLE
                     }
@@ -114,7 +114,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Loading -> {
-                        binding.placeholder.root.visibility= View.VISIBLE
+                        binding.placeHolder.visibility= View.VISIBLE
                         binding.topRatedRv.visibility= View.GONE
 
                     }
