@@ -24,6 +24,7 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,6 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.trendingCarosel.setNestedScrollingEnabled(false)
         binding.chipCategories.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {
@@ -106,12 +106,17 @@ class HomeFragment : Fragment(), MovieClickListener {
                 when (result) {
                     is Result.Success -> {
                         Log.d("top list", result.data.toString())
+                        binding.placeholder.root.visibility= View.GONE
                         topMovieAdapter.submitList(result.data)
+                        binding.topRatedRv.visibility= View.VISIBLE
                     }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Loading -> {
+                        binding.placeholder.root.visibility= View.VISIBLE
+                        binding.topRatedRv.visibility= View.GONE
+
                     }
                 }
             }
@@ -127,15 +132,21 @@ class HomeFragment : Fragment(), MovieClickListener {
 
                     when (result) {
                         is Result.Success -> {
+                            delay(3000)
                             Log.d("trending", result.data.toString())
                             trendingMovieAdapter.submitList(result.data)
+                            binding.trendingCarosel.visibility= View.VISIBLE
+                            binding.trendingRvPlaceholder.root.visibility=View.GONE
                         }
 
                         is Result.Error -> {
                             Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+
                         }
 
                         is Result.Loading -> {
+                            binding.trendingCarosel.visibility= View.GONE
+                            binding.trendingRvPlaceholder.root.visibility=View.VISIBLE
                         }
                     }
                 }

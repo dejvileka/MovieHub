@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,7 +78,7 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
         binding.genreTitle.text = args.genre.name
 
         lifecycleScope.launch {
-            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage)
+            mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage,)
                 .collect { movieResultsList ->
                     when (movieResultsList) {
                         is Result.Loading -> {
