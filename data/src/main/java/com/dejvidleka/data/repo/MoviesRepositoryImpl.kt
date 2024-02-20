@@ -66,7 +66,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTopRated(category: String, section:String): Flow<List<MovieData>> {
+    override fun getTopRated(category: String, section: String, currentPage: Int): Flow<List<MovieData>> {
         return flow {
             val movies = moviesService.getTopRated(category, section).movieResults.map {
                 it.toMovieData()}

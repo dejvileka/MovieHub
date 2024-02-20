@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.Regions
@@ -35,10 +36,47 @@ class MainViewModel @Inject constructor(
 
     private val _section = MutableStateFlow("top_rated")
 
+    private val _displayedMovies = MutableStateFlow<List<MovieData>>(emptyList())
+    val displayedMovies: StateFlow<List<MovieData>> = _displayedMovies
+
+    private var allFetchedMovies = mutableListOf<MovieData>()
+    private var currentPage = 1
+    private var isFetching = false
+
+    init {
+        fetchMovies(_category.value, _section.value)
+    }
+
+    fun fetchMovies(category: String, section: String) {
+        if (isFetching) return
+        isFetching = true
+
+        viewModelScope.launch {
+            moviesRepository.getTopRated(category, section, currentPage).collect { result ->
+
+                allFetchedMovies.addAll(result as Collection<MovieData>)
+                _displayedMovies.value = allFetchedMovies.take(5)
+                isFetching = false
+            }
+
+        }
+    }
+
+
+    fun loadMoreMovies() {
+        val nextIndex = _displayedMovies.value.size
+        _displayedMovies.value = allFetchedMovies.take(nextIndex + 5)
+        if (_displayedMovies.value.size == allFetchedMovies.size && !isFetching) {
+            currentPage++
+            fetchMovies(_category.value, _section.value)
+        }
+    }
+
+
     val topRatedMovies = _category.combine(_section) { category, section ->
         Pair(category, section)
     }.flatMapLatest { (category, section) ->
-        moviesRepository.getTopRated(category, section).toResult()
+        moviesRepository.getTopRated(category, section, currentPage).toResult()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,

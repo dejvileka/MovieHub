@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
@@ -101,7 +102,14 @@ class HomeFragment : Fragment(), MovieClickListener {
         topMovieAdapter= TopMovieAdapter(this)
         binding.topRatedRv.adapter=topMovieAdapter
         binding.topRatedRv.layoutManager= LinearLayoutManager(context)
-        viewLifecycleOwner.lifecycleScope.launch {
+            binding.topRatedRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (!recyclerView.canScrollVertically(1)) {
+                        mainViewModel.loadMoreMovies()
+                    }
+                }
+            })
+   /*     viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.topRatedMovies.collect { result ->
                 when (result) {
                     is Result.Success -> {
@@ -115,7 +123,12 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
                 }
             }
-        }
+        }*/
+            viewLifecycleOwner.lifecycleScope.launch {
+                mainViewModel.displayedMovies.collect { movies ->
+                    topMovieAdapter.submitList(movies)
+                }
+            }
     }
     private fun populateCard() {
         trendingMovieAdapter = TrendingViewPager(this)

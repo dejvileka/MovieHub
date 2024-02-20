@@ -23,7 +23,7 @@ interface MoviesRepository {
 
     fun getTrailer(movieId: Int): Flow<TrailerResult>
 
-    fun getTopRated(category: String,section: String): Flow<List<MovieData>>
+    fun getTopRated(category: String, section: String, currentPage: Int): Flow<List<MovieData>>
     fun getRegions(): Flow<List<Regions>>
     fun getTrending(category: String): Flow<List<MovieResult>>
 
