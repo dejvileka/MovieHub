@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<layout>
 
+    <data>
 
+        <variable
+            name="movie"
+            type="com.dejvidleka.data.local.models.MovieResult"></variable>
 
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"></variable>
+    </data>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollable"
-            android:padding="20dp"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/cardview_movies"
+        android:padding="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scrollable_con"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/cardview_movies"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:clipToOutline="true">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/scrollable_con"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToOutline="true">
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                tools:text="Bullet train"
+                android:text="@{movie.title}"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/movie_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Bullet Train"
-                    android:textSize="30sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/movie_rating_stars"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/detail_image"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Bullet Train">
+            <LinearLayout
+                android:id="@+id/movie_rating_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/detail_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Bullet Train">
 
 
-
-                    <RatingBar
+                <RatingBar
                         android:id="@+id/movieRatingBar"
                         style="?android:attr/ratingBarStyle"
                         android:layout_width="wrap_content"
@@ -61,6 +68,7 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/bullet_train_land"
+                    imageUrl="@{movie.backdrop_path}"
                     app:layout_collapseMode="parallax"
                     app:layout_constraintTop_toBottomOf="@id/movie_title" />
 
@@ -70,9 +78,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="this is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth it"
+                    tools:text="this is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth itthis is a cool movie worth it"
                     android:textColor="@color/black"
                     android:textSize="20sp"
+                    android:text="@{movie.overview}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/detail_image" />
@@ -110,13 +119,12 @@
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <!--        <FrameLayout
+                    android:id="@+id/videoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />-->
         </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
-        android:id="@+id/videoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </layout>
