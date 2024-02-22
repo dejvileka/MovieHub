@@ -32,6 +32,8 @@ class MainViewModel @Inject constructor(
 
     private val _category = MutableStateFlow("movie")
     val category: StateFlow<String> = _category
+    private val _page = MutableStateFlow(1)
+    val page: StateFlow<Int> = _page
 
 
     private val _section = MutableStateFlow("top_rated")
@@ -40,7 +42,7 @@ class MainViewModel @Inject constructor(
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)
     }.flatMapLatest { (category, section) ->
-        moviesRepository.getTopRated(category, section).toResult()
+        moviesRepository.getTopRated(category, section, page = page.value).toResult()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,

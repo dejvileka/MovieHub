@@ -66,17 +66,20 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTopRated(category: String, section:String): Flow<List<MovieData>> {
+    override fun getTopRated(category: String, section: String, page: Int): Flow<List<MovieData>> {
         return flow {
-            val movies = moviesService.getTopRated(category, section).movieResults.map {
-                it.toMovieData()}
-                coroutineScope {
-                    val semaphore = Semaphore(permits = 5)
-                    movies.map { movie ->
-                        launch {
-                            semaphore.withPermit {
-                                val providersDeferred = async { moviesService.getProviders(category, movie.id) }
-                                val detailsDeferred = async { moviesService.getDetails(category,movie.id) }
+            val movies = moviesService.getTopRated(category, section, page).movieResults.map {
+                it.toMovieData()
+            }
+            coroutineScope {
+                val semaphore = Semaphore(permits = 5)
+                movies.map { movie ->
+                    launch {
+                        semaphore.withPermit {
+                            val providersDeferred =
+                                async { moviesService.getProviders(category, movie.id) }
+                            val detailsDeferred =
+                                async { moviesService.getDetails(category, movie.id) }
                                 movie.results = providersDeferred.await().results
                                 movie.runtime = detailsDeferred.await().runtime
                             }
