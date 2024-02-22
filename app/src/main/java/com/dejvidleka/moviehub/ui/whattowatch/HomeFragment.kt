@@ -24,7 +24,6 @@ import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -66,9 +65,10 @@ class HomeFragment : Fragment(), MovieClickListener {
                         }
                         mainViewModel.updateCategory(category)
                     }
-                }
-            })
 
+                }
+
+            })
         binding.chipCategoriesTopGenres.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {
@@ -97,46 +97,50 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     }
 
-        private fun populationTopMovies(){
-        topMovieAdapter= TopMovieAdapter(this)
-        binding.topRatedRv.adapter=topMovieAdapter
-        binding.topRatedRv.layoutManager= LinearLayoutManager(context)
+    private fun populationTopMovies() {
+        topMovieAdapter = TopMovieAdapter(this)
+        binding.topRatedRv.adapter = topMovieAdapter
+        binding.topRatedRv.layoutManager = LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.topRatedMovies.collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        Log.d("top list", result.data.toString())
-                        binding.placeHolder.visibility= View.GONE
-                        topMovieAdapter.submitList(result.data)
-                        binding.topRatedRv.visibility= View.VISIBLE
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-                    }
-                    is Result.Loading -> {
-                        binding.placeHolder.visibility= View.VISIBLE
-                        binding.topRatedRv.visibility= View.GONE
+                mainViewModel.topRatedMovies.collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            Log.d("top list", result.data.toString())
+                            topMovieAdapter.submitList(result.data)
+                            binding.topRatedRv.visibility = View.VISIBLE
+                            binding.placeHolder.visibility = View.GONE
+                        }
+
+                        is Result.Error -> {
+                            Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                        }
+
+                        is Result.Loading -> {
+                            topMovieAdapter.submitList(emptyList())
+                            topMovieAdapter.notifyDataSetChanged()
+                            binding.placeHolder.visibility = View.VISIBLE
+                            binding.topRatedRv.visibility = View.GONE
+
+                        }
 
                     }
                 }
             }
         }
-    }
+
+
     private fun populateCard() {
         trendingMovieAdapter = TrendingViewPager(this)
         binding.trendingCarosel.adapter = trendingMovieAdapter
-
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.category.collectLatest {
                 mainViewModel.getTrending(category = it).collect { result ->
-
                     when (result) {
                         is Result.Success -> {
-                            delay(3000)
                             Log.d("trending", result.data.toString())
                             trendingMovieAdapter.submitList(result.data)
-                            binding.trendingCarosel.visibility= View.VISIBLE
-                            binding.trendingRvPlaceholder.root.visibility=View.GONE
+                            binding.trendingCarosel.visibility = View.VISIBLE
+                            binding.trendingRvPlaceholder.root.visibility = View.GONE
                         }
 
                         is Result.Error -> {
@@ -145,8 +149,10 @@ class HomeFragment : Fragment(), MovieClickListener {
                         }
 
                         is Result.Loading -> {
-                            binding.trendingCarosel.visibility= View.GONE
-                            binding.trendingRvPlaceholder.root.visibility=View.VISIBLE
+                            topMovieAdapter.notifyDataSetChanged()
+                            topMovieAdapter.submitList(emptyList())
+                            binding.trendingCarosel.visibility = View.GONE
+                            binding.trendingRvPlaceholder.root.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -161,7 +167,7 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
         val navigation =
-            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment( movieResult)
+            HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(navigation)
     }
 
@@ -171,6 +177,31 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        binding.chipCategories.addOnTabSelectedListener(
+//            object :
+//                TabLayout.OnTabSelectedListener {
+//                override fun onTabReselected(tab: TabLayout.Tab?) {
+//                }
+//
+//                override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                }
+//
+//                override fun onTabSelected(tab: TabLayout.Tab?) {
+//                    tab?.let {
+//                        val category = when (it.position) {
+//                            0 -> "movie"
+//                            1 -> "tv"
+//                            else -> return
+//                        }
+//                        mainViewModel.updateCategory(category)
+//                    }
+//                }
+//            })
+//
+//    }
 
 }
 

@@ -33,17 +33,22 @@ class MainViewModel @Inject constructor(
     private val _category = MutableStateFlow("movie")
     val category: StateFlow<String> = _category
 
-    private val _section = MutableStateFlow("top_rated")
 
-    val topRatedMovies = _category.combine(_section) { category, section ->
+    private val _section = MutableStateFlow("top_rated")
+    val section: StateFlow<String> = _section
+
+    val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)
     }.flatMapLatest { (category, section) ->
         moviesRepository.getTopRated(category, section).toResult()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = Result.Loading()
-    )
+        initialValue = Result.Loading(),
+        )
+    fun getTrending(category: String): Flow<Result<List<MovieResult>>> {
+        return moviesRepository.getTrending(category).toResult()
+    }
 
     private val _genres = _category.flatMapLatest { category ->
         moviesRepository.getGenre(category).toResult()
@@ -108,9 +113,7 @@ class MainViewModel @Inject constructor(
         return moviesRepository.getSearchResult(query).toResult()
     }
 
-    fun getTrending(category: String): Flow<Result<List<MovieResult>>> {
-        return moviesRepository.getTrending(category).toResult()
-    }
+
 //    fun getRegions(): Flow<Result<List<Regions>>>{
 //        return moviesRepository.getRegions().toResult()
 //    }

@@ -42,8 +42,9 @@ interface MoviesServices {
     suspend fun getCast(
         @Path("movie_id") movieId: Int,
     ): Response<MovieCast>
- @GET("/3/movie/{movie_id}")
+ @GET("/3/{category}/{movie_id}")
     suspend fun getDetails(
+     @Path("category") category: String,
         @Path("movie_id") movieId: Int,
     ): MovieDetails
 
