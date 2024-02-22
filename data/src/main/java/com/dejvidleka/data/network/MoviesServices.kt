@@ -6,6 +6,7 @@ import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
 import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.ProvidersResponse
+import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
@@ -30,11 +31,10 @@ interface MoviesServices {
         @Path("category") category: String
     ): Response<MovieByGenre>
 
-    @GET("/3/{category}/{section}/{page}")
+    @GET("/3/{category}/{section}")
     suspend fun getTopRated(
         @Path("category") category: String,
-        @Path("section") section:String,
-        @Query("page") page: Int
+        @Path("section") section:String
     ): TopRatedMovies
 
 
@@ -45,7 +45,7 @@ interface MoviesServices {
  @GET("/3/{category}/{movie_id}")
     suspend fun getDetails(
      @Path("category") category: String,
-     @Path("movie_id") movieId: Int,
+        @Path("movie_id") movieId: Int,
     ): MovieDetails
 
  @GET("/3/tv/{tv_id}")
