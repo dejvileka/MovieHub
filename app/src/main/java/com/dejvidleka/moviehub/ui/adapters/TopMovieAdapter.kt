@@ -1,5 +1,8 @@
 package com.dejvidleka.moviehub.ui.adapters
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +14,13 @@ import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.moviehub.databinding.ItemTopMoviesBinding
 import com.dejvidleka.moviehub.utils.Image_URL
 import com.dejvidleka.moviehub.utils.MovieClickListener
+import com.google.android.material.internal.ContextUtils.getActivity
 
 
 class TopMovieAdapter(
+    private val activity: Context,
     private val onClick: MovieClickListener,
-    ) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
+) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
     inner class MovieResultViewHolder(val itemBinding: ItemTopMoviesBinding) :
@@ -28,6 +33,9 @@ class TopMovieAdapter(
             itemBinding.movieDurationLenth.text = movieResult.runtime.toString()
             val logoPath = movieResult.results["AL"]?.flatrate?.firstOrNull()?.logo_path
 
+            itemBinding.providerLogo.setOnClickListener {
+                OpenNFX(movieResult.title.toString())
+            }
             if (!logoPath.isNullOrEmpty()) {
                 val fullImageUrl = Image_URL + logoPath
                 Glide.with(itemView.context).load(fullImageUrl).into(itemBinding.providerLogo)
@@ -40,7 +48,13 @@ class TopMovieAdapter(
         }
     }
 
-
+    fun OpenNFX(movieTitle:String) {
+        val netflix = Intent()
+        netflix.setAction(Intent.ACTION_VIEW)
+        netflix.setData(Uri.parse("https://www.netflix.com/search?q=${movieTitle}"))
+        netflix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        activity.startActivity(netflix)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
         val binding =
             ItemTopMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
