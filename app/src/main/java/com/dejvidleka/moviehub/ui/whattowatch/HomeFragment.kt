@@ -47,6 +47,20 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.getProviderNames().collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Log.d("Providers", "${result.data.map { it.provider_name }}")
+                    }
+
+                    is Result.Error -> {}
+                    is Result.Loading -> {}
+
+
+                }
+            }
+        }
         binding.chipCategories.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {

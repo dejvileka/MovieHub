@@ -5,8 +5,9 @@ import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
 import com.dejvidleka.data.local.models.MovieDetails
+import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.ProvidersResponse
-import com.dejvidleka.data.local.models.Regions
+import com.dejvidleka.data.local.models.Result
 import com.dejvidleka.data.local.models.SearchResultMovies
 import com.dejvidleka.data.local.models.SimilarMovies
 import com.dejvidleka.data.local.models.TopRatedMovies
@@ -83,6 +84,9 @@ interface MoviesServices {
 
     @GET("/3/watch/providers/regions")
     suspend fun getRegions(): Response<Countries>
+
+    @GET("/3/watch/providers/movie")
+    suspend fun getProvidersName(): Response<ProvidersName>
 
 }
 

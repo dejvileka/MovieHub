@@ -6,7 +6,9 @@ import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
+import com.dejvidleka.data.local.models.Result
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ interface MoviesRepository {
 
     fun getTopRated(category: String,section: String): Flow<List<MovieData>>
     fun getRegions(): Flow<List<Regions>>
+    fun getProviderNames(): Flow<List<Result>>
     fun getTrending(category: String): Flow<List<MovieResult>>
 
     fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>>

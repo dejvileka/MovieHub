@@ -6,7 +6,9 @@ import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
+import com.dejvidleka.data.local.models.Result
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import com.dejvidleka.data.local.models.toMovieData
@@ -39,11 +41,7 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(response.body()?.genres ?: emptyList())
         }
     }
-    override fun getRegions(): Flow<List<Regions>> {
-        return flow {
-            val response = moviesService.getRegions()
-            emit(response.body()?.results ?: emptyList())        }
-    }
+
 
 
     override fun getCast(movieId: Int): Flow<List<Cast>> {
@@ -94,6 +92,18 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getProviderNames(): Flow<List<Result>> {
+        return flow {
+            val response = moviesService.getProvidersName()
+            emit(response.body()?.results ?: emptyList())
+        }
+    }
+    override fun getRegions(): Flow<List<Regions>> {
+        return flow {
+            val response = moviesService.getRegions()
+            emit(response.body()?.results ?: emptyList())
+        }
+    }
     override fun getSimilarMovies(movieId: Int): Flow<List<MovieResult>> {
         return flow {
             val response = moviesService.getSimilarMovies(movieId)
@@ -101,7 +111,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTvDetails(tvId: Int): Flow<TvDetails>{
+    override fun getTvDetails(tvId: Int): Flow<TvDetails> {
         return flow {
             val response= moviesService.getDetailsTv(tvId)
             response.body()?.let { emit(it) }

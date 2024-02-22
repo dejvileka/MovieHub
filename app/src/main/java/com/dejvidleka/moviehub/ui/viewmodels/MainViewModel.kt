@@ -6,6 +6,7 @@ import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
+import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.repo.MoviesRepository
@@ -107,6 +108,10 @@ class MainViewModel @Inject constructor(
 
     fun getSimilarMovies(movieId: Int): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSimilarMovies(movieId).toResult()
+    }
+
+    fun getProviderNames(): Flow<Result<List<com.dejvidleka.data.local.models.Result>>> {
+        return moviesRepository.getProviderNames().toResult()
     }
 
     fun getSearchResult(query: String): Flow<Result<List<MovieResult>>> {

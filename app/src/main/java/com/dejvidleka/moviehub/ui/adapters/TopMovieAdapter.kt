@@ -14,7 +14,7 @@ import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.moviehub.databinding.ItemTopMoviesBinding
 import com.dejvidleka.moviehub.utils.Image_URL
 import com.dejvidleka.moviehub.utils.MovieClickListener
-import com.google.android.material.internal.ContextUtils.getActivity
+import com.dejvidleka.moviehub.utils.getWatchProviders
 
 
 class TopMovieAdapter(
@@ -31,11 +31,15 @@ class TopMovieAdapter(
             }
             itemBinding.movie = movieResult
             itemBinding.movieDurationLenth.text = movieResult.runtime.toString()
-            val logoPath = movieResult.results["AL"]?.flatrate?.firstOrNull()?.logo_path
+            val logoPath = movieResult.results["ZW"]?.flatrate?.firstOrNull()?.logo_path
+            val providerName = movieResult.results["ZW"]?.flatrate?.firstOrNull()?.provider_name
+
 
             itemBinding.providerLogo.setOnClickListener {
-                OpenNFX(movieResult.title.toString())
+                providerName?.let { activity.getWatchProviders(it,activity)
+                }
             }
+
             if (!logoPath.isNullOrEmpty()) {
                 val fullImageUrl = Image_URL + logoPath
                 Glide.with(itemView.context).load(fullImageUrl).into(itemBinding.providerLogo)
