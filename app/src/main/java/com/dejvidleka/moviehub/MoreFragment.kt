@@ -51,7 +51,6 @@ class MoreFragment : Fragment() {
                             regionsName
                         )
                         val locationAutocomplete = binding.locationAutocomplete
-
                             locationAutocomplete.setAdapter(adapter)
                             locationAutocomplete.threshold = 1
                         binding.savePreferencesButton.setOnClickListener {

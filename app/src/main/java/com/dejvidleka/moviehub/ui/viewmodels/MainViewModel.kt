@@ -38,6 +38,7 @@ class MainViewModel @Inject constructor(
     private val _section = MutableStateFlow("top_rated")
     val section: StateFlow<String> = _section
 
+
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)
     }.flatMapLatest { (category, section) ->
@@ -119,10 +120,5 @@ class MainViewModel @Inject constructor(
     fun getSearchResult(query: String): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getSearchResult(query).toResult()
     }
-
-
-//    fun getRegions(): Flow<Result<List<Regions>>>{
-//        return moviesRepository.getRegions().toResult()
-//    }
 
 }

@@ -65,11 +65,9 @@ class HomeFragment : Fragment(), MovieClickListener {
         binding.chipCategories.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
@@ -105,7 +103,6 @@ class HomeFragment : Fragment(), MovieClickListener {
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                 }
-
             })
         populationTopMovies()
         populateCard()
@@ -115,8 +112,6 @@ class HomeFragment : Fragment(), MovieClickListener {
     private fun populationTopMovies() {
 
         val savedRegionCode = AppPreferences.getRegionCode(requireContext())
-        if (savedRegionCode != null) {
-        }
         topMovieAdapter = context?.let { TopMovieAdapter(savedRegionCode,it, this) }!!
         binding.topRatedRv.adapter = topMovieAdapter
         binding.topRatedRv.layoutManager = LinearLayoutManager(context)
@@ -129,11 +124,9 @@ class HomeFragment : Fragment(), MovieClickListener {
                         binding.topRatedRv.visibility = View.VISIBLE
                         binding.placeHolder.visibility = View.GONE
                         }
-
                         is Result.Error -> {
                             Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
                         }
-
                         is Result.Loading -> {
                             topMovieAdapter.submitList(emptyList())
                             topMovieAdapter.notifyDataSetChanged()
@@ -141,7 +134,6 @@ class HomeFragment : Fragment(), MovieClickListener {
                             binding.topRatedRv.visibility = View.GONE
 
                         }
-
                     }
                 }
             }
@@ -191,37 +183,9 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClickNew(movieData: MovieData, view: View) {
-
     }
-
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        binding.chipCategories.addOnTabSelectedListener(
-//            object :
-//                TabLayout.OnTabSelectedListener {
-//                override fun onTabReselected(tab: TabLayout.Tab?) {
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                }
-//
-//                override fun onTabSelected(tab: TabLayout.Tab?) {
-//                    tab?.let {
-//                        val category = when (it.position) {
-//                            0 -> "movie"
-//                            1 -> "tv"
-//                            else -> return
-//                        }
-//                        mainViewModel.updateCategory(category)
-//                    }
-//                }
-//            })
-//
-//    }
-
 }
 
 
