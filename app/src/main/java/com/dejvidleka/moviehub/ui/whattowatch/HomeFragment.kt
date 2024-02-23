@@ -21,6 +21,7 @@ import com.dejvidleka.moviehub.domain.Result
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
+import com.dejvidleka.moviehub.utils.AppPreferences
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,17 +113,21 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     private fun populationTopMovies() {
-        topMovieAdapter = context?.let { TopMovieAdapter(it,this) }!!
+
+        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
+        if (savedRegionCode != null) {
+        }
+        topMovieAdapter = context?.let { TopMovieAdapter(savedRegionCode,it, this) }!!
         binding.topRatedRv.adapter = topMovieAdapter
         binding.topRatedRv.layoutManager = LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
-                mainViewModel.topRatedMovies.collect { result ->
-                    when (result) {
-                        is Result.Success -> {
-                            Log.d("top list", result.data.toString())
-                            topMovieAdapter.submitList(result.data)
-                            binding.topRatedRv.visibility = View.VISIBLE
-                            binding.placeHolder.visibility = View.GONE
+            mainViewModel.topRatedMovies.collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Log.d("top list", result.data.toString())
+                        topMovieAdapter.submitList(result.data)
+                        binding.topRatedRv.visibility = View.VISIBLE
+                        binding.placeHolder.visibility = View.GONE
                         }
 
                         is Result.Error -> {

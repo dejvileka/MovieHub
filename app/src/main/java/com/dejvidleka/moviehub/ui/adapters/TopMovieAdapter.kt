@@ -1,8 +1,6 @@
 package com.dejvidleka.moviehub.ui.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +16,13 @@ import com.dejvidleka.moviehub.utils.getWatchProviders
 
 
 class TopMovieAdapter(
+    private val savedRegionCode:String?,
     private val activity: Context,
     private val onClick: MovieClickListener,
 ) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
-    inner class MovieResultViewHolder(val itemBinding: ItemTopMoviesBinding) :
+    inner class MovieResultViewHolder(private val itemBinding: ItemTopMoviesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(movieResult: MovieData) {
             itemBinding.setClickListener {
@@ -31,8 +30,12 @@ class TopMovieAdapter(
             }
             itemBinding.movie = movieResult
             itemBinding.movieDurationLenth.text = movieResult.runtime.toString()
-            val logoPath = movieResult.results["ZW"]?.flatrate?.firstOrNull()?.logo_path
-            val providerName = movieResult.results["ZW"]?.flatrate?.firstOrNull()?.provider_name
+
+            savedRegionCode.let {
+                val logoPath =
+                    movieResult.results[savedRegionCode]?.flatrate?.firstOrNull()?.logo_path
+                val providerName =
+                    movieResult.results[savedRegionCode]?.flatrate?.firstOrNull()?.provider_name
 
 
             itemBinding.providerLogo.setOnClickListener {
@@ -49,16 +52,9 @@ class TopMovieAdapter(
                 itemBinding.providerLogo.visibility = View.GONE
                 itemBinding.providerName.visibility = View.VISIBLE
             }
-        }
+        }}
     }
 
-    fun OpenNFX(movieTitle:String) {
-        val netflix = Intent()
-        netflix.setAction(Intent.ACTION_VIEW)
-        netflix.setData(Uri.parse("https://www.netflix.com/search?q=${movieTitle}"))
-        netflix.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        activity.startActivity(netflix)
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
         val binding =
             ItemTopMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -73,7 +69,6 @@ class TopMovieAdapter(
     }
 }
 
-
 private class TopMovieDiffUtil : DiffUtil.ItemCallback<MovieData>() {
     override fun areItemsTheSame(oldItem: MovieData, newItem: MovieData): Boolean {
         return newItem.id == oldItem.id
@@ -83,6 +78,4 @@ private class TopMovieDiffUtil : DiffUtil.ItemCallback<MovieData>() {
         return newItem == oldItem
 
     }
-
-
 }

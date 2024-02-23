@@ -65,6 +65,8 @@ class MainViewModel @Inject constructor(
     private val _regions= moviesRepository.getRegions().toResult()
     val regions: Flow<Result<List<Regions>>> = _regions
 
+
+
     fun updateCategory(category: String) {
         _category.value = category
     }
