@@ -51,7 +51,7 @@ class GenreAdapter(
         holder.snapHelper.attachToRecyclerView(holder.binding.moviesRv)
 
         mainViewModel.setGenre(genre.id.toString())
-        val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString(),)
+        val moviesFlow = mainViewModel.moviesForGenre(genre.id.toString())
 
         lifecycleOwner.lifecycleScope.launch {
             moviesFlow.collect { movieResultsList ->

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.repo.MoviesRepository
@@ -35,9 +35,18 @@ class MainViewModel @Inject constructor(
     val category: StateFlow<String> = _category
 
 
-    private val _section = MutableStateFlow("top_rated")
+    private val _section = MutableStateFlow("discover")
     val section: StateFlow<String> = _section
 
+//    fun recommendedMovies(): Flow<Result<List<MovieData>>> {
+//        return moviesRepository.recommendedMovies().toResult()
+//    }
+
+    val recommendedMovies= moviesRepository.recommendedMovies().toResult().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = Result.Loading(),
+    )
 
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)
@@ -100,6 +109,8 @@ class MainViewModel @Inject constructor(
             moviesRepository.getMovies(it, genreId, page).toResult()
         }
     }
+
+
 
     fun castForMovie(movieId: Int): Flow<Result<List<Cast>>> {
         return moviesRepository.getCast(movieId).toResult()

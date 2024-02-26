@@ -4,6 +4,7 @@ import com.dejvidleka.data.local.models.Countries
 import com.dejvidleka.data.local.models.GenreResponse
 import com.dejvidleka.data.local.models.MovieByGenre
 import com.dejvidleka.data.local.models.MovieCast
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieDetails
 import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.ProvidersResponse
@@ -31,12 +32,9 @@ interface MoviesServices {
         @Path("category") category: String,
         @Path("section") section: String
     ): TopRatedMovies
-    @GET("/3/discover/{category}")
+    @GET("/3/discover/movie")
     suspend fun getRecommendedMovies(
-        @Path("category") category: String,
-        @Query("with_genres") genre: String
-        // ... other query parameters ...
-    ): Response<MovieByGenre>
+    ): TopRatedMovies
 
     @GET("/3/trending/{category}/day")
     suspend fun getTrending(

@@ -1,7 +1,6 @@
 package com.dejvidleka.moviehub.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -83,10 +81,9 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
                     when (movieResultsList) {
                         is Result.Loading -> {
                         }
-
                         is Result.Success -> {
                             handleSuccess(movieResultsList.data)
-                        Log.d("hey", "${movieResultsList.data}")}
+                        }
                         is Result.Error -> showToast("Error loading movies")
                     }
                 }

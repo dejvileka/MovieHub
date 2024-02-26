@@ -6,7 +6,6 @@ import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.Result
 import com.dejvidleka.data.local.models.TrailerResult
@@ -28,12 +27,18 @@ class MoviesRepositoryImpl @Inject constructor(
     override val movieDao: MovieDao
 ) : MoviesRepository {
 
-    override fun getMovies(categry: String,genre: String, page: Int): Flow<List<MovieResult>> {
+    override fun getMovies(categry: String, genre: String, page: Int): Flow<List<MovieResult>> {
         return flow {
-            val response = moviesService.getMovies(categry, "301766,18321,445,7344,33451,33432,284609,267122,280017,155477",genre, page)
+            val response = moviesService.getMovies(
+                categry,
+                "301766,18321,445,7344,33451,33432,284609,267122,280017,155477",
+                genre,
+                page
+            )
             emit(response.body()?.movieResults ?: emptyList())
         }
     }
+
 
     override fun getGenre(categry: String): Flow<List<Genre>> {
         return flow {
@@ -84,6 +89,15 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(movies)
         }
     }
+    override fun recommendedMovies(
+    ): Flow<List<MovieData>> {
+        return flow {
+           val movies= moviesService.getRecommendedMovies().movieResults.map {
+                it.toMovieData()}
+            emit(movies)
+        }
+    }
+
 
     override fun getTrending(category: String): Flow<List<MovieResult>> {
         return flow {
