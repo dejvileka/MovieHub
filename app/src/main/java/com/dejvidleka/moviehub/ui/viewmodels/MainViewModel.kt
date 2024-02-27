@@ -35,12 +35,9 @@ class MainViewModel @Inject constructor(
     val category: StateFlow<String> = _category
 
 
-    private val _section = MutableStateFlow("discover")
+    private val _section = MutableStateFlow("top_rated")
     val section: StateFlow<String> = _section
 
-//    fun recommendedMovies(): Flow<Result<List<MovieData>>> {
-//        return moviesRepository.recommendedMovies().toResult()
-//    }
 
     val recommendedMovies= moviesRepository.recommendedMovies().toResult().stateIn(
         scope = viewModelScope,

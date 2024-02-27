@@ -110,65 +110,66 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     private fun populationTopMovies() {
-
         val savedRegionCode = AppPreferences.getRegionCode(requireContext())
-
         topMovieAdapter = context?.let { TopMovieAdapter(savedRegionCode, it, this) }!!
         binding.topRatedRv.adapter = topMovieAdapter
         binding.topRatedRv.layoutManager = LinearLayoutManager(context)
-//        if (mainViewModel.section.value == "discover") {
-            viewLifecycleOwner.lifecycleScope.launch {
-                mainViewModel.recommendedMovies.collect { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            topMovieAdapter.notifyDataSetChanged()
-                            binding.placeHolder.visibility = View.VISIBLE
-                            binding.topRatedRv.visibility = View.GONE
-                        }
-                        is Result.Success -> {
-                            Log.d("recommended movies", result.data.toString())
-                            topMovieAdapter.submitList(result.data)
-                            binding.topRatedRv.visibility = View.VISIBLE
-                            binding.placeHolder.visibility = View.GONE
-                        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.section.collect { section ->
+                if (section == "discover") {
+                    mainViewModel.recommendedMovies.collectLatest{ result ->
+                        when (result) {
+                            is Result.Loading -> {
+                                topMovieAdapter.notifyDataSetChanged()
+                                binding.placeHolder.visibility = View.VISIBLE
+                                binding.topRatedRv.visibility = View.GONE
+                            }
 
-                        is Result.Error -> {
-                            Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
+                            is Result.Success -> {
+                                Log.d("recommended movies", result.data.toString())
+                                topMovieAdapter.submitList(result.data)
+                                binding.topRatedRv.visibility = View.VISIBLE
+                                binding.placeHolder.visibility = View.GONE
+                            }
 
+                            is Result.Error -> {
+                                Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT)
+                                    .show()
+
+                            }
+                        }
+                    }
+                } else {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        mainViewModel.topRatedMovies.collect { result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    Log.d("top list", result.data.toString())
+                                    topMovieAdapter.submitList(result.data)
+                                    binding.topRatedRv.visibility = View.VISIBLE
+                                    binding.placeHolder.visibility = View.GONE
+                                }
+
+                                is Result.Error -> {
+                                    Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+
+                                is Result.Loading -> {
+                                    topMovieAdapter.submitList(emptyList())
+                                    topMovieAdapter.notifyDataSetChanged()
+                                    binding.placeHolder.visibility = View.VISIBLE
+                                    binding.topRatedRv.visibility = View.GONE
+
+                                }
+                            }
                         }
                     }
                 }
             }
 
-//        } else {
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                mainViewModel.topRatedMovies.collect { result ->
-//                    when (result) {
-//                        is Result.Success -> {
-//                            Log.d("top list", result.data.toString())
-//                            topMovieAdapter.submitList(result.data)
-//                            binding.topRatedRv.visibility = View.VISIBLE
-//                            binding.placeHolder.visibility = View.GONE
-//                        }
-//
-//                        is Result.Error -> {
-//                            Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-//                        }
-//
-//                        is Result.Loading -> {
-//                            topMovieAdapter.submitList(emptyList())
-//                            topMovieAdapter.notifyDataSetChanged()
-//                            binding.placeHolder.visibility = View.VISIBLE
-//                            binding.topRatedRv.visibility = View.GONE
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        }
     }
-
-
     private fun populateCard() {
         trendingMovieAdapter = TrendingViewPager(this)
         binding.trendingCarosel.adapter = trendingMovieAdapter
