@@ -58,15 +58,16 @@ class HomeFragment : Fragment(), MovieClickListener {
         populationTopMovies()
         populationTrendingMovies()
     }
-
-
+    
     private fun getTabListeners() {
         binding.chipCategories.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    mainViewModel.updateCategory("")
+                }
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
@@ -94,8 +95,9 @@ class HomeFragment : Fragment(), MovieClickListener {
                         mainViewModel.updateSection(section = section)
                     }
                 }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    mainViewModel.updateSection("")
+                }
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
             })
     }
@@ -201,7 +203,6 @@ class HomeFragment : Fragment(), MovieClickListener {
                 placeholder.visibility = View.GONE
             }
         }
-
     }
 
     override fun onDestroyView() {
