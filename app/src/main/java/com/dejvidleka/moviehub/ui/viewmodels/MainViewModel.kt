@@ -35,7 +35,7 @@ class MainViewModel @Inject constructor(
     val category: StateFlow<String> = _category
 
 
-    private val _section = MutableStateFlow("top_movies")
+    private val _section = MutableStateFlow("")
     val section: StateFlow<String> = _section
 
 

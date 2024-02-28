@@ -85,7 +85,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
                         val section = when (it.position) {
-                            0 -> "discover"
+                            0 -> ""
                             1 -> "top_rated"
                             2 -> "popular"
                             3 -> "now_playing"
@@ -114,7 +114,7 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     private fun getProviderName() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.getProviderNames().collect { result ->
+            mainViewModel.getProviderNames().collectLatest { result ->
                 if (result is Result.Success) {
                     Log.d("Providers", result.data.joinToString { it.provider_name })
                 }
@@ -124,9 +124,9 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.section.collect { section ->
+            mainViewModel.section.collectLatest { section ->
                 val targetFlow =
-                    if (section == "discover") mainViewModel.recommendedMovies else mainViewModel.topRatedMovies
+                    if (section == "") mainViewModel.recommendedMovies else mainViewModel.topRatedMovies
                 targetFlow.collectLatest { result ->
                     handleMovieResult(
                         result,
@@ -142,7 +142,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     private fun populationTrendingMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.category.collectLatest { category ->
-                mainViewModel.getTrending(category).collect { result ->
+                mainViewModel.getTrending(category).collectLatest { result ->
                     handleMovieResult(
                         result,
                         trendingMovieAdapter,
@@ -162,21 +162,40 @@ class HomeFragment : Fragment(), MovieClickListener {
     ) {
         when (result) {
             is Result.Success -> {
-                if (adapter is TrendingViewPager) {
-                    adapter.submitList(result.data as List<MovieResult>)
-                    contentView.visibility = View.VISIBLE
-                    placeholder.visibility = View.GONE
-                } else if (adapter is TopMovieAdapter) {
-                    adapter.submitList(result.data as List<MovieData>)
-                    contentView.visibility = View.VISIBLE
-                    placeholder.visibility = View.GONE
+                when (adapter) {
+                    is TrendingViewPager -> {
+                        adapter.submitList(result.data as List<MovieResult>)
+                        contentView.visibility = View.VISIBLE
+                        placeholder.visibility = View.GONE
+                    }
+
+                    is TopMovieAdapter -> {
+                        adapter.submitList(result.data as List<MovieData>)
+                        contentView.visibility = View.VISIBLE
+                        placeholder.visibility = View.GONE
+                    }
                 }
             }
+
             is Result.Loading -> {
+                when (adapter) {
+                    is TopMovieAdapter -> {
+                        adapter.submitList(emptyList())
+                    }
+                    is TrendingViewPager->{adapter.submitList(emptyList())}
+                }
+                adapter.notifyDataSetChanged()
                 contentView.visibility = View.GONE
                 placeholder.visibility = View.VISIBLE
             }
+
             is Result.Error -> {
+                when (adapter) {
+                    is TopMovieAdapter -> {
+                        adapter.submitList(emptyList())
+                    }
+                    is TrendingViewPager->{adapter.submitList(emptyList())}
+                }
                 Toast.makeText(requireContext(), "An error occurred", Toast.LENGTH_SHORT).show()
                 contentView.visibility = View.GONE
                 placeholder.visibility = View.GONE
