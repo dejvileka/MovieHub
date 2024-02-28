@@ -35,7 +35,7 @@ class MainViewModel @Inject constructor(
     val category: StateFlow<String> = _category
 
 
-    private val _section = MutableStateFlow("top_rated")
+    private val _section = MutableStateFlow("top_movies")
     val section: StateFlow<String> = _section
 
 
@@ -68,11 +68,8 @@ class MainViewModel @Inject constructor(
 
 
     val genre: StateFlow<Result<List<Genre>>> = _genres
-
     private val _regions= moviesRepository.getRegions().toResult()
     val regions: Flow<Result<List<Regions>>> = _regions
-
-
 
     fun updateCategory(category: String) {
         _category.value = category
@@ -106,8 +103,6 @@ class MainViewModel @Inject constructor(
             moviesRepository.getMovies(it, genreId, page).toResult()
         }
     }
-
-
 
     fun castForMovie(movieId: Int): Flow<Result<List<Cast>>> {
         return moviesRepository.getCast(movieId).toResult()

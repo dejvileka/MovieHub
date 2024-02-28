@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
@@ -40,28 +41,26 @@ class HomeFragment : Fragment(), MovieClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWhatToWatchBinding.inflate(LayoutInflater.from(context))
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeUI()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.getProviderNames().collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        Log.d("Providers", "${result.data.map { it.provider_name }}")
-                    }
-
-                    is Result.Error -> {}
-                    is Result.Loading -> {}
+    private fun initializeUI() {
+        getTabListeners()
+        getProviderName()
+        setupAdapters()
+        populationTopMovies()
+        populationTrendingMovies()
+    }
 
 
-                }
-            }
-        }
+    private fun getTabListeners() {
         binding.chipCategories.addOnTabSelectedListener(
             object :
                 TabLayout.OnTabSelectedListener {
@@ -78,9 +77,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                         }
                         mainViewModel.updateCategory(category)
                     }
-
                 }
-
             })
         binding.chipCategoriesTopGenres.addOnTabSelectedListener(
             object :
@@ -98,107 +95,94 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
                 }
 
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
             })
-        populationTopMovies()
-        populateCard()
+    }
 
+    private fun setupAdapters() {
+        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
+        topMovieAdapter = TopMovieAdapter(savedRegionCode, requireContext(), this)
+        trendingMovieAdapter = TrendingViewPager(this)
+
+        binding.topRatedRv.apply {
+            adapter = topMovieAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.trendingCarosel.adapter = trendingMovieAdapter
+    }
+
+    private fun getProviderName() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.getProviderNames().collect { result ->
+                if (result is Result.Success) {
+                    Log.d("Providers", result.data.joinToString { it.provider_name })
+                }
+            }
+        }
     }
 
     private fun populationTopMovies() {
-        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
-        topMovieAdapter = context?.let { TopMovieAdapter(savedRegionCode, it, this) }!!
-        binding.topRatedRv.adapter = topMovieAdapter
-        binding.topRatedRv.layoutManager = LinearLayoutManager(context)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.section.collect { section ->
-                if (section == "discover") {
-                    mainViewModel.recommendedMovies.collectLatest{ result ->
-                        when (result) {
-                            is Result.Loading -> {
-                                topMovieAdapter.notifyDataSetChanged()
-                                binding.placeHolder.visibility = View.VISIBLE
-                                binding.topRatedRv.visibility = View.GONE
-                            }
-
-                            is Result.Success -> {
-                                Log.d("recommended movies", result.data.toString())
-                                topMovieAdapter.submitList(result.data)
-                                binding.topRatedRv.visibility = View.VISIBLE
-                                binding.placeHolder.visibility = View.GONE
-                            }
-
-                            is Result.Error -> {
-                                Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT)
-                                    .show()
-
-                            }
-                        }
-                    }
-                } else {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        mainViewModel.topRatedMovies.collect { result ->
-                            when (result) {
-                                is Result.Success -> {
-                                    Log.d("top list", result.data.toString())
-                                    topMovieAdapter.submitList(result.data)
-                                    binding.topRatedRv.visibility = View.VISIBLE
-                                    binding.placeHolder.visibility = View.GONE
-                                }
-
-                                is Result.Error -> {
-                                    Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-
-                                is Result.Loading -> {
-                                    topMovieAdapter.submitList(emptyList())
-                                    topMovieAdapter.notifyDataSetChanged()
-                                    binding.placeHolder.visibility = View.VISIBLE
-                                    binding.topRatedRv.visibility = View.GONE
-
-                                }
-                            }
-                        }
-                    }
+                val targetFlow =
+                    if (section == "discover") mainViewModel.recommendedMovies else mainViewModel.topRatedMovies
+                targetFlow.collectLatest { result ->
+                    handleMovieResult(
+                        result,
+                        topMovieAdapter,
+                        binding.topRatedRv,
+                        binding.placeHolder
+                    )
                 }
             }
-
         }
     }
-    private fun populateCard() {
-        trendingMovieAdapter = TrendingViewPager(this)
-        binding.trendingCarosel.adapter = trendingMovieAdapter
+
+    private fun populationTrendingMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.category.collectLatest {
-                mainViewModel.getTrending(category = it).collect { result ->
-                    when (result) {
-                        is Result.Success -> {
-                            Log.d("trending", result.data.toString())
-                            trendingMovieAdapter.submitList(result.data)
-                            binding.trendingCarosel.visibility = View.VISIBLE
-                            binding.trendingRvPlaceholder.root.visibility = View.GONE
-                        }
-
-                        is Result.Error -> {
-                            Toast.makeText(requireContext(), "Shame", Toast.LENGTH_SHORT).show()
-
-                        }
-
-                        is Result.Loading -> {
-                            topMovieAdapter.notifyDataSetChanged()
-                            topMovieAdapter.submitList(emptyList())
-                            binding.trendingCarosel.visibility = View.GONE
-                            binding.trendingRvPlaceholder.root.visibility = View.VISIBLE
-                        }
-                    }
+            mainViewModel.category.collectLatest { category ->
+                mainViewModel.getTrending(category).collect { result ->
+                    handleMovieResult(
+                        result,
+                        trendingMovieAdapter,
+                        binding.trendingCarosel,
+                        binding.trendingRvPlaceholder.root
+                    )
                 }
             }
         }
+    }
+
+    private fun <T> handleMovieResult(
+        result: Result<List<T>>,
+        adapter: RecyclerView.Adapter<*>,
+        contentView: View,
+        placeholder: View
+    ) {
+        when (result) {
+            is Result.Success -> {
+                if (adapter is TrendingViewPager) {
+                    adapter.submitList(result.data as List<MovieResult>)
+                    contentView.visibility = View.VISIBLE
+                    placeholder.visibility = View.GONE
+                } else if (adapter is TopMovieAdapter) {
+                    adapter.submitList(result.data as List<MovieData>)
+                    contentView.visibility = View.VISIBLE
+                    placeholder.visibility = View.GONE
+                }
+            }
+            is Result.Loading -> {
+                contentView.visibility = View.GONE
+                placeholder.visibility = View.VISIBLE
+            }
+            is Result.Error -> {
+                Toast.makeText(requireContext(), "An error occurred", Toast.LENGTH_SHORT).show()
+                contentView.visibility = View.GONE
+                placeholder.visibility = View.GONE
+            }
+        }
+
     }
 
     override fun onDestroyView() {
@@ -214,6 +198,7 @@ class HomeFragment : Fragment(), MovieClickListener {
 
     override fun onMovieClickNew(movieData: MovieData, view: View) {
     }
+
     override fun onViewMoreClick(genre: Genre, view: View) {
     }
 }
