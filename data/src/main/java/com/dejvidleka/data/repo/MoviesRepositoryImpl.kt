@@ -89,10 +89,9 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(movies)
         }
     }
-    override fun recommendedMovies(
-    ): Flow<List<MovieData>> {
+    override fun recommendedMovies(category: String,page: Int): Flow<List<MovieData>> {
         return flow {
-           val movies= moviesService.getRecommendedMovies().movieResults.map {
+           val movies= moviesService.getRecommendedMovies(category, page).movieResults.map {
                 it.toMovieData()}
             emit(movies)
         }

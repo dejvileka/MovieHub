@@ -56,7 +56,6 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
 
     private fun setupRecyclerView() {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
-
         adapter = MovieListByGenreAdapter(genre = args.genre, onClick = this, hasViewMore = false)
         binding.allMoviesRv.adapter = adapter
         binding.allMoviesRv.layoutManager =
@@ -74,7 +73,6 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
         val args = MoreMoviesPerGenreArgs.fromBundle(requireArguments())
         mainViewModel.setGenre(args.genre.id.toString())
         binding.genreTitle.text = args.genre.name
-
         lifecycleScope.launch {
             mainViewModel.moviesForGenre(args.genre.id.toString(), page = currentPage,)
                 .collect { movieResultsList ->

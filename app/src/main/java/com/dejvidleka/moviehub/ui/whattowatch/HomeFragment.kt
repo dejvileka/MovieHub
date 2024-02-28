@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +37,8 @@ class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
+    private var currentPage = 1
+    private val maxPages = 10
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,17 +101,7 @@ class HomeFragment : Fragment(), MovieClickListener {
             })
     }
 
-    private fun setupAdapters() {
-        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
-        topMovieAdapter = TopMovieAdapter(savedRegionCode, requireContext(), this)
-        trendingMovieAdapter = TrendingViewPager(this)
 
-        binding.topRatedRv.apply {
-            adapter = topMovieAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-        binding.trendingCarosel.adapter = trendingMovieAdapter
-    }
 
     private fun getProviderName() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -122,11 +113,32 @@ class HomeFragment : Fragment(), MovieClickListener {
         }
     }
 
+    private fun setupAdapters() {
+        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
+        topMovieAdapter = TopMovieAdapter(savedRegionCode, requireContext(), this)
+        trendingMovieAdapter = TrendingViewPager(this)
+        binding.topRatedRv.apply {
+            adapter = topMovieAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.topRatedRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
+                    currentPage++
+                    mainViewModel.page.value = currentPage
+                    mainViewModel.incrementPage()
+                }
+            }
+        })
+        binding.trendingCarosel.adapter = trendingMovieAdapter
+    }
+
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.section.collectLatest { section ->
                 val targetFlow =
                     if (section == "") mainViewModel.recommendedMovies else mainViewModel.topRatedMovies
+                mainViewModel.category.collectLatest {
                 targetFlow.collectLatest { result ->
                     handleMovieResult(
                         result,
@@ -136,6 +148,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                     )
                 }
             }
+        }
         }
     }
 
@@ -196,7 +209,6 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
                     is TrendingViewPager->{adapter.submitList(emptyList())}
                 }
-                Toast.makeText(requireContext(), "An error occurred", Toast.LENGTH_SHORT).show()
                 contentView.visibility = View.GONE
                 placeholder.visibility = View.GONE
             }
