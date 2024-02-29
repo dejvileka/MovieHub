@@ -37,8 +37,8 @@ class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
-    private var currentPage = 1
-    private val maxPages = 10
+
+    private var latestIncrement = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -122,10 +122,8 @@ class HomeFragment : Fragment(), MovieClickListener {
             layoutManager = LinearLayoutManager(context)
         }
         binding.topRatedRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
-                    currentPage++
-                    mainViewModel.page.value = currentPage
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
                     mainViewModel.incrementPage()
                 }
             }
@@ -147,8 +145,8 @@ class HomeFragment : Fragment(), MovieClickListener {
                         binding.placeHolder
                     )
                 }
+                }
             }
-        }
         }
     }
 

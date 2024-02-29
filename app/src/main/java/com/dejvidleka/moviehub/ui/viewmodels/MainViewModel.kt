@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -35,7 +34,6 @@ class MainViewModel @Inject constructor(
     private val _section = MutableStateFlow("")
     val section: StateFlow<String> = _section
     private val _page = MutableStateFlow(1)
-    var page: MutableStateFlow<Int> = _page
     val maxPages = 10
 
 
@@ -44,15 +42,17 @@ class MainViewModel @Inject constructor(
             _page.value = _page.value + 1
         }
     }
+
     val recommendedMovies = _category.flatMapLatest { category ->
         _page.flatMapLatest { pageNum ->
             moviesRepository.recommendedMovies(category, pageNum).toResult().stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
-                initialValue = Result.Loading(),
+                initialValue = Result.Loading()
             )
         }
     }
+
 
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)

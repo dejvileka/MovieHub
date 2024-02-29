@@ -32,7 +32,7 @@ interface MoviesServices {
         @Path("category") category: String,
         @Path("section") section: String
     ): TopRatedMovies
-    @GET("/3/discover/{category/}")
+    @GET("/3/discover/{category}")
     suspend fun getRecommendedMovies(
         @Path ("category") category: String,
         @Query("page") page: Int
