@@ -55,6 +55,12 @@ class TopMovieAdapter(
         }}
     }
 
+    fun appendMovies(newMovies: List<MovieData>) {
+        val currentList = this.currentList.toMutableList() // Assuming you're using ListAdapter
+        currentList.addAll(newMovies)
+        submitList(currentList)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieResultViewHolder {
         val binding =
             ItemTopMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)

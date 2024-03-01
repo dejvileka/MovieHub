@@ -34,25 +34,17 @@ class MainViewModel @Inject constructor(
     private val _section = MutableStateFlow("")
     val section: StateFlow<String> = _section
     private val _page = MutableStateFlow(1)
-    val maxPages = 10
 
-
-    fun incrementPage() {
-        if (_page.value < maxPages) {
-            _page.value = _page.value + 1
-        }
-    }
 
     val recommendedMovies = _category.flatMapLatest { category ->
         _page.flatMapLatest { pageNum ->
-            moviesRepository.recommendedMovies(category, pageNum).toResult().stateIn(
+            moviesRepository.recommendedMovies(category, _page.value).toResult().stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
                 initialValue = Result.Loading()
             )
         }
     }
-
 
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)

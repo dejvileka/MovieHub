@@ -38,7 +38,6 @@ class HomeFragment : Fragment(), MovieClickListener {
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
 
-    private var latestIncrement = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,8 +55,8 @@ class HomeFragment : Fragment(), MovieClickListener {
         getTabListeners()
         getProviderName()
         setupAdapters()
-        populationTopMovies()
         populationTrendingMovies()
+        populationTopMovies()
     }
 
     private fun getTabListeners() {
@@ -121,14 +120,6 @@ class HomeFragment : Fragment(), MovieClickListener {
             adapter = topMovieAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        binding.topRatedRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
-                    mainViewModel.incrementPage()
-                }
-            }
-        })
-        binding.trendingCarosel.adapter = trendingMovieAdapter
     }
 
     private fun populationTopMovies() {
@@ -181,7 +172,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
 
                     is TopMovieAdapter -> {
-                        adapter.submitList(result.data as List<MovieData>)
+                        adapter.appendMovies(result.data as List<MovieData>)
                         contentView.visibility = View.VISIBLE
                         placeholder.visibility = View.GONE
                     }
@@ -191,7 +182,7 @@ class HomeFragment : Fragment(), MovieClickListener {
             is Result.Loading -> {
                 when (adapter) {
                     is TopMovieAdapter -> {
-                        adapter.submitList(emptyList())
+                        adapter.appendMovies(emptyList())
                     }
                     is TrendingViewPager->{adapter.submitList(emptyList())}
                 }
