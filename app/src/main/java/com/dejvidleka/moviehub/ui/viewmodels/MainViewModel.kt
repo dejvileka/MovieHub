@@ -37,13 +37,11 @@ class MainViewModel @Inject constructor(
 
 
     val recommendedMovies = _category.flatMapLatest { category ->
-        _page.flatMapLatest { pageNum ->
             moviesRepository.recommendedMovies(category, _page.value).toResult().stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
                 initialValue = Result.Loading()
             )
-        }
     }
 
     val topRatedMovies = _category.combine(section) { category, section ->

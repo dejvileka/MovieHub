@@ -100,8 +100,6 @@ class HomeFragment : Fragment(), MovieClickListener {
             })
     }
 
-
-
     private fun getProviderName() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.getProviderNames().collectLatest { result ->
@@ -144,7 +142,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     private fun populationTrendingMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.category.collectLatest { category ->
-                mainViewModel.getTrending(category).collectLatest { result ->
+                mainViewModel.getTrending(category).collect { result ->
                     handleMovieResult(
                         result,
                         trendingMovieAdapter,
@@ -172,47 +170,28 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
 
                     is TopMovieAdapter -> {
-                        adapter.appendMovies(result.data as List<MovieData>)
+                        adapter.submitList(result.data as List<MovieData>)
                         contentView.visibility = View.VISIBLE
                         placeholder.visibility = View.GONE
                     }
                 }
             }
-
             is Result.Loading -> {
-                when (adapter) {
-                    is TopMovieAdapter -> {
-                        adapter.appendMovies(emptyList())
-                    }
-                    is TrendingViewPager->{adapter.submitList(emptyList())}
-                }
-                adapter.notifyDataSetChanged()
-                contentView.visibility = View.GONE
-                placeholder.visibility = View.VISIBLE
             }
-
             is Result.Error -> {
-                when (adapter) {
-                    is TopMovieAdapter -> {
-                        adapter.submitList(emptyList())
-                    }
-                    is TrendingViewPager->{adapter.submitList(emptyList())}
-                }
-                contentView.visibility = View.GONE
-                placeholder.visibility = View.GONE
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        handler.removeCallbacks(update)
     }
 
     override fun onMovieClick(movieResult: MovieResult, view: View) {
         val navigation =
             HomeFragmentDirections.actionWhatToWatchFragmentToMovieDetailFragment(movieResult)
         view.findNavController().navigate(navigation)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(update)
     }
 
     override fun onMovieClickNew(movieData: MovieData, view: View) {

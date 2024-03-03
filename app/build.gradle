@@ -111,6 +111,7 @@ dependencies {
 // blur background dependency
 
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+    implementation "androidx.paging:paging-runtime:3.2.1"
 
 
     implementation project(':data')
