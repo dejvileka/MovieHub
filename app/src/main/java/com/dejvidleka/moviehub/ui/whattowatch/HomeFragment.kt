@@ -114,6 +114,9 @@ class HomeFragment : Fragment(), MovieClickListener {
         val savedRegionCode = AppPreferences.getRegionCode(requireContext())
         topMovieAdapter = TopMovieAdapter(savedRegionCode, requireContext(), this)
         trendingMovieAdapter = TrendingViewPager(this)
+        binding.trendingCarosel.apply {
+            adapter = trendingMovieAdapter
+        }
         binding.topRatedRv.apply {
             adapter = topMovieAdapter
             layoutManager = LinearLayoutManager(context)
@@ -177,6 +180,18 @@ class HomeFragment : Fragment(), MovieClickListener {
                 }
             }
             is Result.Loading -> {
+                contentView.visibility = View.GONE
+                placeholder.visibility = View.VISIBLE
+                adapter.notifyDataSetChanged()
+                when (adapter) {
+                    is TrendingViewPager -> {
+                        adapter.submitList(emptyList())
+                    }
+
+                    is TopMovieAdapter -> {
+                        adapter.submitList(emptyList())
+                    }
+                }
             }
             is Result.Error -> {
             }

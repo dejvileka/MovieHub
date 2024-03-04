@@ -93,6 +93,19 @@ class MoviesRepositoryImpl @Inject constructor(
         return flow {
            val movies= moviesService.getRecommendedMovies(category, page).movieResults.map {
                 it.toMovieData()}
+            coroutineScope {
+                val semaphore = Semaphore(permits = 5)
+                movies.map { movie ->
+                    semaphore.withPermit {
+                        val providersDeferred =
+                            async { moviesService.getProviders(category, movie.id) }
+                        val detailsDefered = async { moviesService.getDetails(category, movie.id) }
+                        movie.results = providersDeferred.await().results
+                        movie.runtime = detailsDefered.await().runtime
+                    }
+
+                }
+            }
             emit(movies)
         }
     }
