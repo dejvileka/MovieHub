@@ -37,7 +37,6 @@ class TopMovieAdapter(
                 val providerName =
                     movieResult.results[savedRegionCode]?.flatrate?.firstOrNull()?.provider_name
 
-
             itemBinding.providerLogo.setOnClickListener {
                 providerName?.let { activity.getWatchProviders(it,activity)
                 }

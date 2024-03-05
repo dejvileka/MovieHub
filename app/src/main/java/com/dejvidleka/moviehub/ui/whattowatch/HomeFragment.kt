@@ -163,6 +163,8 @@ class HomeFragment : Fragment(), MovieClickListener {
         contentView: View,
         placeholder: View
     ) {
+        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
+
         when (result) {
             is Result.Success -> {
                 when (adapter) {
@@ -173,7 +175,12 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
 
                     is TopMovieAdapter -> {
-                        adapter.submitList(result.data as List<MovieData>)
+                        val list = result.data as List<MovieData>
+
+                        list.filter {
+                            !it.results["US"]?.flatrate?.firstOrNull()?.logo_path.isNullOrBlank()
+                        }
+                        adapter.submitList(list)
                         contentView.visibility = View.VISIBLE
                         placeholder.visibility = View.GONE
                     }
