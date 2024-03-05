@@ -176,11 +176,10 @@ class HomeFragment : Fragment(), MovieClickListener {
 
                     is TopMovieAdapter -> {
                         val list = result.data as List<MovieData>
-
-                        list.filter {
-                            !it.results["US"]?.flatrate?.firstOrNull()?.logo_path.isNullOrBlank()
+                        val newList= list.filter {
+                            !it.results[savedRegionCode]?.flatrate?.firstOrNull()?.logo_path.isNullOrBlank()
                         }
-                        adapter.submitList(list)
+                        adapter.submitList(newList)
                         contentView.visibility = View.VISIBLE
                         placeholder.visibility = View.GONE
                     }
