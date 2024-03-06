@@ -140,7 +140,7 @@
                     app:layout_constraintTop_toBottomOf="@id/chip_categories_top_genres"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:listitem="@layout/item_top_movies"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

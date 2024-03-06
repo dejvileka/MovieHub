@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ class TopMovieAdapter(
     private val savedRegionCode:String?,
     private val activity: Context,
     private val onClick: MovieClickListener,
-) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
+) : PagingDataAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
 
 
     inner class MovieResultViewHolder(private val itemBinding: ItemTopMoviesBinding) :
@@ -62,9 +63,10 @@ class TopMovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieResultViewHolder, position: Int) {
-
         val movieResult = getItem(position)
-        holder.bind(movieResult)
+        if (movieResult != null) {
+            holder.bind(movieResult)
+        }
 
     }
 }

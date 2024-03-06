@@ -2,8 +2,11 @@ package com.dejvidleka.moviehub.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
+import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.data.local.models.Regions
@@ -33,11 +36,25 @@ class MainViewModel @Inject constructor(
     val category: StateFlow<String> = _category
     private val _section = MutableStateFlow("")
     val section: StateFlow<String> = _section
-    private val _page = MutableStateFlow(1)
+
+
+    fun recommendedMovies1(page: Int): Flow<Result<List<MovieData>>> {
+        return category.flatMapLatest {
+            moviesRepository.recommendedMovies(it, page).toResult().stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Lazily,
+                initialValue = Result.Loading()
+            )
+        }
+    }
+
+
+    val moviesFlow: Flow<PagingData<MovieData>> =
+        moviesRepository.getMoviesStream(category).cachedIn(viewModelScope)
 
 
     val recommendedMovies = _category.flatMapLatest { category ->
-            moviesRepository.recommendedMovies(category, _page.value).toResult().stateIn(
+        moviesRepository.recommendedMovies(category, 1).toResult().stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
                 initialValue = Result.Loading()

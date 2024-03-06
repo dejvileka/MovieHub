@@ -1,5 +1,8 @@
 package com.dejvidleka.data.repo
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
@@ -15,6 +18,7 @@ import com.dejvidleka.data.network.MoviesServices
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -27,6 +31,16 @@ class MoviesRepositoryImpl @Inject constructor(
     override val movieDao: MovieDao
 ) : MoviesRepository {
 
+    override fun getMoviesStream(category: StateFlow<String>): Flow<PagingData<MovieData>> {
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingData(this, category) }
+        ).flow
+    }
     override fun getMovies(categry: String, genre: String, page: Int): Flow<List<MovieResult>> {
         return flow {
             val response = moviesService.getMovies(
@@ -117,6 +131,8 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(response.body()?.movieResults ?: emptyList())
         }
     }
+
+
 
     override fun getProviderNames(): Flow<List<Result>> {
         return flow {

@@ -1,22 +1,26 @@
 package com.dejvidleka.data.repo
 
+import androidx.paging.PagingData
 import com.dejvidleka.data.local.dao.MovieDao
 import com.dejvidleka.data.local.models.Cast
 import com.dejvidleka.data.local.models.Genre
 import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieEntity
 import com.dejvidleka.data.local.models.MovieResult
-import com.dejvidleka.data.local.models.ProvidersName
 import com.dejvidleka.data.local.models.Regions
 import com.dejvidleka.data.local.models.Result
 import com.dejvidleka.data.local.models.TrailerResult
 import com.dejvidleka.data.local.models.TvDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 interface MoviesRepository {
     val movieDao: MovieDao
+
+    fun getMoviesStream(category: StateFlow<String>): Flow<PagingData<MovieData>>
+
     fun getMovies(category: String,genre: String, page: Int = 1): Flow<List<MovieResult>>
     fun recommendedMovies(category: String, page: Int): Flow<List<MovieData>>
 

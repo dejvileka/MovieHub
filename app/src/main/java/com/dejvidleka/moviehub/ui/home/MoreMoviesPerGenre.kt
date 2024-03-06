@@ -49,7 +49,6 @@ class MoreMoviesPerGenre : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hideBottomNavigation()
-
         setupRecyclerView()
         loadMovies()
     }

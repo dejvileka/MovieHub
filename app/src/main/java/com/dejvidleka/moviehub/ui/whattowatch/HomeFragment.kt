@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
@@ -18,8 +19,10 @@ import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
+import com.dejvidleka.moviehub.ui.home.MoreMoviesPerGenreArgs
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.AppPreferences
 import com.dejvidleka.moviehub.utils.MovieClickListener
@@ -37,6 +40,9 @@ class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
+
+    private var currentPage = 1
+    private val maxPages = 10
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,14 +126,21 @@ class HomeFragment : Fragment(), MovieClickListener {
         binding.topRatedRv.apply {
             adapter = topMovieAdapter
             layoutManager = LinearLayoutManager(context)
-        }
+        }.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
+                    currentPage++
+                    populationTopMovies()
+                }
+            }
+        })
     }
 
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.section.collectLatest { section ->
                 val targetFlow =
-                    if (section == "") mainViewModel.recommendedMovies else mainViewModel.topRatedMovies
+                    if (section == "") mainViewModel.recommendedMovies1(page = currentPage) else mainViewModel.topRatedMovies
                 mainViewModel.category.collectLatest {
                 targetFlow.collectLatest { result ->
                     handleMovieResult(
@@ -180,22 +193,16 @@ class HomeFragment : Fragment(), MovieClickListener {
                             !it.results[savedRegionCode]?.flatrate?.firstOrNull()?.logo_path.isNullOrBlank()
                         }
                         adapter.submitList(newList)
-                        contentView.visibility = View.VISIBLE
-                        placeholder.visibility = View.GONE
+
                     }
                 }
             }
             is Result.Loading -> {
-                contentView.visibility = View.GONE
-                placeholder.visibility = View.VISIBLE
-                adapter.notifyDataSetChanged()
                 when (adapter) {
                     is TrendingViewPager -> {
-                        adapter.submitList(emptyList())
                     }
 
                     is TopMovieAdapter -> {
-                        adapter.submitList(emptyList())
                     }
                 }
             }
