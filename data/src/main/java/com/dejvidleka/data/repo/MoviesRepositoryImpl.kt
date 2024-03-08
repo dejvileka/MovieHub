@@ -31,14 +31,13 @@ class MoviesRepositoryImpl @Inject constructor(
     override val movieDao: MovieDao
 ) : MoviesRepository {
 
-    override fun getMoviesStream(category: StateFlow<String>): Flow<PagingData<MovieData>> {
-
+    override fun getMoviesStream(category: String): Flow<PagingData<MovieData>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { MoviesPagingData(this, category) }
+            pagingSourceFactory = { MoviesPagingData(moviesService, category) }
         ).flow
     }
     override fun getMovies(categry: String, genre: String, page: Int): Flow<List<MovieResult>> {
@@ -103,17 +102,17 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(movies)
         }
     }
-    override fun recommendedMovies(category: String,page: Int): Flow<List<MovieData>> {
+/*    override fun recommendedMovies(category: StateFlow<String>, page: Int): Flow<PagingData<MovieData>> {
         return flow {
-           val movies= moviesService.getRecommendedMovies(category, page).movieResults.map {
+           val movies= moviesService.getRecommendedMovies(category.value, page).movieResults.map {
                 it.toMovieData()}
             coroutineScope {
                 val semaphore = Semaphore(permits = 5)
                 movies.map { movie ->
                     semaphore.withPermit {
                         val providersDeferred =
-                            async { moviesService.getProviders(category, movie.id) }
-                        val detailsDefered = async { moviesService.getDetails(category, movie.id) }
+                            async { moviesService.getProviders(category.value, movie.id) }
+                        val detailsDefered = async { moviesService.getDetails(category.value, movie.id) }
                         movie.results = providersDeferred.await().results
                         movie.runtime = detailsDefered.await().runtime
                     }
@@ -122,7 +121,7 @@ class MoviesRepositoryImpl @Inject constructor(
             }
             emit(movies)
         }
-    }
+    }*/
 
 
     override fun getTrending(category: String): Flow<List<MovieResult>> {

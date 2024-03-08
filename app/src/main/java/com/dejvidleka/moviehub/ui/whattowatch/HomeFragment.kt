@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dejvidleka.data.local.models.Genre
@@ -19,10 +19,8 @@ import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
-import com.dejvidleka.moviehub.ui.adapters.MovieListByGenreAdapter
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
-import com.dejvidleka.moviehub.ui.home.MoreMoviesPerGenreArgs
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
 import com.dejvidleka.moviehub.utils.AppPreferences
 import com.dejvidleka.moviehub.utils.MovieClickListener
@@ -126,22 +124,13 @@ class HomeFragment : Fragment(), MovieClickListener {
         binding.topRatedRv.apply {
             adapter = topMovieAdapter
             layoutManager = LinearLayoutManager(context)
-        }.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1) && currentPage <= maxPages) {
-                    currentPage++
-                    populationTopMovies()
-                }
-            }
-        })
+        }
     }
 
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.section.collectLatest { section ->
-                val targetFlow =
-                    if (section == "") mainViewModel.recommendedMovies1(page = currentPage) else mainViewModel.topRatedMovies
-                mainViewModel.category.collectLatest {
+                val targetFlow = mainViewModel.recommendedMoviesPagerData(page = currentPage)
                 targetFlow.collectLatest { result ->
                     handleMovieResult(
                         result,
@@ -149,7 +138,6 @@ class HomeFragment : Fragment(), MovieClickListener {
                         binding.topRatedRv,
                         binding.placeHolder
                     )
-                }
                 }
             }
         }
@@ -170,13 +158,12 @@ class HomeFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun <T> handleMovieResult(
-        result: Result<List<T>>,
+    private suspend fun <T> handleMovieResult(
+        result: Result<T>,
         adapter: RecyclerView.Adapter<*>,
         contentView: View,
         placeholder: View
     ) {
-        val savedRegionCode = AppPreferences.getRegionCode(requireContext())
 
         when (result) {
             is Result.Success -> {
@@ -188,12 +175,8 @@ class HomeFragment : Fragment(), MovieClickListener {
                     }
 
                     is TopMovieAdapter -> {
-                        val list = result.data as List<MovieData>
-                        val newList= list.filter {
-                            !it.results[savedRegionCode]?.flatrate?.firstOrNull()?.logo_path.isNullOrBlank()
-                        }
-                        adapter.submitList(newList)
-
+                        val list = result.data
+                        adapter.submitData(list as PagingData<MovieData>)
                     }
                 }
             }
