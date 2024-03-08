@@ -15,11 +15,12 @@ import com.dejvidleka.moviehub.utils.Image_URL
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.dejvidleka.moviehub.utils.getWatchProviders
 
-class TopMovieAdapter(
+
+class RecommendedMovieAdapter(
     private val savedRegionCode:String?,
     private val activity: Context,
     private val onClick: MovieClickListener,
-) : ListAdapter<MovieData, TopMovieAdapter.MovieResultViewHolder>(TopMovieDiffUtil()) {
+) : PagingDataAdapter<MovieData, RecommendedMovieAdapter.MovieResultViewHolder>(TrendingDiffUtil()) {
 
 
     inner class MovieResultViewHolder(private val itemBinding: ItemTopMoviesBinding) :
@@ -69,7 +70,8 @@ class TopMovieAdapter(
 
     }
 }
-private class TopMovieDiffUtil : DiffUtil.ItemCallback<MovieData>() {
+
+private class TrendingDiffUtil : DiffUtil.ItemCallback<MovieData>() {
     override fun areItemsTheSame(oldItem: MovieData, newItem: MovieData): Boolean {
         return newItem.id == oldItem.id
     }

@@ -50,6 +50,7 @@ fun getWatchProviders(): Map<String, WatchProvider> {
         "Fandor" to WatchProvider("Fandor", "https://www.fandor.com"),
         "Netzkino" to WatchProvider("Netzkino", "https://www.netzkino.de"),
         "Sky Go" to WatchProvider("Sky Go", "https://www.skygo.sky.de"),
+        "SkyShowtime" to WatchProvider("Sky Go", "https://www.skyshowtime.com"),
         "WOW" to WatchProvider("WOW", "https://www.wowpresentsplus.com"),
         "Alleskino" to WatchProvider("Alleskino", "https://www.alleskino.de"),
         "MGM Plus" to WatchProvider("MGM Plus", "https://www.mgm.com"),

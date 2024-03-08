@@ -19,6 +19,7 @@ import com.dejvidleka.data.local.models.MovieData
 import com.dejvidleka.data.local.models.MovieResult
 import com.dejvidleka.moviehub.databinding.FragmentWhatToWatchBinding
 import com.dejvidleka.moviehub.domain.Result
+import com.dejvidleka.moviehub.ui.adapters.RecommendedMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TopMovieAdapter
 import com.dejvidleka.moviehub.ui.adapters.TrendingViewPager
 import com.dejvidleka.moviehub.ui.viewmodels.MainViewModel
@@ -35,6 +36,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentWhatToWatchBinding
     private lateinit var topMovieAdapter: TopMovieAdapter
+    private lateinit var recommendedMovieAdapter: RecommendedMovieAdapter
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
@@ -56,11 +58,14 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     private fun initializeUI() {
+        lifecycleScope.launch {
+            setupAdapters()
+        }
         getTabListeners()
         getProviderName()
-        setupAdapters()
         populationTrendingMovies()
         populationTopMovies()
+
     }
 
     private fun getTabListeners() {
@@ -114,36 +119,62 @@ class HomeFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun setupAdapters() {
+    private suspend fun setupAdapters() {
         val savedRegionCode = AppPreferences.getRegionCode(requireContext())
         topMovieAdapter = TopMovieAdapter(savedRegionCode, requireContext(), this)
+        recommendedMovieAdapter = RecommendedMovieAdapter(savedRegionCode, requireContext(), this)
         trendingMovieAdapter = TrendingViewPager(this)
         binding.trendingCarosel.apply {
             adapter = trendingMovieAdapter
         }
-        binding.topRatedRv.apply {
-            adapter = topMovieAdapter
-            layoutManager = LinearLayoutManager(context)
+        mainViewModel.section.collectLatest {
+            if (it == "") {
+                binding.topRatedRv.apply {
+                    adapter = recommendedMovieAdapter
+                    layoutManager = LinearLayoutManager(context)
+                }
+            } else {
+                binding.topRatedRv.apply {
+                    adapter = topMovieAdapter
+                    layoutManager = LinearLayoutManager(context)
+                }
+            }
         }
+
     }
 
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.section.collectLatest { section ->
-                val targetFlow = mainViewModel.recommendedMoviesPagerData(page = currentPage)
-                targetFlow.collectLatest { result ->
-                    handleMovieResult(
-                        result,
-                        topMovieAdapter,
-                        binding.topRatedRv,
-                        binding.placeHolder
-                    )
+                if (section == "") {
+                    val targetFlow =
+                        mainViewModel.recommendedMoviesPagerData(page = currentPage)
+                    targetFlow.collectLatest { result ->
+                        handleMovieResult(
+                            result,
+                            recommendedMovieAdapter,
+                            binding.topRatedRv,
+                            binding.placeHolder
+                        )
+                    }
+                } else {
+                    val targetFlow = mainViewModel.topRatedMovies
+                    targetFlow.collectLatest { result ->
+                        handleMovieResult(
+                            result,
+                            topMovieAdapter,
+                            binding.topRatedRv,
+                            binding.placeHolder
+                        )
+
+                    }
                 }
             }
         }
     }
 
     private fun populationTrendingMovies() {
+        trendingMovieAdapter = TrendingViewPager(this)
         viewLifecycleOwner.lifecycleScope.launch {
             mainViewModel.category.collectLatest { category ->
                 mainViewModel.getTrending(category).collect { result ->
@@ -174,9 +205,14 @@ class HomeFragment : Fragment(), MovieClickListener {
                         placeholder.visibility = View.GONE
                     }
 
-                    is TopMovieAdapter -> {
+                    is RecommendedMovieAdapter -> {
                         val list = result.data
                         adapter.submitData(list as PagingData<MovieData>)
+                    }
+
+                    is TopMovieAdapter -> {
+                        adapter.submitList(result.data as List<MovieData>)
+
                     }
                 }
             }
@@ -185,7 +221,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                     is TrendingViewPager -> {
                     }
 
-                    is TopMovieAdapter -> {
+                    is RecommendedMovieAdapter -> {
                     }
                 }
             }
