@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dejvidleka.data.local.models.MovieData
@@ -20,7 +19,7 @@ class RecommendedMovieAdapter(
     private val savedRegionCode:String?,
     private val activity: Context,
     private val onClick: MovieClickListener,
-) : PagingDataAdapter<MovieData, RecommendedMovieAdapter.MovieResultViewHolder>(TrendingDiffUtil()) {
+) : PagingDataAdapter<MovieData, RecommendedMovieAdapter.MovieResultViewHolder>(RecommendedDiffUtil()) {
 
 
     inner class MovieResultViewHolder(private val itemBinding: ItemTopMoviesBinding) :
@@ -71,7 +70,7 @@ class RecommendedMovieAdapter(
     }
 }
 
-private class TrendingDiffUtil : DiffUtil.ItemCallback<MovieData>() {
+private class RecommendedDiffUtil : DiffUtil.ItemCallback<MovieData>() {
     override fun areItemsTheSame(oldItem: MovieData, newItem: MovieData): Boolean {
         return newItem.id == oldItem.id
     }

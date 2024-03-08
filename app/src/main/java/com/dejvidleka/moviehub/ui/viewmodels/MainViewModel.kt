@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
     val section: StateFlow<String> = _section
 
 
-    fun recommendedMoviesPagerData(page: Int): Flow<Result<PagingData<MovieData>>> {
+    fun recommendedMoviesPagerData(): Flow<Result<PagingData<MovieData>>> {
         return category.flatMapLatest {
             moviesRepository.getMoviesStream(it).toResult().stateIn(
                 scope = viewModelScope,
@@ -47,18 +47,6 @@ class MainViewModel @Inject constructor(
             )
         }
     }
-
-//    val moviesFlow: Flow<PagingData<MovieData>> =
-//        moviesRepository.getMoviesStream(category).cachedIn(viewModelScope)
-//
-
-//    val recommendedMovies = _category.flatMapLatest { category ->
-//        moviesRepository.recommendedMovies(category, 1).toResult().stateIn(
-//                scope = viewModelScope,
-//                started = SharingStarted.Lazily,
-//                initialValue = Result.Loading()
-//            )
-//    }
 
     val topRatedMovies = _category.combine(section) { category, section ->
         Pair(category, section)

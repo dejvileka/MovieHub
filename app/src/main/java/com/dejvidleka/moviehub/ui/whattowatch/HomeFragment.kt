@@ -27,6 +27,7 @@ import com.dejvidleka.moviehub.utils.AppPreferences
 import com.dejvidleka.moviehub.utils.MovieClickListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -40,9 +41,6 @@ class HomeFragment : Fragment(), MovieClickListener {
     private lateinit var trendingMovieAdapter: TrendingViewPager
     private val handler = Handler(Looper.getMainLooper())
     private val update = Runnable { }
-
-    private var currentPage = 1
-    private val maxPages = 10
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +56,7 @@ class HomeFragment : Fragment(), MovieClickListener {
     }
 
     private fun initializeUI() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             setupAdapters()
         }
         getTabListeners()
@@ -140,16 +138,14 @@ class HomeFragment : Fragment(), MovieClickListener {
                 }
             }
         }
-
     }
 
     private fun populationTopMovies() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.section.collectLatest { section ->
-                if (section == "") {
-                    val targetFlow =
-                        mainViewModel.recommendedMoviesPagerData(page = currentPage)
-                    targetFlow.collectLatest { result ->
+            mainViewModel.section.collectLatest{ section ->
+                if (section.isEmpty()) {
+                    mainViewModel.recommendedMoviesPagerData()
+                        .collect{ result ->
                         handleMovieResult(
                             result,
                             recommendedMovieAdapter,
@@ -158,8 +154,7 @@ class HomeFragment : Fragment(), MovieClickListener {
                         )
                     }
                 } else {
-                    val targetFlow = mainViewModel.topRatedMovies
-                    targetFlow.collectLatest { result ->
+                    mainViewModel.topRatedMovies.collect { result ->
                         handleMovieResult(
                             result,
                             topMovieAdapter,
@@ -203,25 +198,45 @@ class HomeFragment : Fragment(), MovieClickListener {
                         adapter.submitList(result.data as List<MovieResult>)
                         contentView.visibility = View.VISIBLE
                         placeholder.visibility = View.GONE
+                        Log.d("trending List", (result.data as List<MovieData>).toString())
                     }
 
                     is RecommendedMovieAdapter -> {
-                        val list = result.data
-                        adapter.submitData(list as PagingData<MovieData>)
+                        adapter.submitData(result.data as PagingData<MovieData>)
+                        Log.d("Recommended List", (result.data as PagingData<MovieData>).toString())
+                        contentView.visibility = View.VISIBLE
+                        placeholder.visibility = View.GONE
                     }
 
                     is TopMovieAdapter -> {
                         adapter.submitList(result.data as List<MovieData>)
-
+                        contentView.visibility = View.VISIBLE
+                        placeholder.visibility = View.GONE
+                        Log.d("Top List", (result.data as List<MovieData>).toString())
                     }
                 }
             }
             is Result.Loading -> {
                 when (adapter) {
                     is TrendingViewPager -> {
+//                        trendingMovieAdapter.notifyDataSetChanged()
+//                        trendingMovieAdapter.submitList(emptyList())
+//                        contentView.visibility = View.VISIBLE
+//                        placeholder.visibility = View.GONE
                     }
 
                     is RecommendedMovieAdapter -> {
+//                        recommendedMovieAdapter.submitData(PagingData.empty())
+//                        recommendedMovieAdapter.notifyDataSetChanged()
+//                        contentView.visibility = View.GONE
+//                        placeholder.visibility = View.VISIBLE
+                    }
+
+                    is TopMovieAdapter -> {
+//                        topMovieAdapter.submitList(emptyList())
+//                        topMovieAdapter.notifyDataSetChanged()
+//                        contentView.visibility = View.GONE
+//                        placeholder.visibility = View.VISIBLE
                     }
                 }
             }
