@@ -21,16 +21,12 @@ interface MoviesRepository {
 
     fun getMoviesStream(category: String): Flow<PagingData<MovieData>>
 
-    fun getMovies(category: String,genre: String, page: Int = 1): Flow<List<MovieResult>>
+    fun getMovies(category: String, genre: String, page: Int = 1): Flow<List<MovieResult>>
 //    fun recommendedMovies(category: StateFlow<String>, page: Int): Flow<PagingData<MovieData>>
-
     fun getGenre(category: String): Flow<List<Genre>>
-
     fun getCast(movieId: Int): Flow<List<Cast>>
-
     fun getTrailer(movieId: Int): Flow<TrailerResult>
-
-    fun getTopRated(category: String,section: String): Flow<List<MovieData>>
+    fun getTopRated(category: String, section: String): Flow<List<MovieData>>
     fun getRegions(): Flow<List<Regions>>
     fun getProviderNames(): Flow<List<Result>>
     fun getTrending(category: String): Flow<List<MovieResult>>
@@ -47,8 +43,7 @@ interface MoviesRepository {
 
     suspend fun removeFavorite(movie: MovieEntity)
 
-    fun getSearchResult(query:String):Flow<List<MovieResult>>
-
+    fun getSearchResult(query: String): Flow<List<MovieResult>>
 
 
 }

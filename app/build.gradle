@@ -57,6 +57,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.9.1'
     implementation 'androidx.compose.material3:material3-android:1.2.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
     def room_version = "2.5.1"
 
 

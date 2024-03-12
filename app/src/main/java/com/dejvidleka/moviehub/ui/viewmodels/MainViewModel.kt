@@ -1,5 +1,6 @@
 package com.dejvidleka.moviehub.ui.viewmodels
 
+import android.graphics.Region
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -56,7 +58,8 @@ class MainViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = Result.Loading(),
-        )
+    )
+
     fun getTrending(category: String): Flow<Result<List<MovieResult>>> {
         return moviesRepository.getTrending(category).toResult()
     }
@@ -70,8 +73,26 @@ class MainViewModel @Inject constructor(
     )
 
     val genre: StateFlow<Result<List<Genre>>> = _genres
-    private val _regions= moviesRepository.getRegions().toResult()
-    val regions: Flow<Result<List<Regions>>> = _regions
+
+    private val _regions = MutableStateFlow<Result<List<Region>>>(Result.Loading)
+    val regions = _regions.asStateFlow()
+
+
+    init {
+        viewModelScope.launch {
+            moviesRepository.getRegions().collect { result ->
+                when (result) {
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        _regions.value = result.data
+                    }
+
+                    is Result.Error -> {}
+
+                }
+            }
+        }
+    }
 
     fun updateCategory(category: String) {
         _category.value = category
