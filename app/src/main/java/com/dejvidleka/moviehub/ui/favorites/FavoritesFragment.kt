@@ -50,7 +50,6 @@ class FavoritesFragment : Fragment(), MovieClickListener {
                     is Result.Success -> {
                         adapter.submitList(result.data)
                     }
-
                     is Result.Loading -> {
                     }
 
