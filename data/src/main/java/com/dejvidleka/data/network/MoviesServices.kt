@@ -26,28 +26,34 @@ interface MoviesServices {
         @Query("page") page: Int
     ): Response<MovieByGenre>
 
-    @GET("/3/trending/{category}/day")
-    suspend fun getTrending(
-        @Path("category") category: String
-    ): Response<MovieByGenre>
-
     @GET("/3/{category}/{section}")
     suspend fun getTopRated(
         @Path("category") category: String,
         @Path("section") section:String
     ): TopRatedMovies
+    @GET("/3/discover/{category}")
+    suspend fun getRecommendedMovies(
+        @Path ("category") category: String,
+        @Query("page") page: Int
+    ): TopRatedMovies
 
+    @GET("/3/trending/{category}/day")
+    suspend fun getTrending(
+        @Path("category") category: String
+    ): Response<MovieByGenre>
 
     @GET("/3/movie/{movie_id}/credits")
     suspend fun getCast(
         @Path("movie_id") movieId: Int,
     ): Response<MovieCast>
- @GET("/3/movie/{movie_id}")
+
+    @GET("/3/{category}/{movie_id}")
     suspend fun getDetails(
+     @Path("category") category: String,
         @Path("movie_id") movieId: Int,
     ): MovieDetails
 
- @GET("/3/tv/{tv_id}")
+    @GET("/3/tv/{tv_id}")
     suspend fun getDetailsTv(
         @Path("tv_id") movieId: Int,
     ): Response<TvDetails>
@@ -82,6 +88,7 @@ interface MoviesServices {
 
     @GET("/3/watch/providers/regions")
     suspend fun getRegions(): Response<Countries>
+
 
 }
 

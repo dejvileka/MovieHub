@@ -76,7 +76,7 @@ class MoviesRepositoryImpl @Inject constructor(
                         launch {
                             semaphore.withPermit {
                                 val providersDeferred = async { moviesService.getProviders(category, movie.id) }
-                                val detailsDeferred = async { moviesService.getDetails(movie.id) }
+                                val detailsDeferred = async { moviesService.getDetails(category,movie.id) }
                                 movie.results = providersDeferred.await().results
                                 movie.runtime = detailsDeferred.await().runtime
                             }
